@@ -1,6 +1,5 @@
 package com.yu.common.querydsl.query.annotation;
 
-
 import com.yu.common.querydsl.query.enums.YuOperatorEnum;
 
 import java.lang.annotation.ElementType;
@@ -8,6 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author wangxd
+ * @date 2020-10-10
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface YuJoinColumn {
@@ -16,36 +19,26 @@ public @interface YuJoinColumn {
 
     /**
      * 关联domain，默认为 SSCriteria 中的domain
-     *
-     * @return
      */
     Class<?> relationDomain() default Void.class;
 
     /**
      * 字段（DSLJoin中的 domain）
-     *
-     * @return
      */
     String column() default "";
 
     /**
      * 关联表字段
-     *
-     * @return
      */
     String relationColumn() default "";
 
     /**
      * 实体类对应的字段名称
-     *
-     * @return
      */
     String fieldName() default "";
 
     /**
      * 常量
-     *
-     * @return
      */
     String constant() default "";
 
@@ -55,11 +48,15 @@ public @interface YuJoinColumn {
      * 关联类型
      */
     enum RelationType {
-        COLUMN,         //表字段关联
+        //两表字段关联
+        COLUMN,
+        //主表 field
         FIELD,
+        //主表 常量
         CONST,
-
+        //关联表 field
         RELATION_FIELD,
+        //关联表 常量
         RELATION_CONST
     }
 }

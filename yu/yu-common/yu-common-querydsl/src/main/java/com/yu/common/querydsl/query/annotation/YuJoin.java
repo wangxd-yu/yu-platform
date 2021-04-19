@@ -5,6 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author wangxd
+ * @date 2020-10-10
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface YuJoin {
@@ -21,12 +25,16 @@ public @interface YuJoin {
      * 关联类型
      */
     enum Type {
+        //innerJoin
         INNER_JOIN("innerJoin"),
+        //leftJoin
         LEFT_JOIN("leftJoin"),
+        //rightJoin
         RIGHT_JOIN("rightJoin"),
+        //fullJoin
         FULL_JOIN("fullJoin");
 
-        private String label;
+        private final String label;
 
         Type(String label) {
             this.label = label;

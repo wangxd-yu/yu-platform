@@ -23,7 +23,9 @@ public @interface YuOrderColumn {
      * 关联类型
      */
     enum Type {
+        //asc
         ASC,
-        DESC;
+        //desc
+        DESC
     }
 }

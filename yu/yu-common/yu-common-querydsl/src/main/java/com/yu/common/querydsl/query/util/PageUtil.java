@@ -14,8 +14,8 @@ import java.util.Map;
 /**
  * 分页工具
  *
- * @author yu
- * @date 2018-12-10
+ * @author wangxd
+ * @date 2020-10-10
  */
 public class PageUtil extends cn.hutool.core.util.PageUtil {
 

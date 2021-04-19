@@ -23,16 +23,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * @author wangxd
+ * @date 2020-10-10
+ */
 @Slf4j
 public class YuQueryHelp {
 
-    private static final Map<String, EntityPath> entityPathMap = new HashMap<>();
+    private static final Map<String, EntityPath<?>> ENTITY_PATH_MAP = new HashMap<>();
 
     public static <C, T> JPAQuery<T> getJPAQuery(JPAQueryFactory jpaQueryFactory, C criteria) {
-        JPAQuery jpaQuery;
+        JPAQuery<T> jpaQuery;
         YuQuery yuQuery = criteria.getClass().getAnnotation(YuQuery.class);
         //主实体类名称（主表）
-        EntityPath masterDO = getEntityPath(yuQuery.domain());
+        @SuppressWarnings("unchecked")
+        EntityPath<T> masterDO = (EntityPath<T>) getEntityPath(yuQuery.domain());
         jpaQuery = jpaQueryFactory.selectFrom(masterDO);
         fromAndJoin(jpaQuery, criteria);
         where(jpaQuery, criteria);
@@ -99,28 +104,28 @@ public class YuQueryHelp {
         return jpaQuery;
     }
 
-    public static <C> void fromAndJoin(JPAQuery jpaQuery, C criteria) {
+    public static <C> void fromAndJoin(JPAQuery<?> jpaQuery, C criteria) {
         try {
-            YuQuery YuQuery = criteria.getClass().getAnnotation(YuQuery.class);
+            YuQuery yuQuery = criteria.getClass().getAnnotation(YuQuery.class);
             //主实体类名称（主表）
-            EntityPath<?> masterDO = getEntityPath(YuQuery.domain());
+            EntityPath<?> masterDO = getEntityPath(yuQuery.domain());
             jpaQuery.from(masterDO);
             //关联实体类（关联表）
-            YuJoin[] YuJoins = YuQuery.joins();
+            YuJoin[] yuJoins = yuQuery.joins();
             //存在关联表
-            if (YuJoins.length > 0) {
+            if (yuJoins.length > 0) {
                 //TODO ,处理关联操作
-                for (YuJoin YuJoin : YuJoins) {
-                    EntityPath<?> joinDomain = getEntityPath(YuJoin.domain());
-                    ReflectUtil.invoke(jpaQuery, YuJoin.type().getLabel(), joinDomain);
+                for (YuJoin yuJoin : yuJoins) {
+                    EntityPath<?> joinDomain = getEntityPath(yuJoin.domain());
+                    ReflectUtil.invoke(jpaQuery, yuJoin.type().getLabel(), joinDomain);
                     List<Predicate> predicates = new ArrayList<>();
-                    if (YuJoin.columns().length <= 0) {
+                    if (yuJoin.columns().length <= 0) {
                         //TODO 抛出异常 "关联表中不存在关联字段"
                     }
                     Method columnMethod;
                     Expression<?> columnField;
                     Expression<?> columnParam;
-                    for (YuJoinColumn column : YuJoin.columns()) {
+                    for (YuJoinColumn column : yuJoin.columns()) {
                         EntityPath<?> relationDomain;
                         if (column.relationDomain() == Void.class) {
                             relationDomain = masterDO;
@@ -184,10 +189,11 @@ public class YuQueryHelp {
         // getFieldMap 去重（子类继承父类后，子类父类都有的字段，使用子类中的字段进行 DSL映射）
         // Field[] fields = getDistinctFields(dtoClass);
         Field[] fields = ReflectUtil.getFieldMap(dtoClass).values().toArray(new Field[0]);
-        List<Expression> expressions = new ArrayList<>();
+        List<Expression<?>> expressions = new ArrayList<>();
         for (Field field : fields) {
             //1、存在 SSDTOTransient 注解，直接忽略
             if (field.isAnnotationPresent(YuDTOTransient.class) || "serialVersionUID".equals(field.getName())) {
+                continue;
             }
             //2、不存在 SSDTOField 注解：默认按字段名映射，domain使用 DSLDTO中的domain
             else if (!field.isAnnotationPresent(YuDTOField.class)) {
@@ -231,7 +237,7 @@ public class YuQueryHelp {
     /**
      * fields 去重， 相同字段，子类替换父类(加在父类的注解，子类可以继承)
      */
-    private static Field[] getDistinctFields(Class dtoClass) {
+    private static Field[] getDistinctFields(Class<?> dtoClass) {
         // 字段顺序，子类中的字段在前，父类在后
         Field[] fields = ReflectUtil.getFields(dtoClass);
         Map<String, Field> fieldMap = new HashMap<>(fields.length);
@@ -337,7 +343,8 @@ public class YuQueryHelp {
         if (!fieldName.contains(".")) {
             return (Expression<?>) ReflectUtil.getFieldValue(domain, fieldName);
         }
-        String[] fields = fieldName.split("\\.");   // 指定分割字符， . 号需要转义
+        // 指定分割字符， . 号需要转义
+        String[] fields = fieldName.split("\\.");
         Expression<?> result = domain;
         for (String field : fields) {
             result = (Expression<?>) ReflectUtil.getFieldValue(result, field);
@@ -361,13 +368,13 @@ public class YuQueryHelp {
         }
         return entityPath;*/
 
-        EntityPath<?> entityPath = entityPathMap.get(cla.getName());
+        EntityPath<?> entityPath = ENTITY_PATH_MAP.get(cla.getName());
         try {
             if (entityPath == null) {
                 String qClassName = cla.getName().replace(cla.getSimpleName(), "Q" + cla.getSimpleName());
-                Class qCla = Class.forName(qClassName);
+                Class<?> qCla = Class.forName(qClassName);
                 entityPath = (EntityPath<?>) qCla.getField(StrUtil.lowerFirst(cla.getSimpleName())).get(null);
-                entityPathMap.put(cla.getName(), entityPath);
+                ENTITY_PATH_MAP.put(cla.getName(), entityPath);
             }
             return entityPath;
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {

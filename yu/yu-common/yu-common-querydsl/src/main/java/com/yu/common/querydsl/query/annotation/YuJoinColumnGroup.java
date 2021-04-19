@@ -5,6 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author wangxd
+ * @date 2020-10-10
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface YuJoinColumnGroup {
@@ -17,7 +21,9 @@ public @interface YuJoinColumnGroup {
      * 关联条件
      */
     enum Type {
+        //and
         AND,
+        //or
         OR
     }
 }

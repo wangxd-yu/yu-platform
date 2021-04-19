@@ -2,6 +2,10 @@ package com.yu.common.querydsl.query.annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * @author wangxd
+ * @date 2020-10-10
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited

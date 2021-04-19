@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * @author wangxd
  * @date 2020-11-25
  */
-public abstract class DslBaseApiController<M extends DslBaseService<DO, ID>, DO extends DslBaseDO, ID>
+public abstract class DslBaseApiController<M extends DslBaseService<DO, ID>, DO extends DslBaseDO<?>, ID>
         extends DslBaseController<M, DO, ID> {
 
     protected final M dslBaseService;
