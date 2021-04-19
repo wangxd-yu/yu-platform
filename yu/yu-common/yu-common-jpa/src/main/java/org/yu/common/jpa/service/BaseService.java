@@ -2,7 +2,7 @@ package org.yu.common.jpa.service;
 
 /**
  * @author wangxd
- * @date 2020-11-09 09:30
+ * @date 2020-11-09
  */
 public interface BaseService<DO, ID> {
 

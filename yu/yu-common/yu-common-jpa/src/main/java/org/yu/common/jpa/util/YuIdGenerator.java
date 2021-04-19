@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * @author wangxd
- * @date 2020-11-27 9:13
+ * @date 2020-11-27
  */
 public class YuIdGenerator implements IdentifierGenerator {
 

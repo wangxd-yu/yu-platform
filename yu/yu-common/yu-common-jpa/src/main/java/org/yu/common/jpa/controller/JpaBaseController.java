@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wangxd
- * @date 2020-11-09 10:10
+ * @date 2020-11-09
  */
 public abstract class JpaBaseController<M extends BaseService<DO, Long>, DO extends JpaBaseDO> {
 

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author wangxd
- * @date 2020-11-09 09:36
+ * @date 2020-11-09
  */
 public abstract class JpaBaseServiceImpl<M extends JpaRepository<DO, ID>, DO, ID> implements BaseService<DO, ID> {
 
