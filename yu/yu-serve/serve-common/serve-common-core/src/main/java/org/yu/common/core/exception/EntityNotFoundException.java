@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
  */
 public class EntityNotFoundException extends RuntimeException {
 
-    public EntityNotFoundException(Class clazz, Object... searchParamsMap) {
+    public EntityNotFoundException(Class<?> clazz, Object... searchParamsMap) {
         super(EntityNotFoundException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
     }
 
@@ -22,10 +22,10 @@ public class EntityNotFoundException extends RuntimeException {
                 searchParams;
     }
 
-    private static <K, V> Map<K, V> toMap(
-            Class<K> keyType, Class<V> valueType, Object... entries) {
-        if (entries.length % 2 == 1)
+    private static <K, V> Map<K, V> toMap(Class<K> keyType, Class<V> valueType, Object... entries) {
+        if (entries.length % 2 == 1) {
             throw new IllegalArgumentException("Invalid entries");
+        }
         return IntStream.range(0, entries.length / 2).map(i -> i * 2)
                 .collect(HashMap::new,
                         (m, i) -> m.put(keyType.cast(entries[i]), valueType.cast(entries[i + 1])),

@@ -6,22 +6,22 @@ package org.yu.common.core.context;
  */
 public class YuContextHolder implements AutoCloseable {
 
-    private static final ThreadLocal<YuContext> ctx = new ThreadLocal<>();
+    private static final ThreadLocal<YuContext> CTX = new ThreadLocal<>();
 
     public YuContextHolder(YuContext yuContext) {
-        ctx.set(yuContext);
+        CTX.set(yuContext);
     }
 
     public static YuContext getYuContext() {
-        return ctx.get();
+        return CTX.get();
     }
 
     public static Integer getTenantId() {
-        return ctx.get() == null ? null : ctx.get().getTenantId();
+        return CTX.get() == null ? null : CTX.get().getTenantId();
     }
 
     @Override
     public void close() {
-        ctx.remove();
+        CTX.remove();
     }
 }
