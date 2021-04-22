@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.yu.common.context.holder.LoginHolder,\
+org.yu.common.context.filter.YuContextFilter
