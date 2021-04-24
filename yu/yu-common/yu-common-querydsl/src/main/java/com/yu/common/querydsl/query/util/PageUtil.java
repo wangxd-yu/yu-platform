@@ -1,14 +1,10 @@
 package com.yu.common.querydsl.query.util;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.sql.JPASQLQuery;
-import org.springframework.data.domain.Page;
+import com.querydsl.jpa.impl.AbstractJPAQuery;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,75 +13,23 @@ import java.util.Map;
  * @author wangxd
  * @date 2020-10-10
  */
-public class PageUtil extends cn.hutool.core.util.PageUtil {
+public class PageUtil {
 
-    /**
-     * List 分页
-     *
-     * @param page
-     * @param size
-     * @param list
-     * @return
-     */
-    public static List toPage(int page, int size, List list) {
-        int fromIndex = page * size;
-        int toIndex = page * size + size;
-
-        if (fromIndex > list.size()) {
-            return new ArrayList();
-        } else if (toIndex >= list.size()) {
-            return list.subList(fromIndex, list.size());
-        } else {
-            return list.subList(fromIndex, toIndex);
-        }
-    }
-
-    /**
-     * Page 数据处理，预防redis反序列化报错
-     *
-     * @param page
-     * @return
-     */
-    public static Map toPage(Page page) {
-        Map map = new HashMap();
-        map.put("content", page.getContent());
-        map.put("totalElements", page.getTotalElements());
+    public static Map<String, Object> toPage(Object object, long total) {
+        HashMap<String, Object> map = new HashMap<>(2);
+        map.put("items", object);
+        map.put("total", total);
         return map;
     }
 
-    /**
-     * @param object
-     * @param totalElements
-     * @return
-     */
-    public static Map toPage(Object object, Object totalElements) {
-        Map map = new HashMap();
-        map.put("content", object);
-        map.put("totalElements", totalElements);
-        return map;
-    }
-
-    public static Map<String, Object> toPage(JPAQuery<?> jpaQuery, Pageable pageable) {
-        //TODO 获取泛型类型并实现分页
-        Map map = new HashMap();
+    public static Map<String, Object> toPage(AbstractJPAQuery<?, ?> jpaQuery, Pageable pageable) {
+        HashMap<String, Object> map = new HashMap<>(2);
         QueryResults<?> queryResults = jpaQuery
                 .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber() * pageable.getPageSize())
+                .offset((long) pageable.getPageNumber() * pageable.getPageSize())
                 .fetchResults();
-        map.put("totalElements", queryResults.getTotal());
-        map.put("content", queryResults.getResults());
-        return map;
-    }
-
-    public static Map<String, Object> toPage(JPASQLQuery<?> jpaSqlQuery, Pageable pageable) {
-        //TODO 获取泛型类型并实现分页
-        Map map = new HashMap();
-        QueryResults<?> queryResults = jpaSqlQuery
-                .limit(pageable.getPageSize())
-                .offset(pageable.getPageNumber() * pageable.getPageSize())
-                .fetchResults();
-        map.put("totalElements", queryResults.getTotal());
-        map.put("content", queryResults.getResults());
+        map.put("total", queryResults.getTotal());
+        map.put("items", queryResults.getResults());
         return map;
     }
 }
