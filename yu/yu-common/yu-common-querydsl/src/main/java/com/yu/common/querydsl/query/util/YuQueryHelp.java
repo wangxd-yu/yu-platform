@@ -1,6 +1,5 @@
 package com.yu.common.querydsl.query.util;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.querydsl.core.types.*;
@@ -309,13 +308,16 @@ public class YuQueryHelp {
     }
 
     private static <T> Predicate getPredicate(EntityPath<T> domain, YuOperatorEnum operatorEnum, YuDateTimeEnum dateTimeEnum, String attributeName, Object val) {
+        if (val == null) {
+            return null;
+        }
         Predicate predicate;
         // in 操作符时为 列表，特殊处理
         if (operatorEnum.equals(YuOperatorEnum.IN)) {
-            if (CollUtil.isNotEmpty((Iterable<?>) val)) {
+            if (val instanceof Iterable) {
                 predicate = ReflectUtil.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
             } else {
-                return null;
+                throw new RuntimeException("类型异常！");
             }
         }
         //日期类型时也需要特殊处理，调用 mysql的 DATE_FORMAT 函数
