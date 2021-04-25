@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -13,6 +12,7 @@ import com.yu.common.querydsl.query.annotation.*;
 import com.yu.common.querydsl.query.enums.YuDateTimeEnum;
 import com.yu.common.querydsl.query.enums.YuOperatorEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -120,7 +120,7 @@ public class YuQueryHelp {
                     ReflectUtil.invoke(jpaQuery, yuJoin.type().getLabel(), joinDomain);
                     List<Predicate> predicates = new ArrayList<>();
                     if (yuJoin.columns().length <= 0) {
-                        //TODO 抛出异常 "关联表中不存在关联字段"
+                        throw new IllegalArgumentException("关联表中不存在关联字段");
                     }
                     Method columnMethod;
                     Expression<?> columnField;
@@ -212,8 +212,8 @@ public class YuQueryHelp {
                 String propName = SSDTOField.propName();
                 String template = SSDTOField.template();
                 // 包含模板
-                if (StrUtil.isNotBlank(template)) {
-                    propName = StrUtil.isBlank(propName) ? field.getName() : propName;
+                if (!StringUtils.isEmpty(template)) {
+                    propName = StringUtils.isEmpty(propName) ? field.getName() : propName;
                     if (field.getType().equals(String.class)) {
                         expressions.add(ReflectUtil.invoke(Expressions.stringTemplate(template, getFieldValue(domain, propName)), "as", field.getName()));
                     } else if (Arrays.asList(Integer.class, Long.class).contains(field.getType())) {
@@ -223,7 +223,7 @@ public class YuQueryHelp {
                     }
                     // TODO 暂不支持 String之外的类型
                 } else {
-                    if (StrUtil.isBlank(propName)) {
+                    if (StringUtils.isEmpty(propName)) {
                         expressions.add(getFieldValue(domain, field.getName()));
                     } else {
                         expressions.add(ReflectUtil.invoke(getFieldValue(domain, propName), "as", field.getName()));
@@ -286,7 +286,7 @@ public class YuQueryHelp {
         YuQueryColumn query = field.getAnnotation(YuQueryColumn.class);
         if (query != null) {
             String propName = query.propName();
-            String attributeName = StrUtil.isBlank(propName) ? field.getName() : propName;
+            String attributeName = StringUtils.isEmpty(propName) ? field.getName() : propName;
             boolean accessFlag = true;
             if (!field.isAccessible()) {
                 accessFlag = false;
@@ -332,7 +332,7 @@ public class YuQueryHelp {
         } else {
             //String valStr = val.toString();
             if (operatorEnum.getFormat() != null) {
-                val = StrUtil.format(operatorEnum.getFormat(), val.toString());
+                val = String.format(operatorEnum.getFormat(), val.toString());
             }
             predicate = ReflectUtil.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
         }
@@ -373,7 +373,7 @@ public class YuQueryHelp {
             if (entityPath == null) {
                 String qClassName = cla.getName().replace(cla.getSimpleName(), "Q" + cla.getSimpleName());
                 Class<?> qCla = Class.forName(qClassName);
-                entityPath = (EntityPath<?>) qCla.getField(StrUtil.lowerFirst(cla.getSimpleName())).get(null);
+                entityPath = (EntityPath<?>) qCla.getField(StringUtils.uncapitalize(cla.getSimpleName())).get(null);
                 ENTITY_PATH_MAP.put(cla.getName(), entityPath);
             }
             return entityPath;
