@@ -1,7 +1,6 @@
 package com.yu.common.querydsl.query.util;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.querydsl.core.types.*;
@@ -310,7 +309,7 @@ public class YuQueryHelp {
     }
 
     private static <T> Predicate getPredicate(EntityPath<T> domain, YuOperatorEnum operatorEnum, YuDateTimeEnum dateTimeEnum, String attributeName, Object val) {
-        Predicate predicate = null;
+        Predicate predicate;
         // in 操作符时为 列表，特殊处理
         if (operatorEnum.equals(YuOperatorEnum.IN)) {
             if (CollUtil.isNotEmpty((Iterable<?>) val)) {
@@ -321,16 +320,16 @@ public class YuQueryHelp {
         }
         //日期类型时也需要特殊处理，调用 mysql的 DATE_FORMAT 函数
         else if (dateTimeEnum != null) {
-            if (val.getClass() == Date.class) {
-                predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), DateUtil.format((Date) val, dateTimeEnum.getFormat()));
-            } else if (val.getClass() == LocalDate.class) {
+            if (val instanceof LocalDate) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeEnum.getFormat());
                 predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDate) val).format(formatter));
-            } else if (val.getClass() == LocalDateTime.class) {
-                predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), DateUtil.format((LocalDateTime) val, dateTimeEnum.getFormat()));
+            } else if (val instanceof LocalDateTime) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeEnum.getFormat());
+                predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDateTime) val).format(formatter));
+            } else {
+                throw new RuntimeException("日期类型只支持：'LocalDate'、'LocalDateTime'");
             }
         } else {
-            //String valStr = val.toString();
             if (operatorEnum.getFormat() != null) {
                 val = String.format(operatorEnum.getFormat(), val.toString());
             }
