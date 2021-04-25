@@ -1,6 +1,5 @@
 package com.yu.common.querydsl.query.util;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
@@ -292,7 +291,9 @@ public class YuQueryHelp {
             }
 
             Object val = field.get(criteria);
-            if (ObjectUtil.isNull(val) || ObjectUtil.isEmpty(val)) {
+            if (Objects.isNull(val)) {
+                return null;
+            } else if (val instanceof String && StringUtils.isEmpty(val)) {
                 return null;
             }
             if (!accessFlag) {
