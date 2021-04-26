@@ -1,14 +1,15 @@
 package com.yu.common.querydsl.query.util;
 
-import cn.hutool.core.util.ReflectUtil;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.yu.common.querydsl.exception.YuQueryException;
 import com.yu.common.querydsl.query.annotation.*;
 import com.yu.common.querydsl.query.enums.YuDateTimeEnum;
 import com.yu.common.querydsl.query.enums.YuOperatorEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.AccessibleObject;
@@ -68,13 +69,15 @@ public class YuQueryHelp {
         List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>(10);
         EntityPath<?> mainDomain = getEntityPath(criteria.domain());
         EntityPath<?> domain;
+        Method method;
         for (YuOrderColumn yuOrderColumn : criteria.orders()) {
             if (yuOrderColumn.domain() == Void.class) {
                 domain = mainDomain;
             } else {
                 domain = getEntityPath(yuOrderColumn.domain());
             }
-            orderSpecifiers.add(ReflectUtil.invoke(getFieldValue(domain, yuOrderColumn.column()), yuOrderColumn.type().name().toLowerCase()));
+
+            orderSpecifiers.add((OrderSpecifier<?>) ReflectUtils.invoke(getFieldValue(domain, yuOrderColumn.column()), yuOrderColumn.type().name().toLowerCase()));
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
     }
@@ -114,7 +117,7 @@ public class YuQueryHelp {
                 //TODO ,处理关联操作
                 for (YuJoin yuJoin : yuJoins) {
                     EntityPath<?> joinDomain = getEntityPath(yuJoin.domain());
-                    ReflectUtil.invoke(jpaQuery, yuJoin.type().getLabel(), joinDomain);
+                    ReflectUtils.invoke(jpaQuery, yuJoin.type().getLabel(), joinDomain);
                     List<Predicate> predicates = new ArrayList<>();
                     if (yuJoin.columns().length <= 0) {
                         throw new IllegalArgumentException("关联表中不存在关联字段");
@@ -143,7 +146,7 @@ public class YuQueryHelp {
                                 break;
                             case FIELD:
                                 fieldName = "".equals(column.fieldName()) ? column.column() : column.fieldName();
-                                field = ReflectUtil.getField(criteria.getClass(), fieldName);
+                                field = ReflectionUtils.findField(criteria.getClass(), fieldName);
                                 field.setAccessible(true);
                                 if (field.isAnnotationPresent(YuDateTimeFormat.class)) {
                                     dateTimeEnum = field.getDeclaredAnnotation(YuDateTimeFormat.class).value();
@@ -156,7 +159,7 @@ public class YuQueryHelp {
                                 break;
                             case RELATION_FIELD:
                                 fieldName = "".equals(column.fieldName()) ? column.relationColumn() : column.fieldName();
-                                field = ReflectUtil.getField(criteria.getClass(), fieldName);
+                                field = ReflectionUtils.findField(criteria.getClass(), fieldName);
                                 field.setAccessible(true);
                                 if (field.isAnnotationPresent(YuDateTimeFormat.class)) {
                                     dateTimeEnum = field.getDeclaredAnnotation(YuDateTimeFormat.class).value();
@@ -185,7 +188,7 @@ public class YuQueryHelp {
         EntityPath<?> masterDO = getEntityPath(yuDto.domain());
         // getFieldMap 去重（子类继承父类后，子类父类都有的字段，使用子类中的字段进行 DSL映射）
         // Field[] fields = getDistinctFields(dtoClass);
-        Field[] fields = ReflectUtil.getFieldMap(dtoClass).values().toArray(new Field[0]);
+        Set<Field> fields = ReflectUtils.getFields(dtoClass);
         List<Expression<?>> expressions = new ArrayList<>();
         for (Field field : fields) {
             //1、存在 SSDTOTransient 注解，直接忽略
@@ -212,10 +215,10 @@ public class YuQueryHelp {
                 if (!StringUtils.isEmpty(template)) {
                     propName = StringUtils.isEmpty(propName) ? field.getName() : propName;
                     if (field.getType().equals(String.class)) {
-                        expressions.add(ReflectUtil.invoke(Expressions.stringTemplate(template, getFieldValue(domain, propName)), "as", field.getName()));
+                        expressions.add(ReflectUtils.invoke(Expressions.stringTemplate(template, getFieldValue(domain, propName)), "as", field.getName()));
                     } else if (Arrays.asList(Integer.class, Long.class).contains(field.getType())) {
                         if (field.getType().equals(Integer.class)) {
-                            expressions.add(ReflectUtil.invoke(Expressions.numberTemplate(Integer.class, template, getFieldValue(domain, propName)), "as", field.getName()));
+                            expressions.add(ReflectUtils.invoke(Expressions.numberTemplate(Integer.class, template, getFieldValue(domain, propName)), "as", field.getName()));
                         }
                     }
                     // TODO 暂不支持 String之外的类型
@@ -223,28 +226,13 @@ public class YuQueryHelp {
                     if (StringUtils.isEmpty(propName)) {
                         expressions.add(getFieldValue(domain, field.getName()));
                     } else {
-                        expressions.add(ReflectUtil.invoke(getFieldValue(domain, propName), "as", field.getName()));
+                        expressions.add(ReflectUtils.invoke(getFieldValue(domain, propName), "as", field.getName()));
                     }
                 }
             }
         }
         return Projections.bean(dtoClass, expressions.toArray(new Expression[0]));
     }
-
-    /**
-     * fields 去重， 相同字段，子类替换父类(加在父类的注解，子类可以继承)
-     */
-    private static Field[] getDistinctFields(Class<?> dtoClass) {
-        // 字段顺序，子类中的字段在前，父类在后
-        Field[] fields = ReflectUtil.getFields(dtoClass);
-        Map<String, Field> fieldMap = new HashMap<>(fields.length);
-
-        for (Field field : fields) {
-            fieldMap.putIfAbsent(field.getName(), field);
-        }
-        return fieldMap.values().toArray(new Field[0]);
-    }
-
 
     /**
      * 根据 查询条件对象 返回DSL查询条件
@@ -254,8 +242,8 @@ public class YuQueryHelp {
         //主实体类名称（主表）
         EntityPath<?> masterDO = getEntityPath(yuQuery.domain());
         List<Predicate> predicates = new ArrayList<>();
-        Field[] fields = ReflectUtil.getFields(criteria.getClass());
-        AccessibleObject.setAccessible(fields, true);
+        Set<Field> fields = ReflectUtils.getFields(criteria.getClass());
+        AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[0]), true);
         for (Field field : fields) {
             if (!field.isAnnotationPresent(YuQueryColumn.class)) {
                 continue;
@@ -271,7 +259,7 @@ public class YuQueryHelp {
                 predicates.add(predicate);
             }
         }
-        AccessibleObject.setAccessible(fields, false);
+        AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[0]), false);
         if (predicates.isEmpty()) {
             return null;
         } else {
@@ -316,40 +304,40 @@ public class YuQueryHelp {
         // in 操作符时为 列表，特殊处理
         if (operatorEnum.equals(YuOperatorEnum.IN)) {
             if (val instanceof Iterable) {
-                predicate = ReflectUtil.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
+                predicate = ReflectUtils.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
             } else {
-                throw new RuntimeException("类型异常！");
+                throw new YuQueryException("类型异常！");
             }
         }
         //日期类型时也需要特殊处理，调用 mysql的 DATE_FORMAT 函数
         else if (dateTimeEnum != null) {
             if (val instanceof LocalDate) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeEnum.getFormat());
-                predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDate) val).format(formatter));
+                predicate = ReflectUtils.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDate) val).format(formatter));
             } else if (val instanceof LocalDateTime) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeEnum.getFormat());
-                predicate = ReflectUtil.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDateTime) val).format(formatter));
+                predicate = ReflectUtils.invoke(Expressions.stringTemplate(dateTimeEnum.getTemplate(), getFieldValue(domain, attributeName)), operatorEnum.getName(), ((LocalDateTime) val).format(formatter));
             } else {
-                throw new RuntimeException("日期类型只支持：'LocalDate'、'LocalDateTime'");
+                throw new YuQueryException("日期类型只支持：'LocalDate'、'LocalDateTime'");
             }
         } else {
             if (operatorEnum.getFormat() != null) {
                 val = String.format(operatorEnum.getFormat(), val.toString());
             }
-            predicate = ReflectUtil.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
+            predicate = ReflectUtils.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
         }
         return predicate;
     }
 
     private static Expression<?> getFieldValue(EntityPath<?> domain, String fieldName) {
         if (!fieldName.contains(".")) {
-            return (Expression<?>) ReflectUtil.getFieldValue(domain, fieldName);
+            return (Expression<?>) ReflectUtils.getFieldValue(domain, fieldName);
         }
         // 指定分割字符， . 号需要转义
         String[] fields = fieldName.split("\\.");
         Expression<?> result = domain;
         for (String field : fields) {
-            result = (Expression<?>) ReflectUtil.getFieldValue(result, field);
+            result = (Expression<?>) ReflectUtils.getFieldValue(result, field);
         }
         return result;
     }
