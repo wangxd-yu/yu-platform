@@ -1,15 +1,15 @@
 package org.yu.common.core.exception.handler;
 
-import org.yu.common.core.exception.BadRequestException;
-import org.yu.common.core.exception.EntityExistException;
-import org.yu.common.core.exception.EntityNotFoundException;
-import org.yu.common.core.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.yu.common.core.exception.BadRequestException;
+import org.yu.common.core.exception.EntityExistException;
+import org.yu.common.core.exception.EntityNotFoundException;
+import org.yu.common.core.util.ThrowableUtil;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
- * @author sdses
+ * @author wangxd
  * @date 2018-11-23
  */
 @Slf4j

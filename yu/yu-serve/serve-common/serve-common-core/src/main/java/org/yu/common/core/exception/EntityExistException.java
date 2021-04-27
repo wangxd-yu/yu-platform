@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 /**
- * @author sdses
+ * @author wangxd
  * @date 2018-11-23
  */
 public class EntityExistException extends RuntimeException {
