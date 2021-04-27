@@ -69,7 +69,6 @@ public class YuQueryHelp {
         List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>(10);
         EntityPath<?> mainDomain = getEntityPath(criteria.domain());
         EntityPath<?> domain;
-        Method method;
         for (YuOrderColumn yuOrderColumn : criteria.orders()) {
             if (yuOrderColumn.domain() == Void.class) {
                 domain = mainDomain;
@@ -77,7 +76,7 @@ public class YuQueryHelp {
                 domain = getEntityPath(yuOrderColumn.domain());
             }
 
-            orderSpecifiers.add((OrderSpecifier<?>) ReflectUtils.invoke(getFieldValue(domain, yuOrderColumn.column()), yuOrderColumn.type().name().toLowerCase()));
+            orderSpecifiers.add(ReflectUtils.invoke(getFieldValue(domain, yuOrderColumn.column()), yuOrderColumn.type().name().toLowerCase()));
         }
         return orderSpecifiers.toArray(new OrderSpecifier[0]);
     }
@@ -196,7 +195,7 @@ public class YuQueryHelp {
                 continue;
             }
             //2、不存在 SSDTOField 注解：默认按字段名映射，domain使用 DSLDTO中的domain
-            else if (!field.isAnnotationPresent(YuDTOField.class)) {
+            if (!field.isAnnotationPresent(YuDTOField.class)) {
                 expressions.add(getFieldValue(masterDO, field.getName()));
             }
             //3、存在 SSDTOField 注解
@@ -322,7 +321,7 @@ public class YuQueryHelp {
             }
         } else {
             if (operatorEnum.getFormat() != null) {
-                val = String.format(operatorEnum.getFormat(), val.toString());
+                val = String.format(operatorEnum.getFormat(), val);
             }
             predicate = ReflectUtils.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
         }
