@@ -25,7 +25,7 @@ public abstract class JpaBaseDO {
      * 主键
      */
     @Id
-    @GenericGenerator(name = "yu_id", strategy = "com.yu.common.jpa.util.YuIdGenerator")
+    @GenericGenerator(name = "yu_id", strategy = "org.yu.common.jpa.util.YuIdGenerator")
     @GeneratedValue(generator = "yu_id")
     private Long id;
     /**
