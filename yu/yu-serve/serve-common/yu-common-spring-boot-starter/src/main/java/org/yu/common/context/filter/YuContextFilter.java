@@ -3,13 +3,13 @@ package org.yu.common.context.filter;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.lang.Nullable;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.yu.common.core.context.YuContext;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.dto.LoginUser;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.annotation.Nullable;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,7 +27,7 @@ public class YuContextFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, @Nullable HttpServletResponse httpServletResponse, @Nullable FilterChain filterChain) throws ServletException, IOException {
         YuContext yuContext = new YuContext();
         String userStr = httpServletRequest.getHeader("user");
-        if(StrUtil.isNotBlank(userStr)) {
+        if (StrUtil.isNotBlank(userStr)) {
             JSONObject userJsonObject = new JSONObject(userStr);
             LoginUser loginUser = new LoginUser();
             loginUser.setId(userJsonObject.getLong("id"));
@@ -42,7 +42,7 @@ public class YuContextFilter extends OncePerRequestFilter {
             yuContext.setClientUser(loginUser);
         } else {
             String tenantId = httpServletRequest.getHeader("tenantId");
-            if(StrUtil.isNotBlank(tenantId)) {
+            if (StrUtil.isNotBlank(tenantId)) {
                 yuContext.setTenantId(Integer.valueOf(tenantId));
             }
         }
