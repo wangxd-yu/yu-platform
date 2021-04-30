@@ -6,7 +6,7 @@
     <parent>
         <artifactId>yu-tenant</artifactId>
         <groupId>org.yu</groupId>
-        <version>1.0.0</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>tenant-service-api</artifactId>

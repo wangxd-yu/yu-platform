@@ -6,7 +6,7 @@
     <parent>
         <artifactId>serve-common</artifactId>
         <groupId>org.yu</groupId>
-        <version>1.0.0</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>serve-common-core</artifactId>
     <description>公共通用组件</description>
