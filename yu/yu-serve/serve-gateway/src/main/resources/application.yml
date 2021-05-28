@@ -12,6 +12,7 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.103.184:8848
+        namespace: 9f4d06c2-b936-4c25-a877-b3c42121a366
     gateway:
       routes: #配置路由路径
         # 认证：用户名密码认证

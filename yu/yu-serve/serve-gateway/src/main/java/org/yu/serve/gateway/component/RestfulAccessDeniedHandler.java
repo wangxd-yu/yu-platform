@@ -1,7 +1,6 @@
 package org.yu.serve.gateway.component;
 
 import cn.hutool.json.JSONUtil;
-import org.yu.serve.gateway.api.CommonResult;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,10 +10,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import org.yu.serve.gateway.api.CommonResult;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
-
 
 /**
  * 自定义返回结果：没有权限访问时

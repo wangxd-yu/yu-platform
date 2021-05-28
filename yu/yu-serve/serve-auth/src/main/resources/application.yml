@@ -11,6 +11,7 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.103.184:8848
+        namespace: 9f4d06c2-b936-4c25-a877-b3c42121a366
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   # RabbitMQ 相关配置项
