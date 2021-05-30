@@ -1,6 +1,0 @@
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/domain/DataSourceDO.java
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/feign/DataSourceFeign.java
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/service/DataSourceEventService.java
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/listener/DataSourceListener.java
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/query/DataSourceQuery.java
-/Users/XMX/Desktop/Git_Project/yu-platform/yu/yu-tenant/tenant-service-api/tenant-service-union-api/src/main/java/org/yu/tenant/service/api/datasource/event/DataSourceEvent.java
