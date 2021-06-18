@@ -35,9 +35,9 @@ public class DynamicDataSourceServiceImpl implements DynamicDataSourceService {
     public DataSource getSpringDefaultDataSource() {
         HikariDataSource dataSource2 = new HikariDataSource();
         dataSource2.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource2.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/yu_tenant_1");
+        dataSource2.setJdbcUrl("jdbc:mysql://192.168.103.184:3306/yu_tenant_1");
         dataSource2.setUsername("root");
-        dataSource2.setPassword("123456");
+        dataSource2.setPassword("Sdses@2020");
         return dataSource2;
     }
 

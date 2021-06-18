@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @EnableDiscoveryClient
 @EnableFeignClients("org.yu")
-@SpringBootApplication(scanBasePackages = {"org.yu.serve.system", "org.yu.tenant.service"})
+@SpringBootApplication(scanBasePackages = {"org.yu.serve.system"})
 public class ServeSystemApp {
     public static void main(String[] args) {
         SpringApplication.run(ServeSystemApp.class, args);
