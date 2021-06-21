@@ -22,7 +22,6 @@ import java.util.Map;
  * @date 2021-03-18 22:22
  */
 @Slf4j
-@Service
 public class DynamicDataSourceServiceImpl implements DynamicDataSourceService {
 
     private final DataSourceFeign dataSourceFeign;
