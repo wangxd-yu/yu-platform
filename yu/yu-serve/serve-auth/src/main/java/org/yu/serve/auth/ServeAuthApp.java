@@ -5,14 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.yu.common.multidb.config.EnableMultiDatabase;
 
 /**
  * @author wangxd
  * @date 2020-11-05 15:08
  */
-@RemoteApplicationEventScan(basePackages = {"org.yu"})
+@EnableMultiDatabase
 @EnableDiscoveryClient
-@EnableFeignClients("org.yu")
 @SpringBootApplication(scanBasePackages = {"org.yu.serve.auth"})
 public class ServeAuthApp {
     public static void main(String[] args) {
