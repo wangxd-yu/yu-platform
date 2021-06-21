@@ -18,7 +18,6 @@ spring:
     password: wangxd
   jpa:
     open-in-view: false
-    show-sql : true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
