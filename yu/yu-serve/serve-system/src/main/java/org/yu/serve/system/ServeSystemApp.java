@@ -6,15 +6,15 @@ import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.yu.common.multidb.config.EnableMultiDatabase;
 
 /**
  * @author wangxd
  */
-@RemoteApplicationEventScan(basePackages = {"org.yu"})
+@EnableMultiDatabase
 @EnableJpaAuditing
 @EnableDiscoveryClient
-@EnableFeignClients("org.yu")
-@SpringBootApplication(scanBasePackages = {"org.yu.serve.system", "org.yu.tenant.service"})
+@SpringBootApplication(scanBasePackages = {"org.yu.serve.system"})
 public class ServeSystemApp {
     public static void main(String[] args) {
         SpringApplication.run(ServeSystemApp.class, args);

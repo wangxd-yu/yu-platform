@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.yu.common.multidb.config.DataSourceConfig,\
-org.yu.common.multidb.service.impl.DynamicDataSourceServiceImpl

@@ -84,6 +84,7 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
         return getJPAQueryFactory().selectFrom(qDeptDO).where(qDeptDO.no.eq(deptNo)).fetchOne();
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public <T extends DeptTreeDTO> List<T> queryAll(DeptQuery query, Class clazz) {
         return (List<T>) super.queryDTO(query, null, clazz);

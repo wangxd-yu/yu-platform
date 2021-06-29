@@ -10,7 +10,6 @@ import org.yu.tenant.service.api.datasource.service.DataSourceEventService;
  * @author wangxd
  * @date 2021-04-09
  */
-@Service
 public class DataSourceEventServiceImpl implements DataSourceEventService {
     @Override
     public void enableDataSource(Long dataSourceId) {
