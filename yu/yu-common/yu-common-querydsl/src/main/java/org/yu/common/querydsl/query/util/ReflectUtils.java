@@ -39,7 +39,8 @@ public class ReflectUtils {
     }
 
     public static <T> T invoke(Object obj, String methodName, Object... args) {
-        Method method = ReflectionUtils.findMethod(obj.getClass(), methodName);
+        Class[] argsClassArray = Arrays.stream(args).map(item -> item.getClass()).toArray(Class[]::new);
+        Method method = ReflectionUtils.findMethod(obj.getClass(), methodName, argsClassArray);
         if (null == method) {
             throw new YuQueryException(String.format("No such method: [%s]", methodName));
         } else {
