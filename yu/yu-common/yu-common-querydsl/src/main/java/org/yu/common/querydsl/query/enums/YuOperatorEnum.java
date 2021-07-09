@@ -20,13 +20,13 @@ public enum YuOperatorEnum {
     //小于等于
     LESS_OR_EQUAL("loe", null),
     //like
-    INNER_LIKE("like", "%{}%"),
+    INNER_LIKE("like", "%{0}%"),
     //not like
-    NOT_INNER_LIKE("notLike", "%{}%"),
+    NOT_INNER_LIKE("notLike", "%{0}%"),
     //start with
-    START_WITH("like", "{}%"),
+    START_WITH("like", "{0}%"),
     //end with
-    END_WITH("like", "%{}"),
+    END_WITH("like", "%{0}"),
     //in
     IN("in", null);
 
