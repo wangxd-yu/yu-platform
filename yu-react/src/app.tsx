@@ -27,7 +27,7 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
-      return msg.data;
+      return msg;
     } catch (error) {
       history.push(loginPath);
     }
@@ -47,6 +47,34 @@ export async function getInitialState(): Promise<{
     settings: {},
   };
 }
+
+// 不需要 auth 认证的接口地址
+const noAuthUrlArr = [
+  '/auth/oauth/token'   // 登录接口
+]
+
+function isUrlNeedAuthentication(url: string) {
+  return noAuthUrlArr.findIndex(item => url.startsWith(item)) === -1
+}
+
+const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
+  // 需要 token 认证
+  if (isUrlNeedAuthentication(url)) {
+    let authHeader = {};
+    if (localStorage.getItem('token')) {
+      authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    }
+    return {
+      url: `${url}`,
+      options: { ...options, interceptors: true, headers: authHeader },
+    };
+  }
+  // 不需要token认证
+  return {
+    url,
+    options
+  };
+};
 
 /**
  * 异常处理程序
@@ -87,6 +115,8 @@ export async function getInitialState(): Promise<{
  * @see https://beta-pro.ant.design/docs/request-cn
  */
 export const request: RequestConfig = {
+  // 新增自动添加AccessToken的请求前拦截器
+  requestInterceptors: [authHeaderInterceptor],
   errorHandler: (error: any) => {
     const { response } = error;
 

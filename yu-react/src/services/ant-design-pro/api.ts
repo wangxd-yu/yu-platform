@@ -1,12 +1,11 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from 'umi';
+import QS from 'qs'
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/currentUser', {
+  return request<API.CurrentUser>('/api_sy/user/info', {
     method: 'GET',
     ...(options || {}),
   });
@@ -22,12 +21,18 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/auth/oauth/token?tenantId=1000', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: body,
+    data: QS.stringify({
+      grant_type: "password",
+      username: "admin1",
+      password: "123456",
+      client_secret: "webApp",
+      client_id: "webApp"
+    }),
     ...(options || {}),
   });
 }

@@ -8,8 +8,13 @@
  */
 export default {
   dev: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
+    '/auth/': {
+      target: 'http://swwx.sdses.com/wxd',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
+    '/api_sy/': {
+      target: 'http://swwx.sdses.com/wxd',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
