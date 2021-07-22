@@ -17,7 +17,7 @@ public class PageUtil {
 
     public static Map<String, Object> toPage(Object object, long total) {
         HashMap<String, Object> map = new HashMap<>(2);
-        map.put("items", object);
+        map.put("data", object);
         map.put("total", total);
         return map;
     }
@@ -28,8 +28,12 @@ public class PageUtil {
                 .limit(pageable.getPageSize())
                 .offset((long) pageable.getPageNumber() * pageable.getPageSize())
                 .fetchResults();
+        map.put("data", queryResults.getResults());
+        map.put("current", pageable.getPageNumber());
+        map.put("pageSize", pageable.getPageSize());
         map.put("total", queryResults.getTotal());
-        map.put("items", queryResults.getResults());
+        // 适配 前端 ant design pro 的 ProTable 组件
+        map.put("success", true);
         return map;
     }
 }

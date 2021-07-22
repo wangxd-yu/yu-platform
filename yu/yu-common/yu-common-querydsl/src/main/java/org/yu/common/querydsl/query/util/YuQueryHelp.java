@@ -16,6 +16,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -146,6 +147,7 @@ public class YuQueryHelp {
                             case FIELD:
                                 fieldName = "".equals(column.fieldName()) ? column.column() : column.fieldName();
                                 field = ReflectionUtils.findField(criteria.getClass(), fieldName);
+                                assert field != null;
                                 field.setAccessible(true);
                                 if (field.isAnnotationPresent(YuDateTimeFormat.class)) {
                                     dateTimeEnum = field.getDeclaredAnnotation(YuDateTimeFormat.class).value();
@@ -159,6 +161,7 @@ public class YuQueryHelp {
                             case RELATION_FIELD:
                                 fieldName = "".equals(column.fieldName()) ? column.relationColumn() : column.fieldName();
                                 field = ReflectionUtils.findField(criteria.getClass(), fieldName);
+                                assert field != null;
                                 field.setAccessible(true);
                                 if (field.isAnnotationPresent(YuDateTimeFormat.class)) {
                                     dateTimeEnum = field.getDeclaredAnnotation(YuDateTimeFormat.class).value();
@@ -321,7 +324,7 @@ public class YuQueryHelp {
             }
         } else {
             if (operatorEnum.getFormat() != null) {
-                val = String.format(operatorEnum.getFormat(), val);
+                val = MessageFormat.format(operatorEnum.getFormat(), val);
             }
             predicate = ReflectUtils.invoke(getFieldValue(domain, attributeName), operatorEnum.getName(), val);
         }
