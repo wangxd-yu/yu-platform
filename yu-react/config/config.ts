@@ -22,6 +22,7 @@ export default defineConfig({
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
+    enable: false,
     // default zh-CN
     default: 'zh-CN',
     antd: true,

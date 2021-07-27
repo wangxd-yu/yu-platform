@@ -37,6 +37,20 @@
     ],
   },
   {
+    path: '/system',
+    name: '系统管理',
+    icon: 'crown',
+    // access: 'canAdmin',
+    routes: [
+      {
+        name: '字典管理',
+        icon: 'smile',
+        path: '/system/dict',
+        component: './system/Dict',
+      },
+    ],
+  },
+  {
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
