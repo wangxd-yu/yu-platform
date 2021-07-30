@@ -1,11 +1,14 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from 'umi';
-import type { DictItem, TableListItem } from './data';
-import {transferPageParams} from '@/utils/requestUtil';
+import type { Dict, DictItem } from './data';
+import * as YuApi from '@/utils/yuApi';
+
+const dictUrl = '/api_sy/dict';
+const dictItemUrl = '/api_sy/dictDetail';
 
 /** 获取规则列表 GET /api/rule */
-export async function dict(
+export async function queryDict(
   params: {
     // query
     /** 当前的页码 */
@@ -15,22 +18,11 @@ export async function dict(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    data: TableListItem[];
-    /** 列表的内容总数 */
-    total?: number;
-    success?: boolean;
-  }>('/api_sy/dict', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
+  return YuApi.queryReq<Dict>(dictUrl, params, options);
 }
 
 /** 获取规则列表 GET /api_sy/dictDetail */
-export async function dictItem(
+export async function queryDictItem(
   params: {
     // query
     /** 当前的页码 */
@@ -40,16 +32,7 @@ export async function dictItem(
   },
   options?: { [key: string]: any },
 ) {
-  return request<{
-    data: DictItem[];
-    /** 列表的内容总数 */
-    total?: number;
-    success?: boolean;
-  }>('/api_sy/dictDetail', {
-    method: 'GET',
-    params: transferPageParams(params),
-    ...(options || {}),
-  });
+  return YuApi.queryReq<DictItem>(dictItemUrl, params, options);
 }
 
 export async function getDict(id: number) {
@@ -59,25 +42,30 @@ export async function getDict(id: number) {
 }
 
 /** 更新字典 PUT /api_sy/dict */
-export async function updateDict(record: TableListItem) {
-  return request<TableListItem>('/api_sy/dict', {
-    method: 'PUT',
-    data: record,
-  });
+export async function updateDict(record: Dict) {
+  return YuApi.updateReq<Dict>(record, dictUrl);
 }
 
-/** 新建字典 POST /api_sy/dict */
-export async function addDict(record: TableListItem) {
-  return request<TableListItem>('/api_sy/dict', {
-    method: 'POST',
-    data: record,
-  });
+/** 更新字典 PUT /api_sy/dict */
+export async function updateDictItem(record: DictItem) {
+  return YuApi.updateReq<DictItem>(record, dictItemUrl);
+}
+
+/** 新建字典 */
+export async function addDict<Dict>(record: Dict) {
+  return YuApi.addReq<Dict>(record, dictUrl);
+}
+
+/** 新建字典条目 */
+export async function addDictItem<DictItem>(record: DictItem) {
+  return YuApi.addReq<DictItem>(record, dictItemUrl);
 }
 
 /** 删除规则 DELETE /api_sy/dict */
-export async function removeDict(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api_sy/dict', {
-    method: 'DELETE',
-    ...(options || {}),
-  });
+export async function deleteDict(id: string | number) {
+  return YuApi.deleteReq(id, dictUrl)
+}
+
+export async function deleteDictItem(id: string | number) {
+  return YuApi.deleteReq(id, dictItemUrl)
 }

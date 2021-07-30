@@ -1,21 +1,17 @@
-export type Dict = {
-  id: string;
+export type TableListItem = {
+  key: number;
+  disabled?: boolean;
+  href: string;
+  avatar: string;
   name: string;
-  code: string;
-  remark: string;
-  createTime?: string;
-  updateTime?: string;
+  owner: string;
+  desc: string;
+  callNo: number;
+  status: string;
+  updatedAt: Date;
+  createdAt: Date;
+  progress: number;
 };
-
-export type DictItem = {
-  id: string;
-  dictId: string;
-  name: string;
-  code: string;
-  sort: number;
-  createTime?: string;
-  updateTime?: string;
-}
 
 export type TableListPagination = {
   total: number;

@@ -1,78 +1,17 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Drawer } from 'antd';
+import { Button, Drawer } from 'antd';
 import type { FormInstance } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea, ProFormDigit } from '@ant-design/pro-form';
+import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { dict, addDict, updateDict, removeDict, dictItem } from './service';
-import type { TableListItem, TableListPagination, DictItem } from './data';
-
-/**
- * 添加节点
- *
- * @param fields
- */
-const handleAdd = async (fields: TableListItem) => {
-  const hide = message.loading('正在添加');
-
-  try {
-    await addDict({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
-
-/**
- * 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: TableListItem) => {
-  const hide = message.loading('正在更新');
-
-  try {
-    await updateDict({ ...fields });
-    hide();
-    message.success('更新成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('更新失败请重试！');
-    return false;
-  }
-};
-/**
- * 删除节点
- *
- * @param selectedRows
- */
-
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-
-  try {
-    await removeDict({
-      key: selectedRows.map((row) => row.id),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
+import * as YuCrud from '@/utils/yuCrud';
+import type { Dict, TableListPagination, DictItem } from './data';
+import DictForm from './components/DictForm'
 
 const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
@@ -84,17 +23,17 @@ const TableList: React.FC = () => {
   const dictItemFormRef = useRef<FormInstance>();
   const actionRef = useRef<ActionType>();
   const itemActionRef = useRef<ActionType>();
-  const [dictCurrentRow, setDictCurrentRow] = useState<TableListItem>();
-  const [dictItemCurrentRow, setDictItemCurrentRow] = useState<TableListItem>();
+  const [dictCurrentRow, setDictCurrentRow] = useState<Dict>();
+  const [dictItemCurrentRow, setDictItemCurrentRow] = useState<DictItem>();
 
   const onDictFill = (record: any) => {
     dictFormRef?.current?.setFieldsValue(record);
   };
-  const onDictItemFill = (record: any) => {
+  const onDictItemFill = (record: DictItem) => {
     dictItemFormRef?.current?.setFieldsValue(record);
   };
 
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<Dict>[] = [
     {
       title: '字典名称',
       dataIndex: 'name',
@@ -155,7 +94,13 @@ const TableList: React.FC = () => {
         >
           字典配置
         </a>,
-        <a key="subscribeAlert" >
+        <a key="subscribeAlert"
+          onClick={async () => {
+            await YuCrud.handleDelete(record.id, deleteDict)
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }}>
           删除
         </a>,
       ],
@@ -181,8 +126,8 @@ const TableList: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_: any, record: any) => [
-        <a key="update"
+      render: (_: any, record: DictItem) => [
+        <a key="updateDictItem"
           onClick={() => {
             handleDictItemVisible(true);
             setDictItemCurrentRow(record);
@@ -191,7 +136,13 @@ const TableList: React.FC = () => {
         >
           编辑
         </a>,
-        <a key="subscribeAlert" >
+        <a key="deleteDictItem"
+          onClick={async () => {
+            await YuCrud.handleDelete(record.id, deleteDictItem);
+            if (itemActionRef.current) {
+              itemActionRef.current.reload();
+            }
+          }}>
           删除
         </a>,
       ],
@@ -205,7 +156,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<TableListItem, TableListPagination>
+      <ProTable<Dict, TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
@@ -218,30 +169,28 @@ const TableList: React.FC = () => {
             key="primary"
             onClick={() => {
               dictFormRef?.current?.resetFields();
+              setDictCurrentRow(undefined)
               handleDictVisible(true);
             }}
           >
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={dict}
+        request={queryDict}
         columns={columns}
       />
-      <ModalForm
-        title="新建字典"
-        width="500px"
-        {...formItemLayout}
-        formRef={dictFormRef}
-        visible={createDictVisible}
-        layout='horizontal'
+      <DictForm 
+        ref={dictFormRef} 
+        visible={createDictVisible} 
+        isAdd={!dictCurrentRow?.id}
         onVisibleChange={handleDictVisible}
         onFinish={async (value) => {
           const data = { ...dictCurrentRow, ...value };
           let success;
           if (!data.id) {
-            success = await handleAdd(data as TableListItem);
+            success = await YuCrud.handleAdd(data as Dict, addDict);
           } else {
-            success = await handleUpdate(data as TableListItem);
+            success = await YuCrud.handleUpdate(data as Dict, updateDict);
           }
           if (success) {
             handleDictVisible(false);
@@ -250,31 +199,8 @@ const TableList: React.FC = () => {
               actionRef.current.reload();
             }
           }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: '字典名称为必填项',
-            },
-          ]}
-          label="字典名称"
-          name="name"
-        />
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: '字典编号为必填项',
-            },
-          ]}
-          label="字典编号"
-          name="code"
-        />
-        <ProFormTextArea label="描述" name="remark" />
-      </ModalForm>
-
+        }} 
+      />
       <Drawer
         title={dictCurrentRow?.name}
         width={800}
@@ -288,11 +214,12 @@ const TableList: React.FC = () => {
         {
           showDictItemDetail &&
           <ProTable<DictItem>
+            actionRef={itemActionRef}
             columns={dictItemColumns}
             params={{
               dictId: dictCurrentRow?.id,
             }}
-            request={dictItem}
+            request={queryDictItem}
             rowKey="id"
             pagination={{
               showQuickJumper: true,
@@ -321,15 +248,15 @@ const TableList: React.FC = () => {
           layout='horizontal'
           onVisibleChange={handleDictItemVisible}
           onFinish={async (value) => {
-            const data = { ...dictItemCurrentRow, ...value };
+            const data = { dictId: dictCurrentRow?.id, ...dictItemCurrentRow, ...value };
             let success;
             if (!data.id) {
-              success = await handleAdd(data as TableListItem);
+              success = await YuCrud.handleAdd(data as DictItem, addDictItem);
             } else {
-              success = await handleUpdate(data as TableListItem);
+              success = await YuCrud.handleUpdate(data as DictItem, updateDictItem);
             }
             if (success) {
-              handleDictVisible(false);
+              handleDictItemVisible(false);
               dictItemFormRef?.current?.resetFields();
               if (itemActionRef.current) {
                 itemActionRef.current.reload();
@@ -371,7 +298,7 @@ const TableList: React.FC = () => {
         closable={false}
       >
         {dictCurrentRow?.name && (
-          <ProDescriptions<TableListItem>
+          <ProDescriptions<Dict>
             column={2}
             title={dictCurrentRow?.name}
             request={async () => ({
@@ -380,7 +307,7 @@ const TableList: React.FC = () => {
             params={{
               id: dictCurrentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<TableListItem>[]}
+            columns={columns as ProDescriptionsItemProps<Dict>[]}
           />
         )}
       </Drawer>
