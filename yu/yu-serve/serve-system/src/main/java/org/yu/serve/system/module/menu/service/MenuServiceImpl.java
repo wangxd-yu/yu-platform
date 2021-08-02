@@ -54,8 +54,9 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
             }
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("content", trees.size() == 0 ? menuDTOS : trees);
-        map.put("totalElements", menuDTOS.size());
+        map.put("data", trees.size() == 0 ? menuDTOS : trees);
+        map.put("total", menuDTOS.size());
+        map.put("success", "true");
         return map;
     }
 

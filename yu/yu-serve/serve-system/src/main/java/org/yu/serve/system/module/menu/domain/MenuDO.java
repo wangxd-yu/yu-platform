@@ -3,10 +3,9 @@ package org.yu.serve.system.module.menu.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;
+import org.yu.serve.system.module.menu.eumus.MenuTypeEnum;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author wangxd
@@ -28,9 +27,25 @@ public class MenuDO extends DslBaseTenantDO<Long> {
     private String name;
 
     /**
+     * 菜单类型
+     */
+    @Enumerated(EnumType.STRING)
+    private MenuTypeEnum type;
+
+    /**
      * 组件
      */
     private String component;
+
+    /**
+     * 路由路径
+     */
+    private String path;
+
+    /**
+     * 权限名称
+     */
+    private String permission;
 
     /**
      * 排序
@@ -47,9 +62,4 @@ public class MenuDO extends DslBaseTenantDO<Long> {
      */
     @Column(name = "is_frame")
     private Boolean frame;
-
-    /**
-     * 链接地址
-     */
-    private String path;
 }

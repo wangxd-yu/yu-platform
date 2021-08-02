@@ -5,6 +5,7 @@ import lombok.Data;
 import org.yu.common.querydsl.query.annotation.YuDTO;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;
 import org.yu.serve.system.module.menu.domain.MenuDO;
+import org.yu.serve.system.module.menu.eumus.MenuTypeEnum;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,9 +30,24 @@ public class MenuDTO {
     private String name;
 
     /**
+     * 菜单类型
+     */
+    private MenuTypeEnum type;
+
+    /**
      * 组件
      */
     private String component;
+
+    /**
+     * 路由路径
+     */
+    private String path;
+
+    /**
+     * 权限名称
+     */
+    private String permission;
 
     /**
      * 排序
@@ -47,11 +63,6 @@ public class MenuDTO {
      * 是否外链
      */
     private Boolean frame;
-
-    /**
-     * 链接地址
-     */
-    private String path;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
