@@ -11,7 +11,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { Dict, TableListPagination, DictItem } from './data';
-import DictForm from './components/DictForm'
+import DictForm1 from './components/DictForm1'
 
 const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
@@ -179,11 +179,11 @@ const TableList: React.FC = () => {
         request={queryDict}
         columns={columns}
       />
-      <DictForm 
-        ref={dictFormRef} 
+      <DictForm1 
         visible={createDictVisible} 
         isAdd={!dictCurrentRow?.id}
         onVisibleChange={handleDictVisible}
+        formRef={dictFormRef} 
         onFinish={async (value) => {
           const data = { ...dictCurrentRow, ...value };
           let success;
@@ -231,6 +231,7 @@ const TableList: React.FC = () => {
               <Button type="primary" key="primary"
                 onClick={() => {
                   dictItemFormRef?.current?.resetFields();
+                  setDictItemCurrentRow(undefined);
                   handleDictItemVisible(true);
                 }}
               >

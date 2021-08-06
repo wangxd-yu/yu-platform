@@ -1,4 +1,4 @@
-﻿export default [
+export default [
   {
     path: '/user',
     layout: false,
@@ -43,6 +43,12 @@
         icon: 'smile',
         path: '/system/dict',
         component: './system/Dict',
+      },
+      {
+        name: '菜单管理',
+        icon: 'smile',
+        path: '/system/menu',
+        component: './system/Menu',
       },
     ],
   },
