@@ -2,7 +2,7 @@ import React from 'react'
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
 
 export type DictFormProps = {
-    onFinish: (values: any) => Promise<void>;
+    onFinish?: (values: any) => Promise<void>;
     onVisibleChange?: (visible: boolean) => void;
     isAdd?: boolean;
     visible: boolean;
@@ -14,7 +14,6 @@ const formItemLayout = {
 };
 
 const DictForm = React.forwardRef((props: DictFormProps, ref: any) => {
-    console.log(props.isAdd)
     return (
         <ModalForm
             title={!props.isAdd ? '更新字典' : '新建字典'}
