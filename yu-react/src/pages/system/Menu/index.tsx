@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import type { FormInstance} from 'antd';
-import { Popconfirm } from 'antd';
-import { Button, Tag, Space } from 'antd';
+import type { FormInstance } from 'antd';
+import { Button, Tag, Space, Popconfirm } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuData } from './data';
 import { PlusOutlined } from '@ant-design/icons';
@@ -45,12 +44,6 @@ const MenuPage: React.FC = () => {
   const [menuDataList, setMenuDataList] = useState<MenuData[]>();
   const menuFormRef = useRef<FormInstance>();
   const menuActionRef = useRef<ActionType>();
-
-  const renderConfirm = (text: string) => (
-    <Popconfirm key="popconfirm" title={`确认${text}吗?`} okText="是" cancelText="否">
-      <a>{text}</a>
-    </Popconfirm>
-  );
 
   const columns: ProColumns<MenuData>[] = [
     {
