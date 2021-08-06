@@ -28,16 +28,19 @@ public class ReflectUtils {
 
     /**
      * 获取类中所有属性字段（包括父类，子类父类都存在的字段，使用子类中的）
-     * com.querydsl.core.util.ReflectUtils
+     * @return
      */
-    public static Set<Field> getFields(Class<?> cl) {
-        Set<Field> fields = new HashSet();
+    public static Collection<Field> getDistinctFields(Class<?> cl) {
+        Map<String, Field> fieldMap= new HashMap<>(16);
 
         for (Class<?> c = cl; c != null; c = c.getSuperclass()) {
-            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            for(Field field : c.getDeclaredFields()) {
+                System.out.println(field.getName());
+                fieldMap.putIfAbsent(field.getName(), field);
+            }
         }
 
-        return fields;
+        return fieldMap.values();
     }
 
     public static <T> T invoke(Object obj, String methodName) {
