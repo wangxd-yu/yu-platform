@@ -1,6 +1,8 @@
 package org.yu.serve.system.module.menu.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.yu.common.querydsl.query.annotation.YuDTO;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;
@@ -17,11 +19,12 @@ import java.util.List;
 @Data
 @YuDTO(domain = MenuDO.class)
 public class MenuDTO {
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 上级菜单ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long pid;
 
     /**
