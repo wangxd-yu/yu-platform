@@ -46,8 +46,8 @@ public class DeptTreeServiceImpl implements DeptTreeService {
     @Override
     public <T extends DeptTreeDTO> Map<String, Object> buildTree(List<T> deptDTOS) {
         Map<String, Object> map = new HashMap<>(2);
-        map.put("totalElements", deptDTOS.size());
-        map.put("content", buildShowTree(deptDTOS));
+        map.put("total", deptDTOS.size());
+        map.put("data", buildShowTree(deptDTOS));
         return map;
     }
 

@@ -48,7 +48,6 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     private Integer subCount;
 
     @YuDTOTransient
-    @JsonIgnore
     private List<DeptDTO> children;
 
     @YuDTOTransient

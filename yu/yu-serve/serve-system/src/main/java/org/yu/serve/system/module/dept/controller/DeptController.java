@@ -1,18 +1,17 @@
 package org.yu.serve.system.module.dept.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.dept.dto.DeptDTO;
 import org.yu.serve.system.module.dept.query.DeptQuery;
 import org.yu.serve.system.module.dept.service.DeptService;
 import org.yu.serve.system.module.dept.service.DeptTreeService;
-import org.yu.common.core.context.YuContextHolder;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, Lo
     }
 
     @GetMapping
-    public ResponseEntity<Object> getPages(DeptQuery query, Pageable pageable) {
+    public ResponseEntity<Object> getPages(DeptQuery query) {
         if (query.getNo() == null) {
             query.setNo(YuContextHolder.getYuContext().getClientUser().getDeptNo());
         }
