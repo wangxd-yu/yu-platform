@@ -18,7 +18,7 @@ export async function queryDict(
   },
   options?: { [key: string]: any },
 ) {
-  return YuApi.queryReq<Dict>(dictUrl, params, options);
+  return YuApi.queryPageReq<Dict>(dictUrl, params, options);
 }
 
 /** 获取规则列表 GET /api_sy/dictDetail */
@@ -32,7 +32,7 @@ export async function queryDictItem(
   },
   options?: { [key: string]: any },
 ) {
-  return YuApi.queryReq<DictItem>(dictItemUrl, params, options);
+  return YuApi.queryPageReq<DictItem>(dictItemUrl, params, options);
 }
 
 export async function getDict(id: number) {
