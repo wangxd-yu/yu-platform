@@ -50,6 +50,12 @@ export default [
         path: '/system/menu',
         component: './system/Menu',
       },
+      {
+        name: '部门管理',
+        icon: 'smile',
+        path: '/system/dept',
+        component: './system/Dept',
+      },
     ],
   },
   {
