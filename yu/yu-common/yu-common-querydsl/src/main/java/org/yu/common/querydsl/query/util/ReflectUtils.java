@@ -35,7 +35,6 @@ public class ReflectUtils {
 
         for (Class<?> c = cl; c != null; c = c.getSuperclass()) {
             for(Field field : c.getDeclaredFields()) {
-                System.out.println(field.getName());
                 fieldMap.putIfAbsent(field.getName(), field);
             }
         }

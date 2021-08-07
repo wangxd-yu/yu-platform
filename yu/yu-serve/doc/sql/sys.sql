@@ -103,6 +103,7 @@ CREATE TABLE `sys_dept`
     `no`          varchar(32) NOT NULL COMMENT '上下级关系编码',
     `pno`         varchar(32) NOT NULL COMMENT '上级部门no',
     `code`        varchar(32)      DEFAULT NULL COMMENT '用户自定义编码',
+    `sort`        tinyint          DEFAULT NULL COMMENT '排序',
     `type_id`     bigint           DEFAULT NULL COMMENT '类型id',
     `type_code`   varchar(16)      DEFAULT NULL COMMENT '类型编号',
     `name`        varchar(32)      DEFAULT NULL COMMENT '名称',
