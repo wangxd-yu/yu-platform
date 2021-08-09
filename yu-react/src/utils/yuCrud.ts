@@ -6,6 +6,27 @@ import { message } from 'antd';
  * @param addHandler 
  * @returns 
  */
+ export const handle = async <T> (fields: T, handler: (record: T) => Promise<any>, title: string = '处理')  => {
+  const hide = message.loading(`正在${title}`);
+
+  try {
+    await handler({ ...fields });
+    hide();
+    message.success(`${title}成功`);
+    return true;
+  } catch (error) {
+    hide();
+    message.error(`${title}失败请重试！`);
+    return false;
+  }
+}
+
+/**
+ * 新增
+ * @param fields 
+ * @param addHandler 
+ * @returns 
+ */
 export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promise<any>)  => {
   const hide = message.loading('正在添加');
 

@@ -13,8 +13,8 @@ export const transferPageParams = (params: any) => {
 
 const deletePageParams = (params: any) => {
   const paramsRtn: any = params;
-  delete paramsRtn.current;
-  delete paramsRtn.pageSize;
+  if(paramsRtn && paramsRtn.current) delete paramsRtn.current;
+  if(paramsRtn && paramsRtn.pageSize) delete paramsRtn.pageSize;
   return paramsRtn;
 };
 
