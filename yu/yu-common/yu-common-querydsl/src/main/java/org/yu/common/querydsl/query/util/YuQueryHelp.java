@@ -190,7 +190,7 @@ public class YuQueryHelp {
         EntityPath<?> masterDO = getEntityPath(yuDto.domain());
         // getFieldMap 去重（子类继承父类后，子类父类都有的字段，使用子类中的字段进行 DSL映射）
         // Field[] fields = getDistinctFields(dtoClass);
-        Set<Field> fields = ReflectUtils.getFields(dtoClass);
+        Collection<Field> fields = ReflectUtils.getDistinctFields(dtoClass);
         List<Expression<?>> expressions = new ArrayList<>();
         for (Field field : fields) {
             //1、存在 SSDTOTransient 注解，直接忽略
@@ -244,7 +244,7 @@ public class YuQueryHelp {
         //主实体类名称（主表）
         EntityPath<?> masterDO = getEntityPath(yuQuery.domain());
         List<Predicate> predicates = new ArrayList<>();
-        Set<Field> fields = ReflectUtils.getFields(criteria.getClass());
+        Collection<Field> fields = ReflectUtils.getDistinctFields(criteria.getClass());
         AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[0]), true);
         for (Field field : fields) {
             if (!field.isAnnotationPresent(YuQueryColumn.class)) {

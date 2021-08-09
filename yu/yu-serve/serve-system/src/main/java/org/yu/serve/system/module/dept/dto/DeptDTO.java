@@ -35,7 +35,15 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     private String name;
 
     private String code;
-
+    /**
+     * 排序
+     */
+    private Integer sort;
+    /**
+     * 类型id
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long typeId;
     /**
      * 类型编码
      */
@@ -48,7 +56,6 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     private Integer subCount;
 
     @YuDTOTransient
-    @JsonIgnore
     private List<DeptDTO> children;
 
     @YuDTOTransient

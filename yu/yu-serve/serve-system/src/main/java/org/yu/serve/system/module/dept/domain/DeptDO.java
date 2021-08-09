@@ -35,6 +35,11 @@ public class DeptDO extends DslBaseTenantDO<Long> {
     private String code;
 
     /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
      * 类型id
      */
     @JsonSerialize(using = ToStringSerializer.class)

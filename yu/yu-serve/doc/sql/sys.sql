@@ -43,19 +43,21 @@ CREATE TABLE `sys_user_role`
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`
 (
-    `id`          bigint(20) NOT NULL COMMENT 'ID',
-    `pid`         bigint(20) NOT NULL COMMENT '上级菜单ID',
-    `name`        varchar(255)     DEFAULT NULL COMMENT '菜单名称',
-    `component`   varchar(255)     DEFAULT NULL COMMENT '组件',
-    `sort`        int              DEFAULT NULL COMMENT '排序',
-    `icon`        varchar(255)     DEFAULT NULL COMMENT '图标',
-    `is_frame`    tinyint unsigned DEFAULT NULL COMMENT '是否外链',
-    `path`        varchar(255)     DEFAULT NULL COMMENT '链接地址',
-    `create_time` datetime         DEFAULT NULL COMMENT '创建时间',
-    `update_time` datetime         DEFAULT NULL COMMENT '更新时间',
-    `tenant_id`   int              DEFAULT NULL COMMENT '租户ID',
+    `id`          BIGINT ( 20 ) NOT NULL COMMENT 'ID',
+    `pid`         BIGINT ( 20 ) NOT NULL COMMENT '上级菜单ID',
+    `name`        VARCHAR(255) DEFAULT NULL COMMENT '菜单名称',
+    `type`        enum ( 'FOLDER', 'MENU', 'PERMISSION' ) DEFAULT NULL COMMENT '类型',
+    `path`        VARCHAR(255) DEFAULT NULL COMMENT '链接地址',
+    `component`   VARCHAR(255) DEFAULT NULL COMMENT '组件',
+    `permission`  VARCHAR(255) DEFAULT NULL COMMENT '权限编码',
+    `sort`        INT          DEFAULT NULL COMMENT '排序',
+    `icon`        VARCHAR(255) DEFAULT NULL COMMENT '图标',
+    `is_frame`    TINYINT UNSIGNED DEFAULT NULL COMMENT '是否外链',
+    `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime     DEFAULT NULL COMMENT '更新时间',
+    `tenant_id`   INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 【关系表】角色-菜单
 DROP TABLE IF EXISTS `sys_role_menu`;
@@ -101,6 +103,7 @@ CREATE TABLE `sys_dept`
     `no`          varchar(32) NOT NULL COMMENT '上下级关系编码',
     `pno`         varchar(32) NOT NULL COMMENT '上级部门no',
     `code`        varchar(32)      DEFAULT NULL COMMENT '用户自定义编码',
+    `sort`        tinyint          DEFAULT NULL COMMENT '排序',
     `type_id`     bigint           DEFAULT NULL COMMENT '类型id',
     `type_code`   varchar(16)      DEFAULT NULL COMMENT '类型编号',
     `name`        varchar(32)      DEFAULT NULL COMMENT '名称',

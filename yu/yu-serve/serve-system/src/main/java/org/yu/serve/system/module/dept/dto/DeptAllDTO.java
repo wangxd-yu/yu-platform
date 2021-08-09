@@ -36,6 +36,10 @@ public class DeptAllDTO extends DeptTreeDTO<DeptAllDTO> implements Serializable 
      * 名称
      */
     private String name;
+    /**
+     * 排序
+     */
+    private Integer sort;
 
     @NotNull
     private Boolean enabled;
