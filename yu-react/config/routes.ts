@@ -56,6 +56,12 @@ export default [
         path: '/system/dept',
         component: './system/Dept',
       },
+      {
+        name: '角色管理',
+        icon: 'smile',
+        path: '/system/role',
+        component: './system/Role',
+      },
     ],
   },
   {
