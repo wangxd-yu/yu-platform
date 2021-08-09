@@ -5,7 +5,7 @@ const menuUrl = '/api_sy/menu';
 
 /** 获取规则列表 GET /api/rule */
 export async function queryMenu(
-  params: any,
+  params?: any,
   options?: Record<string, any>,
 ) {
   return YuApi.queryListReq<MenuData>(menuUrl, params, options);
