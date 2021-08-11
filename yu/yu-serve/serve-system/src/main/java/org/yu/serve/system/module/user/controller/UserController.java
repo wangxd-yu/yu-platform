@@ -1,5 +1,6 @@
 package org.yu.serve.system.module.user.controller;
 
+import org.springframework.web.bind.annotation.*;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.user.domain.UserDO;
 import org.yu.serve.system.module.user.dto.UserFullDTO;
@@ -10,9 +11,6 @@ import org.yu.common.core.context.YuContextHolder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author wangxd
@@ -34,5 +32,10 @@ public class UserController extends DslBaseApiController<UserService, UserDO, Lo
     @GetMapping
     public ResponseEntity<Object> getUsers(UserTableQuery query, Pageable pageable) {
         return super.queryDTO(query, pageable, UserTableDTO.class);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> save(@RequestBody UserDO domain) throws Exception {
+        return super.save(domain);
     }
 }
