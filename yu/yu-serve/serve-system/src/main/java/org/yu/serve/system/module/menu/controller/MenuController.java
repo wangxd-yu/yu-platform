@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yu.common.core.context.YuContextHolder;
+import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.menu.domain.MenuDO;
 import org.yu.serve.system.module.menu.dto.MenuDTO;
@@ -45,8 +46,8 @@ public class MenuController extends DslBaseApiController<MenuService, MenuDO, Lo
 
     @GetMapping
     public ResponseEntity<Map<?, ?>> getMenus(MenuQuery criteria) {
-        List<MenuDTO> menuDTOS = (List<MenuDTO>) menuService.queryDTO(criteria, null, MenuDTO.class);
-        return new ResponseEntity<>(menuService.buildTree(menuDTOS), HttpStatus.OK);
+        MultiDataResult<MenuDTO> menuDTOS = menuService.queryDTO(criteria, null, MenuDTO.class);
+        return new ResponseEntity<>(menuService.buildTree(menuDTOS.getData()), HttpStatus.OK);
     }
 
     /**

@@ -3,6 +3,7 @@ package org.yu.serve.system.module.dept.service.impl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.exception.BadRequestException;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
@@ -23,7 +24,11 @@ import java.util.List;
 @Service
 public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, Long> implements DeptService {
     private final DeptTreeService deptTreeService;
-    QDeptDO qDeptDO = QDeptDO.deptDO;
+    private final QDeptDO qDeptDO = QDeptDO.deptDO;
+    /**
+     * 顶级部门 pno 默认值
+     */
+    private final String ROOT_PNO = "0";
 
     public DeptServiceImpl(DeptTreeService deptTreeService) {
         this.deptTreeService = deptTreeService;
@@ -33,6 +38,13 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
     @Transactional(rollbackFor = Exception.class)
     public DeptDO save(DeptDO deptDO) {
         //TODO 合法校验
+        if(StringUtils.isEmpty(deptDO.getPno())) {
+            deptDO.setPno(ROOT_PNO);
+        } else {
+            if(this.getByNo(deptDO.getPno()) == null) {
+                throw new BadRequestException("上级部门编号错误！");
+            }
+        }
         deptDO.setNo(this.genNo(deptDO.getPno()));
         deptDO.setEnabled(true);
         deptDO.setSubCount(0);
@@ -47,8 +59,6 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
      * 生成 上下级关系编码 NO
      */
     private String genNo(String pno) {
-        DeptDO pDeptDo = this.getByNo(pno);
-        String fatherNo = pDeptDo.getNo();
         //1、查询pno = pno的子部门的最大值
         String maxSubNo;
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
@@ -57,14 +67,14 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
                 .where(qDeptDO.pno.eq(pno))
                 .fetchOne();
         if (maxSubNo == null) {
-            maxSubNo = fatherNo + "000";
+            maxSubNo = pno + "000";
         }
 
         int deptNum = Integer.parseInt(maxSubNo.substring(maxSubNo.length() - 3));
         if (deptNum >= 999) {
             throw new BadRequestException("不能在当前父机构下创建子机构，机构编号已用完，请联系管理员！");
         }
-        maxSubNo = fatherNo + String.format("%03d", deptNum + 1);
+        maxSubNo = pno + String.format("%03d", deptNum + 1);
         return maxSubNo;
     }
 
@@ -87,6 +97,6 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public <T extends DeptTreeDTO> List<T> queryAll(DeptQuery query, Class clazz) {
-        return (List<T>) super.queryDTO(query, null, clazz);
+        return super.queryDTO(query, null, clazz).getData();
     }
 }
