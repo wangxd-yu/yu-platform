@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.querydsl.api.MultiDataResult;
@@ -31,7 +32,14 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     protected EntityManager entityManager;
 
     protected JPAQueryFactory getJPAQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+        Object jpaQueryFactoryObject = RequestContextHolder.getRequestAttributes().getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
+        if (jpaQueryFactoryObject != null) {
+            return (JPAQueryFactory) jpaQueryFactoryObject;
+        } else {
+            JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
+            RequestContextHolder.getRequestAttributes().setAttribute("JPAQueryFactory", jpaQueryFactory, RequestAttributes.SCOPE_REQUEST);
+            return jpaQueryFactory;
+        }
     }
 
     @Override
