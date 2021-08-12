@@ -1,5 +1,6 @@
 import {
   AlipayCircleOutlined,
+  ApartmentOutlined,
   LockOutlined,
   MobileOutlined,
   TaobaoCircleOutlined,
@@ -120,6 +121,20 @@ const Login: React.FC = () => {
             )}
             {type === 'account' && (
               <>
+                <ProFormText
+                  name="tenantId"
+                  fieldProps={{
+                    size: 'large',
+                    prefix: <ApartmentOutlined className={styles.prefixIcon} />,
+                  }}
+                  placeholder={'租户编号: 1000 or 1001'}
+                  rules={[
+                    {
+                      required: true,
+                      message: '租户编号是必填项！',
+                    },
+                  ]}
+                />
                 <ProFormText
                   name="username"
                   fieldProps={{

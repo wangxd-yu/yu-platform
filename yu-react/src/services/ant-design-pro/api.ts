@@ -21,15 +21,15 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/auth/oauth/token?tenantId=1000', {
+  return request<API.LoginResult>(`/auth/oauth/token?tenantId=${body.tenantId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     data: QS.stringify({
       grant_type: "password",
-      username: "admin1",
-      password: "123456",
+      username: body.username,
+      password: body.password,
       client_secret: "webApp",
       client_id: "webApp"
     }),

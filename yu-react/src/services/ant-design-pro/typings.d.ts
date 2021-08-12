@@ -24,6 +24,7 @@ declare namespace API {
   };
 
   type LoginResult = {
+    token?: string;
     status?: string;
     type?: string;
     currentAuthority?: string;
@@ -62,6 +63,7 @@ declare namespace API {
   };
 
   type LoginParams = {
+    tenantId?: string;
     username?: string;
     password?: string;
     autoLogin?: boolean;
