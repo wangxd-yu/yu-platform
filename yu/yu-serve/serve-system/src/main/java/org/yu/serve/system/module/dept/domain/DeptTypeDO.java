@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sys_dept_type")
-public class DeptTypeDO extends DslBaseTenantDO<Long> {
+public class DeptTypeDO extends DslBaseTenantDO<String> {
 
     /**
      * 名称

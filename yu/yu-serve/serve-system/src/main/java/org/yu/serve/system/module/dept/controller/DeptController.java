@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("dept")
-public class DeptController extends DslBaseApiController<DeptService, DeptDO, Long> {
+public class DeptController extends DslBaseApiController<DeptService, DeptDO, String> {
 
     private final DeptTreeService deptTreeService;
 

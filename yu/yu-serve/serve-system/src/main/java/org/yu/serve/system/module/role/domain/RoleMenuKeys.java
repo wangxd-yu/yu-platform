@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class RoleMenuKeys implements Serializable {
-    private Long roleId;
-    private Long menuId;
+    private String roleId;
+    private String menuId;
 }

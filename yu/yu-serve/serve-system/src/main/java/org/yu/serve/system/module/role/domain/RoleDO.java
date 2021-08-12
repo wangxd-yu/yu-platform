@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "sys_role")
-public class RoleDO extends DslBaseTenantDO<Long> implements Serializable {
+public class RoleDO extends DslBaseTenantDO<String> implements Serializable {
     @NotBlank
     private String code;
 

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author wangxd
  * @date 2020-11-26 14:45
  */
-public interface MenuService extends DslBaseService<MenuDO, Long> {
+public interface MenuService extends DslBaseService<MenuDO, String> {
 
     /**
      * 根据角色code列表获取菜单
@@ -30,5 +30,5 @@ public interface MenuService extends DslBaseService<MenuDO, Long> {
 
     Object getMenuTree(List<MenuDO> menus);
 
-    List<MenuDO> findByPid(long pid);
+    List<MenuDO> findByPid(String pid);
 }

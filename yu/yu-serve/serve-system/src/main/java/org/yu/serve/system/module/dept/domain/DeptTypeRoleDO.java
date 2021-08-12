@@ -17,15 +17,15 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sys_dept_type_role")
-public class DeptTypeRoleDO extends DslBaseTenantDO<Long> {
+public class DeptTypeRoleDO extends DslBaseTenantDO<String> {
 
     /**
      * 主类型id
      */
-    private Long typeId;
+    private String typeId;
 
     /**
      * 子类型id
      */
-    private Long subTypeId;
+    private String subTypeId;
 }

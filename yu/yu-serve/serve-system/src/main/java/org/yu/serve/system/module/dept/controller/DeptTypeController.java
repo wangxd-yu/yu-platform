@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("deptType")
-public class DeptTypeController extends DslBaseApiController<DeptTypeService, DeptTypeDO, Long> {
+public class DeptTypeController extends DslBaseApiController<DeptTypeService, DeptTypeDO, String> {
     protected DeptTypeController(DeptTypeService deptTypeService) {
         super(deptTypeService);
     }
 
     @GetMapping("subTypes/{typeId}")
-    public ResponseEntity<Object> findSubTypesByTypeId(@PathVariable Long typeId) {
+    public ResponseEntity<Object> findSubTypesByTypeId(@PathVariable String typeId) {
         return new ResponseEntity<>(dslBaseService.findSubTypesByTypeId(typeId), HttpStatus.OK);
     }
 

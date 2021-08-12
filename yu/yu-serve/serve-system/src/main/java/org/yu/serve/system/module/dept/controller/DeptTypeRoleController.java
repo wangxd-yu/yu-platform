@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("deptTypeRole")
-public class DeptTypeRoleController extends DslBaseApiController<DeptTypeRoleService, DeptTypeRoleDO, Long> {
+public class DeptTypeRoleController extends DslBaseApiController<DeptTypeRoleService, DeptTypeRoleDO, String> {
     protected DeptTypeRoleController(DeptTypeRoleService deptTypeRoleService) {
         super(deptTypeRoleService);
     }

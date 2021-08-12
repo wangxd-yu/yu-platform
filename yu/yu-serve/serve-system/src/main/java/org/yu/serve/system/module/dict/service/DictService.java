@@ -7,5 +7,5 @@ import org.yu.common.querydsl.service.DslBaseService;
  * @author wangxd
  * @date 2020-11-27 14:32
  */
-public interface DictService extends DslBaseService<DictDO, Long> {
+public interface DictService extends DslBaseService<DictDO, String> {
 }

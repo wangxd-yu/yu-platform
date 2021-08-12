@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "sys_dept")
-public class DeptDO extends DslBaseTenantDO<Long> {
+public class DeptDO extends DslBaseTenantDO<String> {
     /**
      * 上级部门no
      */
@@ -42,8 +42,7 @@ public class DeptDO extends DslBaseTenantDO<Long> {
     /**
      * 类型id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long typeId;
+    private String typeId;
 
     /**
      * 类型编码

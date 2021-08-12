@@ -14,7 +14,7 @@ import org.yu.serve.system.module.dict.domain.DictDetailDO;
 @YuQuery(domain = DictDetailDO.class)
 public class DictDetailQuery {
     @YuQueryColumn
-    private Long dictId;
+    private String dictId;
 
     @YuQueryColumn(operator = YuOperatorEnum.INNER_LIKE)
     private String name;

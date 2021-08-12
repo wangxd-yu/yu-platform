@@ -13,13 +13,13 @@ import org.yu.serve.system.module.dict.service.DictDetailService;
  * @date 2020-11-27 15:07
  */
 @Service
-public class DictDetailServiceImpl extends DslBaseServiceImpl<DictDetailRepository, DictDetailDO, Long> implements DictDetailService {
+public class DictDetailServiceImpl extends DslBaseServiceImpl<DictDetailRepository, DictDetailDO, String> implements DictDetailService {
 
     QDictDetailDO qDictDetailDO = QDictDetailDO.dictDetailDO;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteByDictId(Long dictId) {
+    public void deleteByDictId(String dictId) {
         getJPAQueryFactory().delete(qDictDetailDO)
                 .where(qDictDetailDO.dictId.eq(dictId))
                 .execute();

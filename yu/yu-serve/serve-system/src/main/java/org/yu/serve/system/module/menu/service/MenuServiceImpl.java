@@ -21,7 +21,7 @@ import java.util.*;
  * @date 2020-11-26 14:50
  */
 @Service
-public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, Long> implements MenuService {
+public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, String> implements MenuService {
     @Override
     public List<MenuDTO> findByRoleCodes(List<String> roleCodes) {
         JPAQueryFactory jpaQueryFactory = super.getJPAQueryFactory();
@@ -126,7 +126,7 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
     }
 
     @Override
-    public List<MenuDO> findByPid(long pid) {
+    public List<MenuDO> findByPid(String pid) {
         return baseRepository.findByPid(pid);
     }
 }

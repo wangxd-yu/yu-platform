@@ -17,12 +17,11 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "sys_dict_detail")
-public class DictDetailDO extends DslBaseTenantDO<Long> {
+public class DictDetailDO extends DslBaseTenantDO<String> {
     /**
      * 字典id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long dictId;
+    private String dictId;
 
     /**
      * 编号
