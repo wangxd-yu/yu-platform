@@ -16,17 +16,12 @@ const formItemLayout = {
 const YuForm: React.FC<YuFormProps> = ((props: YuFormProps) => {
     return (
         <ModalForm
-            title={!props.isAdd ? '更新字典' : '新建字典'}
-            width="500px"
-            {...formItemLayout}
-            formRef={props.formRef}
-            visible={props.visible}
             layout='horizontal'
-            onVisibleChange={props.onVisibleChange}
-            onFinish={props.onFinish}
-      >
-        {props.children}
-      </ModalForm >
+            {...formItemLayout}
+            {...props}
+        >
+            {props.children}
+        </ModalForm >
     )
 })
 

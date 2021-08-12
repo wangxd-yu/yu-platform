@@ -96,6 +96,7 @@ const DeptPage: React.FC = () => {
         columns={columns}
         actionRef={deptActionRef}
         request={queryDept}
+        footer={() => ''}
         postData={(dataList) => {
           setDeptDataList(dataList)
           return dataList;

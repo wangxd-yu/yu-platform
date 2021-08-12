@@ -11,8 +11,8 @@ export const transferPageParams = (params: any) => {
   return paramsRtn;
 };
 
-const deletePageParams = (params: any) => {
-  const paramsRtn: any = params;
+const transferListParams = (params: any) => {
+  const paramsRtn: any = {...params, yuRtn: 'LIST'};
   if(paramsRtn && paramsRtn.current) delete paramsRtn.current;
   if(paramsRtn && paramsRtn.pageSize) delete paramsRtn.pageSize;
   return paramsRtn;
@@ -43,7 +43,7 @@ export async function queryPageReq<T>(
 
 export async function queryListReq<T>(
   url: string,
-  params: {
+  params?: {
     /** 当前的页码 */
     current?: number;
     /** 页面的容量 */
@@ -58,7 +58,7 @@ export async function queryListReq<T>(
     success?: boolean;
   }>(url, {
     method: 'GET',
-    params: deletePageParams(params), 
+    params: params? transferListParams(params) : null, 
     ...(options || {}),
   });
 }

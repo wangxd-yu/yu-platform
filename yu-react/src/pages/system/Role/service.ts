@@ -9,7 +9,7 @@ export async function queryRole(
   params: any,
   options?: Record<string, any>,
 ) {
-  return YuApi.queryListReq<RoleData>(roleUrl, params, options);
+  return YuApi.queryPageReq<RoleData>(roleUrl, params, options);
 }
 
 export async function getRole(id: number) {
