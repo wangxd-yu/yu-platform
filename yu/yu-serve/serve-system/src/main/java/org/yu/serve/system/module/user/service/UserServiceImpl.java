@@ -17,9 +17,12 @@ import org.yu.serve.system.module.user.dto.UserDTO;
 import org.yu.serve.system.module.user.dto.UserFullDTO;
 import org.yu.serve.system.module.user.repository.UserRepository;
 import org.yu.serve.system.module.user.repository.UserRoleRepository;
+import org.yu.serve.system.util.PasswordUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author wangxd
@@ -33,9 +36,14 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     QUserRoleDO qUserRoleDO = QUserRoleDO.userRoleDO;
     QDeptDO qDeptDO = QDeptDO.deptDO;
 
+    //TODO 默认密码，后续放到全局配置表中
+    private static final String DEFAULT_PASS = "123456";
+
+    private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
 
-    public UserServiceImpl(UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+        this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
     }
 
@@ -51,10 +59,11 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDO save(UserDO domain) {
-        if (baseRepository.findByUsername(domain.getUsername()) != null) {
+        if (userRepository.findByUsername(domain.getUsername()) != null) {
             throw new EntityExistException(UserDO.class, "username", domain.getUsername());
         }
-        baseRepository.save(domain);
+        domain.setPassword(PasswordUtil.encodedPassword(DEFAULT_PASS));
+        userRepository.save(domain);
         saveUserRole(domain);
         return domain;
     }
@@ -69,8 +78,22 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
         if (dbUser != null && !dbUser.getId().equals(domain.getId())) {
             throw new EntityExistException(UserDO.class, "username", domain.getUsername());
         }
+        assert dbUser != null;
+        domain.setPassword(dbUser.getPassword());
         baseRepository.save(domain);
         saveUserRole(domain);
+    }
+
+    @Override
+    public UserDO getById(String id) {
+        UserDO userDO = baseRepository.findById(id).orElseThrow(() -> new BadRequestException("数据不存在！"));
+        Set<String> roleIds = new HashSet<>(getJPAQueryFactory()
+                .select(qUserRoleDO.roleId)
+                .from(qUserRoleDO)
+                .where(qUserRoleDO.userId.eq(id))
+                .fetch());
+        userDO.setRoleIds(roleIds);
+        return userDO;
     }
 
     @Override
