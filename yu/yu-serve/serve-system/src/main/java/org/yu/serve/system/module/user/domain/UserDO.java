@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "sys_user")
-public class UserDO extends DslBaseDeptDO<Long> implements Serializable {
+public class UserDO extends DslBaseDeptDO<String> implements Serializable {
     @NotBlank
     private String username;
 
@@ -36,5 +36,5 @@ public class UserDO extends DslBaseDeptDO<Long> implements Serializable {
     private String password;
 
     @Transient
-    private Set<Long> roleIds;
+    private Set<String> roleIds;
 }

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @YuDTO(domain = UserDO.class)
 public class UserTableDTO {
 
-    private Long id;
+    private String id;
 
     private String username;
 

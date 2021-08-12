@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name="sys_user_role")
 public class UserRoleDO {
     @Id
-    private Long userId;
+    private String userId;
     @Id
-    private Long roleId;
+    private String roleId;
 }

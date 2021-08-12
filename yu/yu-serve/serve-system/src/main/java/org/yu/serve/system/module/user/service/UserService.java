@@ -9,10 +9,10 @@ import org.yu.common.querydsl.service.DslBaseService;
  * @author wangxd
  * @date 2020-11-09 09:58
  */
-public interface UserService extends DslBaseService<UserDO, Long> {
+public interface UserService extends DslBaseService<UserDO, String> {
 
-    UserDTO findDtoById(Long userId);
+    UserDTO findDtoById(String userId);
 
-    UserFullDTO getUserInfo(Long userId);
+    UserFullDTO getUserInfo(String userId);
 
 }

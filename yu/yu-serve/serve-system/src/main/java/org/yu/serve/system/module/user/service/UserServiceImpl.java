@@ -26,7 +26,7 @@ import java.util.List;
  * @date 2020-11-09 09:59
  */
 @Service
-public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, Long> implements UserService {
+public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, String> implements UserService {
 
     QUserDO qUserDO = QUserDO.userDO;
     QRoleDO qRoleDO = QRoleDO.roleDO;
@@ -42,7 +42,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     private void saveUserRole(UserDO domain) {
         getJPAQueryFactory().delete(qUserRoleDO).where(qUserRoleDO.userId.eq(domain.getId())).execute();
         List<UserRoleDO> userRoleDOS = new ArrayList<>(domain.getRoleIds().size());
-        for (Long menuId : domain.getRoleIds()) {
+        for (String menuId : domain.getRoleIds()) {
             userRoleDOS.add(new UserRoleDO(domain.getId(), menuId));
         }
         userRoleRepository.saveAll(userRoleDOS);
@@ -74,7 +74,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     }
 
     @Override
-    public UserDTO findDtoById(Long userId) {
+    public UserDTO findDtoById(String userId) {
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
         UserDTO userDTO = jpaQueryFactory.select(YuQueryHelp.getJpaDTOSelect(UserDTO.class))
                 .from(qUserDO)
@@ -94,7 +94,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     }
 
     @Override
-    public UserFullDTO getUserInfo(Long userId) {
+    public UserFullDTO getUserInfo(String userId) {
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
         UserFullDTO userFullDTO = jpaQueryFactory.select(YuQueryHelp.getJpaDTOSelect(UserFullDTO.class))
                 .from(qUserDO, qDeptDO)
@@ -107,7 +107,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
         return userFullDTO;
     }
 
-    private List<String> getRoleCodeByUserId(Long userId) {
+    private List<String> getRoleCodeByUserId(String userId) {
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
         return jpaQueryFactory.select(qRoleDO.code)
                 .from(qRoleDO)

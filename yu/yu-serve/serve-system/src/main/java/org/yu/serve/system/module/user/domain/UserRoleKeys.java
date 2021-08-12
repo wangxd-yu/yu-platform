@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class UserRoleKeys implements Serializable {
-    private Long userId;
-    private Long roleId;
+    private String userId;
+    private String roleId;
 }
