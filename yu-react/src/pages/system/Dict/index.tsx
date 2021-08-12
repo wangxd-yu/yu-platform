@@ -6,8 +6,6 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { Dict, TableListPagination, DictItem } from './data';
@@ -17,7 +15,6 @@ const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
   const [createDictVisible, handleDictVisible] = useState<boolean>(false);
   const [createDictItemVisible, handleDictItemVisible] = useState<boolean>(false);
-  const [showDictDetail, setShowDictDetail] = useState<boolean>(false);
   const [showDictItemDetail, setShowDictItemDetail] = useState<boolean>(false);
   const dictFormRef = useRef<FormInstance>();
   const dictItemFormRef = useRef<FormInstance>();
@@ -36,19 +33,7 @@ const TableList: React.FC = () => {
   const columns: ProColumns<Dict>[] = [
     {
       title: '字典名称',
-      dataIndex: 'name',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setDictCurrentRow(entity);
-              setShowDictDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      dataIndex: 'name'
     },
     {
       title: '字典编号',
@@ -179,11 +164,11 @@ const TableList: React.FC = () => {
         request={queryDict}
         columns={columns}
       />
-      <DictForm1 
-        visible={createDictVisible} 
-        isAdd={!dictCurrentRow?.id}
+      <DictForm1
+        title={!dictCurrentRow?.id ? '更新字典' : '新建字典'}
+        visible={createDictVisible}
         onVisibleChange={handleDictVisible}
-        formRef={dictFormRef} 
+        formRef={dictFormRef}
         onFinish={async (value) => {
           const data = { ...dictCurrentRow, ...value };
           let success;
@@ -199,7 +184,7 @@ const TableList: React.FC = () => {
               actionRef.current.reload();
             }
           }
-        }} 
+        }}
       />
       <Drawer
         title={dictCurrentRow?.name}
@@ -287,30 +272,6 @@ const TableList: React.FC = () => {
           />
           <ProFormDigit label="排序" name="sort" min={1} max={99} />
         </ModalForm>
-      </Drawer>
-
-      <Drawer
-        width={600}
-        visible={showDictDetail}
-        onClose={() => {
-          setDictCurrentRow(undefined);
-          setShowDictItemDetail(false);
-        }}
-        closable={false}
-      >
-        {dictCurrentRow?.name && (
-          <ProDescriptions<Dict>
-            column={2}
-            title={dictCurrentRow?.name}
-            request={async () => ({
-              data: dictCurrentRow || {},
-            })}
-            params={{
-              id: dictCurrentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<Dict>[]}
-          />
-        )}
       </Drawer>
     </PageContainer >
   );

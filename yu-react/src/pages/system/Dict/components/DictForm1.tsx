@@ -14,7 +14,7 @@ const DictForm1: React.FC<YuFormProps> = (props: YuFormProps) => {
             message: '字典名称为必填项',
           },
         ]}
-        label="字典名称1"
+        label="字典名称"
         name="name"
       />
       <ProFormText

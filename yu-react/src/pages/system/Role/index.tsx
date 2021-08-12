@@ -55,7 +55,6 @@ const RoleTable: React.FC = () => {
     setCheckedKeys(checkedKeysValue as CheckedKye);
   };
 
-
   useEffect(() => {
     queryMenu().then(res => {
       setMenuTree(handleTreeDataRecursion(res.data));
@@ -98,8 +97,8 @@ const RoleTable: React.FC = () => {
         <a
           key="update"
           onClick={() => {
-            handleRoleVisible(true);
             setRoleCurrentRow(record);
+            handleRoleVisible(true);
           }}
         >
           编辑
@@ -156,10 +155,19 @@ const RoleTable: React.FC = () => {
         columns={columns}
       />
       <RoleForm
+        width="500px"
+        title={!roleCurrentRow?.id ? '更新角色' : '新建角色'}
         visible={createRoleVisible}
-        isAdd={!roleCurrentRow?.id}
-        onVisibleChange={handleRoleVisible}
+        onVisibleChange={(visible) => {
+          if (visible) {
+            roleFormRef?.current?.resetFields();
+          } else {
+            handleRoleVisible(false);
+            setRoleCurrentRow(undefined);
+          }
+        }}
         formRef={roleFormRef}
+        initialValues={roleCurrentRow || {}}
         onFinish={async (value) => {
           const data = { ...roleCurrentRow, ...value };
           let success;
@@ -183,8 +191,8 @@ const RoleTable: React.FC = () => {
         visible={showRoleMenuDetail}
         onVisibleChange={(visible) => {
           setShowRoleMenuDetail(visible)
-          if(!visible) {
-            setCheckedKeys({checked: [],halfChecked: []});
+          if (!visible) {
+            setCheckedKeys({ checked: [], halfChecked: [] });
           }
         }}
         onFinish={async () => {
