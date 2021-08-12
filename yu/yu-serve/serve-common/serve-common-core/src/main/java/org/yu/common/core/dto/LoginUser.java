@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class LoginUser {
 
-    private Long id;
+    private String id;
     /**
      * 部门NO
      */

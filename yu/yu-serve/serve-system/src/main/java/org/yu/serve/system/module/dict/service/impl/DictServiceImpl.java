@@ -13,7 +13,7 @@ import org.yu.serve.system.module.dict.service.DictService;
  * @date 2020-11-27 14:32
  */
 @Service
-public class DictServiceImpl extends DslBaseServiceImpl<DictRepository, DictDO, Long> implements DictService {
+public class DictServiceImpl extends DslBaseServiceImpl<DictRepository, DictDO, String> implements DictService {
 
     private final DictDetailService dictDetailService;
 
@@ -23,7 +23,7 @@ public class DictServiceImpl extends DslBaseServiceImpl<DictRepository, DictDO, 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public void delete(String id) {
         super.delete(id);
         dictDetailService.deleteByDictId(id);
     }

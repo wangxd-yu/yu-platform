@@ -7,5 +7,5 @@ import org.yu.common.querydsl.repository.DslBaseRepository;
  * @author wangxd
  * @date 2020-11-27 15:05
  */
-public interface DictDetailRepository extends DslBaseRepository<DictDetailDO, Long> {
+public interface DictDetailRepository extends DslBaseRepository<DictDetailDO, String> {
 }

@@ -15,11 +15,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "sys_menu")
-public class MenuDO extends DslBaseTenantDO<Long> {
+public class MenuDO extends DslBaseTenantDO<String> {
     /**
      * 上级菜单ID
      */
-    private Long pid;
+    private String pid;
 
     /**
      * 菜单名称

@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
  */
 @RestController
 @RequestMapping("user")
-public class UserController extends DslBaseApiController<UserService, UserDO, Long> {
+public class UserController extends DslBaseApiController<UserService, UserDO, String> {
 
     public UserController(UserService userService) {
         super(userService);

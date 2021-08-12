@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("role")
-public class RoleController extends DslBaseApiController<RoleService, RoleDO, Long> {
+public class RoleController extends DslBaseApiController<RoleService, RoleDO, String> {
     private final RoleService roleService;
     protected RoleController(RoleService roleService, RoleService roleService1) {
         super(roleService);
@@ -32,13 +32,13 @@ public class RoleController extends DslBaseApiController<RoleService, RoleDO, Lo
     }
 
     @PostMapping("{id}/menus")
-    public ResponseEntity<Object> saveRoleMenus(@PathVariable Long id, @RequestBody Map<String, List<Long>> map) {
-        roleService.saveRoleMenus(id, Convert.toLongArray(map.get("menuIds")));
+    public ResponseEntity<Object> saveRoleMenus(@PathVariable String id, @RequestBody Map<String, List<String>> map) {
+        roleService.saveRoleMenus(id, Convert.toStrArray(map.get("menuIds")));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("{id}/menus")
-    public ResponseEntity<Object> getRoleMenus(@PathVariable Long id) {
+    public ResponseEntity<Object> getRoleMenus(@PathVariable String id) {
         return new ResponseEntity<>(roleService.getRoleMenus(id), HttpStatus.OK);
     }
 }

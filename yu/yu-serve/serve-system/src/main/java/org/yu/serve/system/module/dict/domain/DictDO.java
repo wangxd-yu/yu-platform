@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "sys_dict")
-public class DictDO extends DslBaseTenantDO<Long> {
+public class DictDO extends DslBaseTenantDO<String> {
     /**
      * 编号
      */

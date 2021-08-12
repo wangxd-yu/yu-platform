@@ -28,8 +28,7 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    private String id;
 
     @JsonProperty("name")
     private String name;
@@ -42,8 +41,7 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     /**
      * 类型id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long typeId;
+    private String typeId;
     /**
      * 类型编码
      */

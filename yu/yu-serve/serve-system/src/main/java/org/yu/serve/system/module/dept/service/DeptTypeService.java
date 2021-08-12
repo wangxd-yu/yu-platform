@@ -9,8 +9,8 @@ import java.util.List;
  * @author wangxd
  * @date 2020-11-30 14:35
  */
-public interface DeptTypeService extends DslBaseService<DeptTypeDO, Long> {
-    List<DeptTypeDO> findSubTypesByTypeId(Long typeId);
+public interface DeptTypeService extends DslBaseService<DeptTypeDO, String> {
+    List<DeptTypeDO> findSubTypesByTypeId(String typeId);
 
     List<DeptTypeDO> findSubTypesByDeptNo(String deptNo);
 }

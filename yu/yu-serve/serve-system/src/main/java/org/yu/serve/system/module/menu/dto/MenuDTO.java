@@ -19,13 +19,11 @@ import java.util.List;
 @Data
 @YuDTO(domain = MenuDO.class)
 public class MenuDTO {
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
+    private String id;
     /**
      * 上级菜单ID
      */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long pid;
+    private String pid;
 
     /**
      * 菜单名称

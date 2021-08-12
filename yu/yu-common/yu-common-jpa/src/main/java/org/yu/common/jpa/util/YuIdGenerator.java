@@ -21,6 +21,6 @@ public class YuIdGenerator implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
-        return snowFlake.nextId();
+        return String.valueOf(snowFlake.nextId());
     }
 }

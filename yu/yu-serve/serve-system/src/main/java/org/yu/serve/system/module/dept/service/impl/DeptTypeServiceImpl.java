@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2020-11-30 14:46
  */
 @Service
-public class DeptTypeServiceImpl extends DslBaseServiceImpl<DeptTypeRepository, DeptTypeDO, Long> implements DeptTypeService {
+public class DeptTypeServiceImpl extends DslBaseServiceImpl<DeptTypeRepository, DeptTypeDO, String> implements DeptTypeService {
 
     private final QDeptTypeDO qDeptTypeDO = QDeptTypeDO.deptTypeDO;
     private final QDeptTypeRoleDO qDeptTypeRoleDO = QDeptTypeRoleDO.deptTypeRoleDO;
@@ -30,7 +30,7 @@ public class DeptTypeServiceImpl extends DslBaseServiceImpl<DeptTypeRepository, 
     }
 
     @Override
-    public List<DeptTypeDO> findSubTypesByTypeId(Long typeId) {
+    public List<DeptTypeDO> findSubTypesByTypeId(String typeId) {
         return getJPAQueryFactory().selectFrom(qDeptTypeDO)
                 .where(qDeptTypeDO.id.in(
                         JPAExpressions.select(qDeptTypeRoleDO.subTypeId)

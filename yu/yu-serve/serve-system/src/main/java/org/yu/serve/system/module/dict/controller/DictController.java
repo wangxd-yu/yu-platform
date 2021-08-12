@@ -16,7 +16,7 @@ import org.yu.serve.system.module.dict.service.DictService;
  */
 @RestController
 @RequestMapping("dict")
-public class DictController extends DslBaseApiController<DictService, DictDO, Long> {
+public class DictController extends DslBaseApiController<DictService, DictDO, String> {
     protected DictController(DictService dictService) {
         super(dictService);
     }

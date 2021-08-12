@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2020-11-30 14:59
  */
 @Service
-public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, Long> implements DeptService {
+public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, String> implements DeptService {
     private final DeptTreeService deptTreeService;
     private final QDeptDO qDeptDO = QDeptDO.deptDO;
     /**

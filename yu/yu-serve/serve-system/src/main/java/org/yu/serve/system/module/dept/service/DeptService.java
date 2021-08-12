@@ -11,7 +11,7 @@ import java.util.List;
  * @author wangxd
  * @date 2020-11-30 14:35
  */
-public interface DeptService extends DslBaseService<DeptDO, Long> {
+public interface DeptService extends DslBaseService<DeptDO, String> {
 
     DeptDO getByNo(String deptNo);
 

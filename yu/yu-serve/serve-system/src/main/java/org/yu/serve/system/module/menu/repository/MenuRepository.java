@@ -9,6 +9,6 @@ import java.util.List;
  * @author wangxd
  * @date 2020-11-26 14:38
  */
-public interface MenuRepository extends DslBaseRepository<MenuDO, Long> {
-    List<MenuDO> findByPid(long pid);
+public interface MenuRepository extends DslBaseRepository<MenuDO, String> {
+    List<MenuDO> findByPid(String pid);
 }

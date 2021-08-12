@@ -11,5 +11,5 @@ import org.yu.serve.system.module.dept.service.DeptTypeRoleService;
  * @date 2020-11-30 15:02
  */
 @Service
-public class DeptTypeRoleServiceImpl extends DslBaseServiceImpl<DeptTypeRoleRepository, DeptTypeRoleDO, Long> implements DeptTypeRoleService {
+public class DeptTypeRoleServiceImpl extends DslBaseServiceImpl<DeptTypeRoleRepository, DeptTypeRoleDO, String> implements DeptTypeRoleService {
 }

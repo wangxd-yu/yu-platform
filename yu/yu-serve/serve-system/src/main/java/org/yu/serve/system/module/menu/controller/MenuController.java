@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("menu")
-public class MenuController extends DslBaseApiController<MenuService, MenuDO, Long> {
+public class MenuController extends DslBaseApiController<MenuService, MenuDO, String> {
 
     private final MenuService menuService;
 
@@ -55,6 +55,6 @@ public class MenuController extends DslBaseApiController<MenuService, MenuDO, Lo
      */
     @GetMapping("tree")
     public ResponseEntity<Object> getMenuTree() {
-        return new ResponseEntity<>(menuService.getMenuTree(menuService.findByPid(0L)), HttpStatus.OK);
+        return new ResponseEntity<>(menuService.getMenuTree(menuService.findByPid("0")), HttpStatus.OK);
     }
 }
