@@ -5,14 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.yu.common.multidb.config.DynamicDataSource;
 import org.yu.common.multidb.service.DynamicDataSourceService;
+import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.tenant.service.api.datasource.domain.DataSourceDO;
 import org.yu.tenant.service.api.datasource.feign.DataSourceFeign;
 
 import javax.sql.DataSource;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,12 +44,12 @@ public class DynamicDataSourceServiceImpl implements DynamicDataSourceService {
         ResponseEntity<Object> responseEntity = dataSourceFeign.listDataSources(null, true);
         log.info("[dataSourceFeign]:({})", responseEntity.getBody());
         ObjectMapper mapper = new ObjectMapper();
-        List<DataSourceDO> dataSourceDOList = mapper.convertValue(
+        MultiDataResult<DataSourceDO> dataSourceDOMultiDataResult = mapper.convertValue(
                 responseEntity.getBody(),
-                new TypeReference<List<DataSourceDO>>() {
+                new TypeReference<MultiDataResult<DataSourceDO>>() {
                 }
         );
-        dataSourceDOList.forEach(dataSourceDO -> {
+        dataSourceDOMultiDataResult.getData().forEach(dataSourceDO -> {
             HikariDataSource dataSource = new HikariDataSource();
             dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
             dataSource.setJdbcUrl(dataSourceDO.getUrl());

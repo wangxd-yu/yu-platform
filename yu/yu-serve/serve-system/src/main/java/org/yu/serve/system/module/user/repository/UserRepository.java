@@ -8,4 +8,5 @@ import org.yu.common.querydsl.repository.DslBaseRepository;
  * @date 2020-11-09 10:00
  */
 public interface UserRepository extends DslBaseRepository<UserDO, Long> {
+    UserDO findByUsername(String username);
 }

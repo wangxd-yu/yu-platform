@@ -6,12 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.yu.common.querydsl.query.util.PageUtil;
+import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.yu.common.querydsl.api.MultiDataResult;
+import org.yu.common.querydsl.query.util.WrapDataUtil;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.repository.DslBaseRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author wangxd
@@ -26,7 +32,14 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     protected EntityManager entityManager;
 
     protected JPAQueryFactory getJPAQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+        Object jpaQueryFactoryObject = RequestContextHolder.getRequestAttributes().getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
+        if (jpaQueryFactoryObject != null) {
+            return (JPAQueryFactory) jpaQueryFactoryObject;
+        } else {
+            JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
+            RequestContextHolder.getRequestAttributes().setAttribute("JPAQueryFactory", jpaQueryFactory, RequestAttributes.SCOPE_REQUEST);
+            return jpaQueryFactory;
+        }
     }
 
     @Override
@@ -57,20 +70,28 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     }
 
     @Override
-    public <Q> Object query(Q query, Pageable pageable) {
+    public <Q> MultiDataResult<DO> query(Q query, Pageable pageable) {
         JPAQuery<DO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query);
-        if (pageable == null) {
-            return jpaQuery.fetch();
-        }
-        return PageUtil.toPage(jpaQuery, pageable);
+        return queryForReturnType(jpaQuery, pageable);
     }
 
     @Override
-    public <Q, DTO> Object queryDTO(Q query, Pageable pageable, Class<DTO> clazz) {
+    public <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz) {
         JPAQuery<DTO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query, clazz);
-        if (pageable == null) {
-            return jpaQuery.fetch();
+        return queryForReturnType(jpaQuery, pageable);
+    }
+
+    private <T> MultiDataResult<T> queryForReturnType(JPAQuery<T> jpaQuery, Pageable pageable) {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        assert servletRequestAttributes != null;
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String resultType = request.getParameter("yuRtn");
+        if (StringUtils.isEmpty(resultType)) {
+            resultType = "PAGE";
         }
-        return PageUtil.toPage(jpaQuery, pageable);
+        if (pageable == null || resultType.equals("LIST")) {
+            return WrapDataUtil.toList(jpaQuery);
+        }
+        return WrapDataUtil.toPage(jpaQuery, pageable);
     }
 }
