@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @date 2020-11-05 15:08
  */
 public class PasswordUtil {
-    //final private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    ///final private static PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     final private static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public static boolean checkPassword(String rawPassword, String encodedPassword) {

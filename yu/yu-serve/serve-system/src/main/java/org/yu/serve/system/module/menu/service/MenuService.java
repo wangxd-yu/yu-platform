@@ -2,6 +2,7 @@ package org.yu.serve.system.module.menu.service;
 
 import org.yu.common.querydsl.service.DslBaseService;
 import org.yu.serve.system.module.menu.domain.MenuDO;
+import org.yu.serve.system.module.menu.dto.MenuBuildDTO;
 import org.yu.serve.system.module.menu.dto.MenuDTO;
 import org.yu.serve.system.module.menu.vo.MenuVO;
 
@@ -19,7 +20,7 @@ public interface MenuService extends DslBaseService<MenuDO, String> {
      *
      * @param roleCodes 角色code列表
      */
-    List<MenuDTO> findByRoleCodes(List<String> roleCodes);
+    List<MenuBuildDTO> findByRoleCodes(List<String> roleCodes);
 
     Map<String, Object> buildTree(List<MenuDTO> menuDTOS);
 

@@ -1,6 +1,7 @@
 package org.yu.serve.system.module.menu.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -26,9 +27,15 @@ public class MenuVO implements Serializable {
 
     private String component;
 
+    /**
+     * 图标
+     */
+    private String icon;
+
     private Boolean alwaysShow;
 
     private MenuMetaVO meta;
 
+    @JsonProperty("routes")
     private List<MenuVO> children;
 }
