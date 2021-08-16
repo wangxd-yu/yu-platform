@@ -87,19 +87,19 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
 
     private MultiDataTypeEnum getMultiDataType(MultiDataTypeEnum typeEnum, Pageable pageable) {
         if (typeEnum == null) {
-            if (pageable == null) {
-                typeEnum = MultiDataTypeEnum.LIST;
-            } else {
-                ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-                assert servletRequestAttributes != null;
-                HttpServletRequest request = servletRequestAttributes.getRequest();
-                String typeStr = request.getParameter("yuRtn");
-                if (!StringUtils.isEmpty(typeStr)) {
-                    typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
-                }
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            assert servletRequestAttributes != null;
+            HttpServletRequest request = servletRequestAttributes.getRequest();
+            String typeStr = request.getParameter("yuRtn");
+            if (!StringUtils.isEmpty(typeStr)) {
+                typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
+            }
 
-                if (typeEnum == null) {
+            if (typeEnum == null) {
+                if(pageable != null) {
                     typeEnum = MultiDataTypeEnum.PAGE;
+                } else {
+                    typeEnum = MultiDataTypeEnum.LIST;
                 }
             }
         }
