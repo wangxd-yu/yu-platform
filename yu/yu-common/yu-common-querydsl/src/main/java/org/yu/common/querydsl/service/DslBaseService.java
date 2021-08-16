@@ -3,6 +3,7 @@ package org.yu.common.querydsl.service;
 import org.springframework.data.domain.Pageable;
 import org.yu.common.jpa.service.BaseService;
 import org.yu.common.querydsl.api.MultiDataResult;
+import org.yu.common.querydsl.api.MultiDataTypeEnum;
 
 /**
  * @author wangxd
@@ -24,5 +25,9 @@ public interface DslBaseService<DO, ID> extends BaseService<DO, ID> {
 
     <Q> MultiDataResult<DO> query(Q query, Pageable pageable);
 
-    <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz);
+    <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz, MultiDataTypeEnum typeEnum);
+
+    default <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz) {
+        return queryDTO(query, pageable, clazz, null);
+    }
 }

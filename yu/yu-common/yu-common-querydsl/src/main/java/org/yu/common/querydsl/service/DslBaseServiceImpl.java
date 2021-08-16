@@ -1,5 +1,6 @@
 package org.yu.common.querydsl.service;
 
+import com.querydsl.jpa.impl.AbstractJPAQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,16 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.querydsl.api.MultiDataResult;
+import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.query.util.WrapDataUtil;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.repository.DslBaseRepository;
+import org.yu.common.querydsl.api.TreeNode;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * @author wangxd
@@ -32,7 +36,7 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     protected EntityManager entityManager;
 
     protected JPAQueryFactory getJPAQueryFactory() {
-        Object jpaQueryFactoryObject = RequestContextHolder.getRequestAttributes().getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
+        Object jpaQueryFactoryObject = Objects.requireNonNull(RequestContextHolder.getRequestAttributes()).getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
         if (jpaQueryFactoryObject != null) {
             return (JPAQueryFactory) jpaQueryFactoryObject;
         } else {
@@ -76,22 +80,41 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     }
 
     @Override
-    public <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz) {
+    public <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz, MultiDataTypeEnum typeEnum) {
+        if(typeEnum == null) {
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            assert servletRequestAttributes != null;
+            HttpServletRequest request = servletRequestAttributes.getRequest();
+            String typeStr = request.getParameter("yuRtn");
+            if(!StringUtils.isEmpty(typeStr)) {
+                typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
+            }
+
+            if (typeEnum == null) {
+                if (pageable == null) {
+                    typeEnum = MultiDataTypeEnum.LIST;
+                } else {
+                    typeEnum = MultiDataTypeEnum.PAGE;
+                }
+            }
+        }
+
         JPAQuery<DTO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query, clazz);
-        return queryForReturnType(jpaQuery, pageable);
+        return queryForReturnType(jpaQuery, pageable, typeEnum);
     }
 
     private <T> MultiDataResult<T> queryForReturnType(JPAQuery<T> jpaQuery, Pageable pageable) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        assert servletRequestAttributes != null;
-        HttpServletRequest request = servletRequestAttributes.getRequest();
-        String resultType = request.getParameter("yuRtn");
-        if (StringUtils.isEmpty(resultType)) {
-            resultType = "PAGE";
+        return queryForReturnType(jpaQuery, pageable, MultiDataTypeEnum.PAGE);
+    }
+
+    private <T> MultiDataResult<T> queryForReturnType(JPAQuery<T> jpaQuery, Pageable pageable, MultiDataTypeEnum typeEnum) {
+        switch (typeEnum) {
+            case LIST:
+                return WrapDataUtil.toList(jpaQuery);
+            case TREE:
+                return (MultiDataResult<T>) WrapDataUtil.toTree((AbstractJPAQuery<TreeNode, ?>) jpaQuery);
+            default:
+                return WrapDataUtil.toPage(jpaQuery, pageable);
         }
-        if (pageable == null || resultType.equals("LIST")) {
-            return WrapDataUtil.toList(jpaQuery);
-        }
-        return WrapDataUtil.toPage(jpaQuery, pageable);
     }
 }

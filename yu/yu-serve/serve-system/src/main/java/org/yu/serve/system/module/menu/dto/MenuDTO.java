@@ -1,9 +1,9 @@
 package org.yu.serve.system.module.menu.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.yu.common.querydsl.api.TreeDTO;
 import org.yu.common.querydsl.query.annotation.YuDTO;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;
 import org.yu.serve.system.module.menu.domain.MenuDO;
@@ -16,9 +16,10 @@ import java.util.List;
  * @author wangxd
  * @date 2020-11-26 15:20
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @YuDTO(domain = MenuDO.class)
-public class MenuDTO {
+public class MenuDTO extends TreeDTO<MenuDTO> {
     private String id;
     /**
      * 上级菜单ID

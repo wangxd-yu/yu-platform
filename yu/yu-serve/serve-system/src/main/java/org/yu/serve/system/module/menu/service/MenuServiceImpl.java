@@ -7,14 +7,18 @@ import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.menu.domain.MenuDO;
 import org.yu.serve.system.module.menu.domain.QMenuDO;
+import org.yu.serve.system.module.menu.dto.MenuBuildDTO;
 import org.yu.serve.system.module.menu.dto.MenuDTO;
+import org.yu.serve.system.module.menu.eumus.MenuTypeEnum;
 import org.yu.serve.system.module.menu.repository.MenuRepository;
 import org.yu.serve.system.module.menu.vo.MenuMetaVO;
 import org.yu.serve.system.module.menu.vo.MenuVO;
 import org.yu.serve.system.module.role.domain.QRoleDO;
 import org.yu.serve.system.module.role.domain.QRoleMenuDO;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author wangxd
@@ -23,25 +27,27 @@ import java.util.*;
 @Service
 public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, String> implements MenuService {
     @Override
-    public List<MenuDTO> findByRoleCodes(List<String> roleCodes) {
+    public List<MenuBuildDTO> findByRoleCodes(List<String> roleCodes) {
         JPAQueryFactory jpaQueryFactory = super.getJPAQueryFactory();
         QMenuDO qMenuDO = QMenuDO.menuDO;
         QRoleDO qRoleDO = QRoleDO.roleDO;
         QRoleMenuDO qRoleMenuDO = QRoleMenuDO.roleMenuDO;
 
-        return jpaQueryFactory.select(YuQueryHelp.getJpaDTOSelect(MenuDTO.class))
+        return jpaQueryFactory.select(YuQueryHelp.getJpaDTOSelect(MenuBuildDTO.class))
                 .from(qMenuDO)
                 .leftJoin(qRoleMenuDO).on(qRoleMenuDO.menuId.eq(qMenuDO.id))
                 .leftJoin(qRoleDO).on(qRoleMenuDO.roleId.eq(qRoleDO.id))
-                .where(qRoleDO.code.in(roleCodes))
-                .distinct().fetch();
+                .where(
+                        qRoleDO.code.in(roleCodes),
+                        qMenuDO.type.ne(MenuTypeEnum.PERMISSION)
+                ).distinct().fetch();
     }
 
     @Override
     public Map<String, Object> buildTree(List<MenuDTO> menuDTOS) {
         List<MenuDTO> trees = new ArrayList<>();
         for (MenuDTO menuDTO : menuDTOS) {
-            if ("0".equals(menuDTO.getPid().toString())) {
+            if ("0".equals(menuDTO.getPid())) {
                 trees.add(menuDTO);
             }
             for (MenuDTO it : menuDTOS) {
@@ -67,6 +73,7 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
         menuDTOS.stream().filter(Objects::nonNull).forEach(menuDTO -> {
             List<MenuDTO> menuDTOList = menuDTO.getChildren();
             MenuVO menuVo = new MenuVO();
+            menuVo.setIcon(menuDTO.getIcon());
             menuVo.setName(menuDTO.getName());
             menuVo.setPath(menuDTO.getPath());
             if (!menuDTO.getFrame()) {
