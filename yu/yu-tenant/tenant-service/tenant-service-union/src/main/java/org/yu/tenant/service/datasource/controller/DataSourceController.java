@@ -32,10 +32,7 @@ public class DataSourceController extends DslBaseController<DataSourceService, D
     }
 
     @GetMapping
-    public ResponseEntity<Object> listDataSources(DataSourceQuery datasourceQuery, boolean unPaged, Pageable pageable) {
-        if (unPaged) {
-            pageable = null;
-        }
+    public ResponseEntity<Object> listDataSources(DataSourceQuery datasourceQuery, Pageable pageable) {
         return super.query(datasourceQuery, pageable);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.yu.common.multidb.config.DynamicDataSource;
 import org.yu.common.multidb.service.DynamicDataSourceService;
 import org.yu.common.querydsl.api.MultiDataResult;
+import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.tenant.service.api.datasource.domain.DataSourceDO;
 import org.yu.tenant.service.api.datasource.feign.DataSourceFeign;
 
@@ -41,7 +42,7 @@ public class DynamicDataSourceServiceImpl implements DynamicDataSourceService {
 
     @Override
     public Map<Object, Object> getTargetDataSource() {
-        ResponseEntity<Object> responseEntity = dataSourceFeign.listDataSources(null, true);
+        ResponseEntity<Object> responseEntity = dataSourceFeign.listDataSources(null, MultiDataTypeEnum.LIST);
         log.info("[dataSourceFeign]:({})", responseEntity.getBody());
         ObjectMapper mapper = new ObjectMapper();
         MultiDataResult<DataSourceDO> dataSourceDOMultiDataResult = mapper.convertValue(

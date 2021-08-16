@@ -13,10 +13,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
+import org.yu.common.querydsl.api.TreeNode;
 import org.yu.common.querydsl.query.util.WrapDataUtil;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.repository.DslBaseRepository;
-import org.yu.common.querydsl.api.TreeNode;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -76,35 +76,34 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     @Override
     public <Q> MultiDataResult<DO> query(Q query, Pageable pageable) {
         JPAQuery<DO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query);
-        return queryForReturnType(jpaQuery, pageable);
+        return queryForReturnType(jpaQuery, pageable, getMultiDataType(null, pageable));
     }
 
     @Override
     public <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz, MultiDataTypeEnum typeEnum) {
-        if(typeEnum == null) {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            assert servletRequestAttributes != null;
-            HttpServletRequest request = servletRequestAttributes.getRequest();
-            String typeStr = request.getParameter("yuRtn");
-            if(!StringUtils.isEmpty(typeStr)) {
-                typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
-            }
+        JPAQuery<DTO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query, clazz);
+        return queryForReturnType(jpaQuery, pageable, getMultiDataType(typeEnum, pageable));
+    }
 
-            if (typeEnum == null) {
-                if (pageable == null) {
-                    typeEnum = MultiDataTypeEnum.LIST;
-                } else {
+    private MultiDataTypeEnum getMultiDataType(MultiDataTypeEnum typeEnum, Pageable pageable) {
+        if (typeEnum == null) {
+            if (pageable == null) {
+                typeEnum = MultiDataTypeEnum.LIST;
+            } else {
+                ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                assert servletRequestAttributes != null;
+                HttpServletRequest request = servletRequestAttributes.getRequest();
+                String typeStr = request.getParameter("yuRtn");
+                if (!StringUtils.isEmpty(typeStr)) {
+                    typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
+                }
+
+                if (typeEnum == null) {
                     typeEnum = MultiDataTypeEnum.PAGE;
                 }
             }
         }
-
-        JPAQuery<DTO> jpaQuery = YuQueryHelp.getJPAQuery(getJPAQueryFactory(), query, clazz);
-        return queryForReturnType(jpaQuery, pageable, typeEnum);
-    }
-
-    private <T> MultiDataResult<T> queryForReturnType(JPAQuery<T> jpaQuery, Pageable pageable) {
-        return queryForReturnType(jpaQuery, pageable, MultiDataTypeEnum.PAGE);
+        return typeEnum;
     }
 
     private <T> MultiDataResult<T> queryForReturnType(JPAQuery<T> jpaQuery, Pageable pageable, MultiDataTypeEnum typeEnum) {
