@@ -36,7 +36,7 @@ const UserTable: React.FC<UserData> = () => {
   const userActionRef = useRef<ActionType>();
 
   useEffect(() => {
-    YuApi.queryListReq<DeptData>('/api_sy/dept').then(res => {
+    YuApi.queryList<DeptData>('/api_sy/dept').then(res => {
       setDeptTree(handleTreeDataRecursion(res.data));
     });
   }, []);

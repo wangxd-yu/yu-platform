@@ -9,26 +9,26 @@ export async function queryDept(
   params: any,
   options?: Record<string, any>,
 ) {
-  return YuApi.queryListReq<DeptData>(deptUrl, params, options);
+  return YuApi.queryList<DeptData>(deptUrl, params, options);
 }
 
 export async function getDept(id: number) {
-  return YuApi.getReq(id, deptUrl)
+  return YuApi.getById(id, deptUrl)
 }
 
 /** 更新部门 PUT /api_sy/dept */
 export async function updateDept(record: DeptData) {
-  return YuApi.updateReq<DeptData>(record, deptUrl);
+  return YuApi.update<DeptData>(record, deptUrl);
 }
 
 /** 新建部门 */
 export async function addDept<DeptData>(record: DeptData) {
-  return YuApi.addReq<DeptData>(record, deptUrl);
+  return YuApi.add<DeptData>(record, deptUrl);
 }
 
 /** 删除规则 DELETE /api_sy/dept */
 export async function deleteDept(id: string | number) {
-  return YuApi.deleteReq(id, deptUrl)
+  return YuApi.deleteById(id, deptUrl)
 }
 
 /** 

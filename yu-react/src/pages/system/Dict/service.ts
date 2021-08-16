@@ -18,7 +18,7 @@ export async function queryDict(
   },
   options?: { [key: string]: any },
 ) {
-  return YuApi.queryPageReq<Dict>(dictUrl, params, options);
+  return YuApi.queryPage<Dict>(dictUrl, params, options);
 }
 
 /** 获取规则列表 GET /api_sy/dictDetail */
@@ -32,7 +32,7 @@ export async function queryDictItem(
   },
   options?: { [key: string]: any },
 ) {
-  return YuApi.queryPageReq<DictItem>(dictItemUrl, params, options);
+  return YuApi.queryPage<DictItem>(dictItemUrl, params, options);
 }
 
 export async function getDict(id: number) {
@@ -43,29 +43,29 @@ export async function getDict(id: number) {
 
 /** 更新字典 PUT /api_sy/dict */
 export async function updateDict(record: Dict) {
-  return YuApi.updateReq<Dict>(record, dictUrl);
+  return YuApi.update<Dict>(record, dictUrl);
 }
 
 /** 更新字典 PUT /api_sy/dict */
 export async function updateDictItem(record: DictItem) {
-  return YuApi.updateReq<DictItem>(record, dictItemUrl);
+  return YuApi.update<DictItem>(record, dictItemUrl);
 }
 
 /** 新建字典 */
 export async function addDict<Dict>(record: Dict) {
-  return YuApi.addReq<Dict>(record, dictUrl);
+  return YuApi.add<Dict>(record, dictUrl);
 }
 
 /** 新建字典条目 */
 export async function addDictItem<DictItem>(record: DictItem) {
-  return YuApi.addReq<DictItem>(record, dictItemUrl);
+  return YuApi.add<DictItem>(record, dictItemUrl);
 }
 
 /** 删除规则 DELETE /api_sy/dict */
 export async function deleteDict(id: string | number) {
-  return YuApi.deleteReq(id, dictUrl)
+  return YuApi.deleteById(id, dictUrl)
 }
 
 export async function deleteDictItem(id: string | number) {
-  return YuApi.deleteReq(id, dictItemUrl)
+  return YuApi.deleteById(id, dictItemUrl)
 }

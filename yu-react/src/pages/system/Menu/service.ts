@@ -8,24 +8,24 @@ export async function queryMenu(
   params?: any,
   options?: Record<string, any>,
 ) {
-  return YuApi.queryListReq<MenuData>(menuUrl, params, options);
+  return YuApi.queryTree<MenuData>(menuUrl, params, options);
 }
 
 export async function getMenu(id: number) {
-  return YuApi.getReq(id, menuUrl)
+  return YuApi.getById(id, menuUrl)
 }
 
 /** 更新菜单 PUT /api_sy/menu */
 export async function updateMenu(record: MenuData) {
-  return YuApi.updateReq<MenuData>(record, menuUrl);
+  return YuApi.update<MenuData>(record, menuUrl);
 }
 
 /** 新建菜单 */
 export async function addMenu<MenuData>(record: MenuData) {
-  return YuApi.addReq<MenuData>(record, menuUrl);
+  return YuApi.add<MenuData>(record, menuUrl);
 }
 
 /** 删除规则 DELETE /api_sy/menu */
 export async function deleteMenu(id: string | number) {
-  return YuApi.deleteReq(id, menuUrl)
+  return YuApi.deleteById(id, menuUrl)
 }

@@ -54,7 +54,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
         name="roleIds"
         label="角色"
         request={async () => {
-          const res = await YuApi.queryListReq<{ name: string; id: string; }>("/api_sy/role");
+          const res = await YuApi.queryList<{ name: string; id: string; }>("/api_sy/role");
           return res.data.map((item) => {
             return {
               label: item.name,

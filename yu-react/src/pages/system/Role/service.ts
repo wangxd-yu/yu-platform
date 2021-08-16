@@ -9,26 +9,26 @@ export async function queryRole(
   params: any,
   options?: Record<string, any>,
 ) {
-  return YuApi.queryPageReq<RoleData>(roleUrl, params, options);
+  return YuApi.queryPage<RoleData>(roleUrl, params, options);
 }
 
 export async function getRole(id: number) {
-  return YuApi.getReq(id, roleUrl)
+  return YuApi.getById(id, roleUrl)
 }
 
 /** 更新角色 PUT /api_sy/role */
 export async function updateRole(record: RoleData) {
-  return YuApi.updateReq<RoleData>(record, roleUrl);
+  return YuApi.update<RoleData>(record, roleUrl);
 }
 
 /** 新建角色 */
 export async function addRole<RoleData>(record: RoleData) {
-  return YuApi.addReq<RoleData>(record, roleUrl);
+  return YuApi.add<RoleData>(record, roleUrl);
 }
 
 /** 删除规则 DELETE /api_sy/role */
 export async function deleteRole(id: string | number) {
-  return YuApi.deleteReq(id, roleUrl)
+  return YuApi.deleteById(id, roleUrl)
 }
 
 export async function saveRoleMenus(record: {roleId: string, menuIds: string[]}) {
