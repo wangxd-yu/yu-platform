@@ -8,6 +8,9 @@ import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 
+import fixMenuItemIcon from './utils/fixMenuItemIcon';
+import * as YuApi from '@/utils/yuApi';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -148,19 +151,33 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     links: isDev
       ? [
-          <Link to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
+        <Link to="/umi/plugin/openapi" target="_blank">
+          <LinkOutlined />
+          <span>OpenAPI 文档</span>
+        </Link>,
+        <Link to="/~docs">
+          <BookOutlined />
+          <span>业务组件文档</span>
+        </Link>,
+      ]
       : [],
     menuHeaderRender: undefined,
+    menuDataRender: (menuItemProps) => {
+      return fixMenuItemIcon(menuItemProps)
+    },
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
+    menu: {
+      // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
+      params: {
+        userId: initialState?.currentUser?.userid,
+      },
+      request: (params, defaultMenuData) => {
+        // initialState.currentUser 中包含了所有用户信息
+        // const menuData = await fetchMenuData();
+        return YuApi.queryList(`/api_sy/menu/build`);
+      }
+    }
   };
-};
+}
