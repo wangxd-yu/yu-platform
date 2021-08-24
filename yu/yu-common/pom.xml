@@ -13,7 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>yu-common-jpa</module>
-        <module>yu-common-querydsl</module>
+        <module>common-core</module>
+        <module>common-jpa</module>
+        <module>common-querydsl</module>
+        <module>common-starters</module>
     </modules>
 </project>

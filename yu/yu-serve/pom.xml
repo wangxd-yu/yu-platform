@@ -11,9 +11,6 @@
     <artifactId>yu-serve</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>serve-common</module>
-        <module>serve-gateway</module>
         <module>serve-system</module>
-        <module>serve-auth</module>
     </modules>
 </project>
