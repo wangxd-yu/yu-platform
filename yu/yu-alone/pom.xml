@@ -28,6 +28,11 @@
         <dependencies>
             <dependency>
                 <groupId>org.yu</groupId>
+                <artifactId>cloud-auth</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yu</groupId>
                 <artifactId>serve-system</artifactId>
                 <version>${yu-serve.version}</version>
             </dependency>

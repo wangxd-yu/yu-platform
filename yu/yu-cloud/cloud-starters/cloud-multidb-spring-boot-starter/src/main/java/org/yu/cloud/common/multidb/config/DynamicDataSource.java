@@ -1,8 +1,11 @@
 package org.yu.cloud.common.multidb.config;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.core.context.YuContextHolder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +21,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        return YuContextHolder.getYuContext() != null ? YuContextHolder.getYuContext().getTenantId().toString() : null;
+        String tenantId = YuContextHolder.getYuContext() != null ? YuContextHolder.getYuContext().getTenantId().toString() : null;
+        if(tenantId == null) {
+            HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+            tenantId = req.getParameter("tenantId");
+        }
+        return tenantId;
     }
 
     /**
@@ -43,7 +51,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      * @param tenantId 租户id
      * @return
      */
-    public static boolean deleteDatasources(String tenantId) {
+    public static boolean deleteDataSource(String tenantId) {
         //TODO
         return false;
     }

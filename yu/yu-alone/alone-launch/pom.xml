@@ -13,6 +13,16 @@
     <dependencies>
         <dependency>
             <groupId>org.yu</groupId>
+            <artifactId>cloud-multidb-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yu</groupId>
+                    <artifactId>tenant-service-union-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.yu</groupId>
             <artifactId>serve-system</artifactId>
             <exclusions>
                 <exclusion>
@@ -28,10 +38,6 @@
                     <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

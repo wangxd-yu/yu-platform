@@ -20,6 +20,6 @@ public class DataSourceEventServiceImpl implements DataSourceEventService {
     public void disableDataSource(Long dataSourceId) {
         //TODO
         String tenantId = "dataSourceId 转换";
-        DynamicDataSource.deleteDatasources(tenantId);
+        DynamicDataSource.deleteDataSource(tenantId);
     }
 }

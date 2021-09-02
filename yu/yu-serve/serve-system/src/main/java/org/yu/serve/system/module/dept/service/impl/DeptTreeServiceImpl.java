@@ -27,10 +27,10 @@ public class DeptTreeServiceImpl implements DeptTreeService {
     private static final int PER_LEVEL_DEPT_DIGIT = 3;
 
     //存放包含子节点的dept，方便快速查询树节点
-    private final Map<String, DeptTreeDTO> deptMapCache = new HashMap<>();
+    private Map<String, DeptTreeDTO> deptMapCache = new HashMap<>();
 
     @Override
-    @PostConstruct
+    //@PostConstruct
     public void initTree() {
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
         List<DeptTreeDTO> deptDTOS = jpaQueryFactory.select(
@@ -70,6 +70,8 @@ public class DeptTreeServiceImpl implements DeptTreeService {
      * 树结构泛型类
      */
     private <T extends DeptTreeDTO> List<T> buildTree(List<T> deptDTOS, boolean cacheFlag) {
+        // TODO 多租户处理
+        deptMapCache = new HashMap<>();
         //加缓存
         Map<String, T> parentDeptMap = new HashMap<>();
         deptDTOS.forEach(dept -> {
