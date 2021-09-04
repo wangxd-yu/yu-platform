@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.yu.alonelaunch.security.token.jwt.YuJwtAccessTokenConverter;
 
 /**
  * JwtToken配置类
@@ -17,9 +18,9 @@ public class JwtTokenStoreConfig {
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("yu");
-        return jwtAccessTokenConverter;
+        YuJwtAccessTokenConverter yuJwtAccessTokenConverter = new YuJwtAccessTokenConverter();
+        yuJwtAccessTokenConverter.setSigningKey("yu");
+        return yuJwtAccessTokenConverter;
     }
 
     @Bean(name = "jwtTokenStore")

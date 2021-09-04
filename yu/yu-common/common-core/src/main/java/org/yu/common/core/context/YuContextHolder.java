@@ -24,4 +24,8 @@ public class YuContextHolder implements AutoCloseable {
     public void close() {
         CTX.remove();
     }
+
+    public static void clearContext() {
+        CTX.remove();
+    }
 }

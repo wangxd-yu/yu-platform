@@ -15,4 +15,16 @@ public class YuContext {
     private String clientId;
 
     private LoginUser clientUser;
+
+    public Integer getTenantId() {
+        return clientUser.getTenantId();
+    }
+
+    public String getClientId() {
+        return clientUser.getClientId();
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 }

@@ -126,15 +126,16 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
                         qUserDO.deptNo.eq(qDeptDO.no)
                 ).fetchOne();
         assert userFullDTO != null;
-        userFullDTO.setRoles(getRoleCodeByUserId(userId));
+        userFullDTO.setRoles(getRoleCodesByUserId(userId));
         return userFullDTO;
     }
 
-    private List<String> getRoleCodeByUserId(String userId) {
+    @Override
+    public Set<String> getRoleCodesByUserId(String userId) {
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
-        return jpaQueryFactory.select(qRoleDO.code)
+        return new HashSet<>(jpaQueryFactory.select(qRoleDO.code).distinct()
                 .from(qRoleDO)
                 .leftJoin(qUserRoleDO).on(qUserRoleDO.userId.eq(userId).and(qUserRoleDO.roleId.eq(qRoleDO.id)))
-                .fetch();
+                .fetch());
     }
 }

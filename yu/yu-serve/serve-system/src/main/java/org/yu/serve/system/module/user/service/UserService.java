@@ -5,6 +5,8 @@ import org.yu.serve.system.module.user.dto.UserDTO;
 import org.yu.serve.system.module.user.dto.UserFullDTO;
 import org.yu.common.querydsl.service.DslBaseService;
 
+import java.util.Set;
+
 /**
  * @author wangxd
  * @date 2020-11-09 09:58
@@ -15,4 +17,5 @@ public interface UserService extends DslBaseService<UserDO, String> {
 
     UserFullDTO getUserInfo(String userId);
 
+    Set<String> getRoleCodesByUserId(String userId);
 }

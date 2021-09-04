@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.yu.alonelaunch.security.filter.YuAuthFilter;
 
 /**
  * Security 配置文件
@@ -18,6 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public final YuAuthFilter yuAuthFilter;
+
+    public SecurityConfig(YuAuthFilter yuAuthFilter) {
+        this.yuAuthFilter = yuAuthFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,5 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/oauth/**", "/user/**").permitAll()
                 // 所有请求必须被认证，登录之后可访问
                 .anyRequest().authenticated();
+
+        http.addFilterBefore(yuAuthFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

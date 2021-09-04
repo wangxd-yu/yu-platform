@@ -9,10 +9,15 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.yu.alonelaunch.security.token.jwt.YuTokenEnhancer;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 任务服务配置
@@ -36,6 +41,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
+    @Resource
+    private YuTokenEnhancer yuTokenEnhancer;
+
     @Resource(name = "authUserService")
     private UserDetailsService userDetailsService;
 
@@ -46,16 +54,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> delegates = new ArrayList<>(2);
+        delegates.add(yuTokenEnhancer);
+        delegates.add(jwtAccessTokenConverter);
+        //配置JWT的内容增强器
+        tokenEnhancerChain.setTokenEnhancers(delegates);
         endpoints.authenticationManager(authenticationManager)
                 //配置存储令牌策略
                 .tokenStore(tokenStore)
                 .userDetailsService(userDetailsService)
-                .accessTokenConverter(jwtAccessTokenConverter);
+                .accessTokenConverter(jwtAccessTokenConverter)
+                .tokenEnhancer(tokenEnhancerChain);
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        System.out.println(passwordEncoder.encode("123456"));
         clients.inMemory()
                 // 配置client-id
                 .withClient("yu")

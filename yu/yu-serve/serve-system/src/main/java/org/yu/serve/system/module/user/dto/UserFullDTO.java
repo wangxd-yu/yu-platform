@@ -7,7 +7,7 @@ import org.yu.common.querydsl.query.annotation.YuDTOTransient;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.user.domain.UserDO;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author wangxd
@@ -30,5 +30,5 @@ public class UserFullDTO {
     private String deptName;
 
     @YuDTOTransient
-    private List<String> roles;
+    private Set<String> roles;
 }
