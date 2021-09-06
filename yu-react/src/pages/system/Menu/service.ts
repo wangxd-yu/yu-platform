@@ -1,7 +1,9 @@
 import type { MenuData } from './data';
 import * as YuApi from '@/utils/yuApi';
 
-const menuUrl = '/api_sy/menu';
+import { yuUrlSystem } from '@/utils/yuUrl';
+
+const menuUrl = yuUrlSystem('/menu');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryMenu(

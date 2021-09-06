@@ -1,4 +1,5 @@
 import { request } from 'umi';
+
 // 转换分页参数 
 export const transferPageParams = (params: any) => {
   const paramsRtn: any = {
@@ -50,7 +51,7 @@ const queryMulti = <T> (pa: {
 /** 查询请求 */
 export async function queryPage<T>(
   url: string,
-  params: {
+  params?: {
     /** 当前的页码 */
     current?: number;
     /** 页面的容量 */
@@ -89,7 +90,7 @@ export async function queryTree<T>(
 
 /** 查询请求 */
 export async function get<T>(url: string) {
-  return request<T>(`${url}`, {
+  return request<T>(url, {
     method: 'GET'
   });
 }

@@ -49,6 +49,7 @@ const Login: React.FC = () => {
     try {
       // 登录
       const msg = await login({ ...values, type });
+      console.log(msg)
 
       if (msg.token) {
         localStorage.setItem('token', msg.token);
@@ -68,6 +69,7 @@ const Login: React.FC = () => {
 
       setUserLoginState(msg);
     } catch (error) {
+      console.log(error)
       const defaultloginFailureMessage = '登录失败，请重试！';
       message.error(defaultloginFailureMessage);
     }

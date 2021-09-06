@@ -10,6 +10,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 
 import fixMenuItemIcon from './utils/fixMenuItemIcon';
 import * as YuApi from '@/utils/yuApi';
+import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -53,7 +54,8 @@ export async function getInitialState(): Promise<{
 
 // 不需要 auth 认证的接口地址
 const noAuthUrlArr = [
-  '/auth/oauth/token'   // 登录接口
+  `${yuServePrefix(YuServe.Auth)}/oauth/token`   // 登录接口
+  //`/oauth/token`
 ]
 
 function isUrlNeedAuthentication(url: string) {
@@ -176,7 +178,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       request: (params, defaultMenuData) => {
         // initialState.currentUser 中包含了所有用户信息
         // const menuData = await fetchMenuData();
-        return YuApi.queryList(`/api_sy/menu/build`);
+        return YuApi.queryList(yuUrlSystem(`/menu/build`), YuServe.Auth);
       }
     }
   };

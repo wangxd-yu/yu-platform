@@ -4,8 +4,10 @@ import { request } from 'umi';
 import type { Dict, DictItem } from './data';
 import * as YuApi from '@/utils/yuApi';
 
-const dictUrl = '/api_sy/dict';
-const dictItemUrl = '/api_sy/dictDetail';
+import { yuUrlSystem } from '@/utils/yuUrl';
+
+const dictUrl = yuUrlSystem('/dict');
+const dictItemUrl = yuUrlSystem('/dictDetail');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryDict(

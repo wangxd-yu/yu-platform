@@ -2,7 +2,9 @@ import type { RoleData } from './data';
 import * as YuApi from '@/utils/yuApi';
 import { request } from 'umi';
 
-const roleUrl = '/api_sy/role';
+import { yuUrlSystem } from '@/utils/yuUrl';
+
+const roleUrl = yuUrlSystem('/role');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryRole(

@@ -12,6 +12,7 @@ import UserForm from './components/UserForm'
 import type { DataNode } from 'rc-tree/lib/interface';
 import * as YuApi from '@/utils/yuApi';
 import type { DeptData } from '../Dept/data';
+import { yuUrlSystem } from '@/utils/yuUrl';
 
 const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
   const item: DataNode[] = [];
@@ -36,7 +37,7 @@ const UserTable: React.FC<UserData> = () => {
   const userActionRef = useRef<ActionType>();
 
   useEffect(() => {
-    YuApi.queryList<DeptData>('/api_sy/dept').then(res => {
+    YuApi.queryList<DeptData>(yuUrlSystem('/dept')).then(res => {
       setDeptTree(handleTreeDataRecursion(res.data));
     });
   }, []);

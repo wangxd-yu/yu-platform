@@ -1,8 +1,9 @@
 import type { DeptData } from './data';
 import * as YuApi from '@/utils/yuApi';
 import { request } from 'umi';
+import { yuUrlSystem } from '@/utils/yuUrl';
 
-const deptUrl = '/api_sy/dept';
+const deptUrl = yuUrlSystem('/dept');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryDept(

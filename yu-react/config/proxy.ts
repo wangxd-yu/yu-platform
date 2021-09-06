@@ -8,7 +8,7 @@
  */
 export default {
   dev: {
-    '/auth/': {
+    /* '/auth/': {
       target: 'http://swwx.sdses.com/wxd',
       changeOrigin: true,
       pathRewrite: { '^': '' },
@@ -17,7 +17,12 @@ export default {
       target: 'http://swwx.sdses.com/wxd',
       changeOrigin: true,
       pathRewrite: { '^': '' },
-    },
+    }, */
+    '/api/': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    }
   },
   test: {
     '/api/': {

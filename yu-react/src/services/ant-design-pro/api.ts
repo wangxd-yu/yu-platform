@@ -2,10 +2,11 @@
 /* eslint-disable */
 import { request } from 'umi';
 import QS from 'qs'
+import { yuUrlAuth, yuUrlSystem } from '@/utils/yuUrl'
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>('/api_sy/user/info', {
+  return request<API.CurrentUser>(yuUrlSystem('/user/info'), {
     method: 'GET',
     ...(options || {}),
   });
@@ -21,7 +22,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>(`/auth/oauth/token?tenantId=${body.tenantId}`, {
+  return request<API.LoginResult>(`${yuUrlAuth('/oauth/token')}?tenantId=${body.tenantId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -30,8 +31,8 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
       grant_type: "password",
       username: body.username,
       password: body.password,
-      client_secret: "webApp",
-      client_id: "webApp"
+      client_secret: "123456",
+      client_id: "yu"
     }),
     ...(options || {}),
   });
