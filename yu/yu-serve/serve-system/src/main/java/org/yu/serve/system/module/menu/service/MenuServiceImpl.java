@@ -27,7 +27,7 @@ import java.util.List;
 @Service
 public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, String> implements MenuService {
     @Override
-    public List<MenuBuildDTO> findByRoleCodes(List<String> roleCodes) {
+    public List<MenuBuildDTO> findByRoleCodes(Set<String> roleCodes) {
         JPAQueryFactory jpaQueryFactory = super.getJPAQueryFactory();
         QMenuDO qMenuDO = QMenuDO.menuDO;
         QRoleDO qRoleDO = QRoleDO.roleDO;

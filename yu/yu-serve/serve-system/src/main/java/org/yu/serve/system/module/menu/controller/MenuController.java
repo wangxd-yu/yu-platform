@@ -17,6 +17,7 @@ import org.yu.serve.system.module.menu.service.MenuService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author wangxd
@@ -35,7 +36,7 @@ public class MenuController extends DslBaseApiController<MenuService, MenuDO, St
 
     @GetMapping("build")
     public ResponseEntity<Object> buildMenus() {
-        List<String> roleCodes = YuContextHolder.getYuContext().getClientUser().getRoles();
+        Set<String> roleCodes = YuContextHolder.getYuContext().getClientUser().getRoles();
         if (CollectionUtil.isEmpty(roleCodes)) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }

@@ -10,6 +10,9 @@ import org.yu.common.core.dto.LoginUser;
 @Data
 public class YuContext {
 
+    /**
+     * 非用户操作时，存放 租户id（系统调用时）
+     */
     private Integer tenantId;
 
     private String clientId;
@@ -17,7 +20,10 @@ public class YuContext {
     private LoginUser clientUser;
 
     public Integer getTenantId() {
-        return clientUser.getTenantId();
+        if(clientUser != null) {
+            return clientUser.getTenantId();
+        }
+        return tenantId;
     }
 
     public String getClientId() {

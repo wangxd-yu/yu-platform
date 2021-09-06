@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
 
 /**
  * @author wangxd
@@ -35,7 +36,7 @@ public class YuContextFilter extends OncePerRequestFilter {
             loginUser.setTenantId(userJsonObject.getInt("tenantId"));
             loginUser.setClientId(userJsonObject.getStr("client_id"));
             loginUser.setUsername(userJsonObject.getStr("user_name"));
-            loginUser.setRoles(Convert.toList(String.class, userJsonObject.get("authorities")));
+            loginUser.setRoles(new HashSet<>(Convert.toList(String.class, userJsonObject.get("authorities"))));
 
             yuContext.setTenantId(loginUser.getTenantId());
             yuContext.setClientId(loginUser.getClientId());

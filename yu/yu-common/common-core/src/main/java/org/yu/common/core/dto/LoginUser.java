@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author wangxd
@@ -24,5 +25,5 @@ public class LoginUser {
     private Integer tenantId;
     private String clientId;
     private String username;
-    private List<String> roles;
+    private Set<String> roles;
 }

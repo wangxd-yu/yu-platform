@@ -8,6 +8,7 @@ import org.yu.serve.system.module.menu.vo.MenuVO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author wangxd
@@ -20,7 +21,7 @@ public interface MenuService extends DslBaseService<MenuDO, String> {
      *
      * @param roleCodes 角色code列表
      */
-    List<MenuBuildDTO> findByRoleCodes(List<String> roleCodes);
+    List<MenuBuildDTO> findByRoleCodes(Set<String> roleCodes);
 
     Map<String, Object> buildTree(List<MenuDTO> menuDTOS);
 

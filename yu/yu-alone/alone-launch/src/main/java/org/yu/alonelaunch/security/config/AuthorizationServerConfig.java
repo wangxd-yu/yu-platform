@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -49,11 +50,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /**
      * 密码模式配置
-     * @param endpoints
-     * @throws Exception
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> delegates = new ArrayList<>(2);
         delegates.add(yuTokenEnhancer);
@@ -80,6 +79,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // 配置申请的权限范围
                 .scopes("all")
                 // 配置grant_type, 标识授权类型
-                .authorizedGrantTypes("password");
+                .authorizedGrantTypes("password", "refresh_token")
+                .refreshTokenValiditySeconds(86400);
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("permitAll()")
+                .allowFormAuthenticationForClients();
     }
 }
