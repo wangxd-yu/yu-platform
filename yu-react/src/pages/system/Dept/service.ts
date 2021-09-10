@@ -38,7 +38,7 @@ export async function deleteDept(id: string | number) {
  * */
 export async function getSubDeptTypes(params: any) {
   const typeId = params.typeId ? params.typeId : '0';
-  return request(`/api_sy/deptType/subTypes/${typeId}`, {
+  return request(yuUrlSystem(`/deptType/subTypes/${typeId}`), {
     method: 'get'
   }).then(res => {
     return res.map((item: any) => {

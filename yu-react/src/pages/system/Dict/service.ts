@@ -38,7 +38,7 @@ export async function queryDictItem(
 }
 
 export async function getDict(id: number) {
-  return request(`/api_sy/dict/${id}`, {
+  return request(yuUrlSystem(`/api_sy/dict/${id}`), {
     method: 'GET',
   });
 }

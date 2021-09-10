@@ -2,6 +2,7 @@ import React from 'react'
 import ProForm, { ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
+import { yuUrlSystem } from '@/utils/yuUrl';
 import { TreeSelect } from 'antd';
 import * as YuApi from '@/utils/yuApi';
 import type { DataNode } from 'rc-tree/lib/interface';
@@ -54,7 +55,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
         name="roleIds"
         label="角色"
         request={async () => {
-          const res = await YuApi.queryList<{ name: string; id: string; }>("/api_sy/role");
+          const res = await YuApi.queryList<{ name: string; id: string; }>(yuUrlSystem("/role"));
           return res.data.map((item) => {
             return {
               label: item.name,
