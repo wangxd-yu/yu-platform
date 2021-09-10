@@ -140,3 +140,34 @@ CREATE TABLE `sys_dept_type_role`
     `tenant_id`   int      DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB;
+
+-- 端点表
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role`
+(
+    `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+    `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+    PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+) ENGINE = InnoDB;
+
+-- 【关系表】菜单-端点
+DROP TABLE IF EXISTS `sys_endpoint`;
+CREATE TABLE `sys_endpoint` (
+    `id` BIGINT NOT NULL,
+    `label` VARCHAR ( 32 ) DEFAULT NULL COMMENT '标签',
+    `pattern` VARCHAR ( 64 ) NOT NULL COMMENT 'url匹配模式',
+    `method` enum ( 'GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE' ) DEFAULT NULL COMMENT '类型',
+    `is_enabled` TINYINT UNSIGNED DEFAULT NULL COMMENT '状态：1启用、0禁用',
+    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+    `tenant_id` INT DEFAULT NULL COMMENT '租户ID',
+    PRIMARY KEY ( `id` ) USING BTREE
+) ENGINE = INNODB;-- 【关系表】菜单-端点
+
+-- 【关系表】菜单-端点
+DROP TABLE IF EXISTS `sys_menu_endpoint`;
+CREATE TABLE `sys_menu_endpoint` (
+     `menu_id` BIGINT ( 20 ) NOT NULL COMMENT '菜单ID',
+     `endpoint_id` BIGINT ( 20 ) NOT NULL COMMENT '端点ID',
+     PRIMARY KEY ( `menu_id`, `endpoint_id` ) USING BTREE
+) ENGINE = INNODB;

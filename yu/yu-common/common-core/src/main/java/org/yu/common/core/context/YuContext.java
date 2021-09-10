@@ -19,6 +19,8 @@ public class YuContext {
 
     private LoginUser clientUser;
 
+    private Object jpaQueryFactory;
+
     public Integer getTenantId() {
         if(clientUser != null) {
             return clientUser.getTenantId();

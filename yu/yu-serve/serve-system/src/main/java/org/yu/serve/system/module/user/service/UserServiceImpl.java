@@ -135,7 +135,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
         return new HashSet<>(jpaQueryFactory.select(qRoleDO.code).distinct()
                 .from(qRoleDO)
-                .leftJoin(qUserRoleDO).on(qUserRoleDO.userId.eq(userId).and(qUserRoleDO.roleId.eq(qRoleDO.id)))
+                .join(qUserRoleDO).on(qUserRoleDO.userId.eq(userId).and(qUserRoleDO.roleId.eq(qRoleDO.id)))
                 .fetch());
     }
 }
