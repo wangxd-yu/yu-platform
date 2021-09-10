@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.api.TreeNode;
@@ -36,12 +37,20 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
     protected EntityManager entityManager;
 
     protected JPAQueryFactory getJPAQueryFactory() {
-        Object jpaQueryFactoryObject = Objects.requireNonNull(RequestContextHolder.getRequestAttributes()).getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
+        /*Object jpaQueryFactoryObject = Objects.requireNonNull(RequestContextHolder.getRequestAttributes()).getAttribute("JPAQueryFactory", RequestAttributes.SCOPE_REQUEST);
         if (jpaQueryFactoryObject != null) {
             return (JPAQueryFactory) jpaQueryFactoryObject;
         } else {
             JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
             RequestContextHolder.getRequestAttributes().setAttribute("JPAQueryFactory", jpaQueryFactory, RequestAttributes.SCOPE_REQUEST);
+            return jpaQueryFactory;
+        }*/
+        Object jpaQueryFactoryObject = YuContextHolder.getYuContext().getJpaQueryFactory();
+        if (jpaQueryFactoryObject != null) {
+            return (JPAQueryFactory) jpaQueryFactoryObject;
+        } else {
+            JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
+            YuContextHolder.getYuContext().setJpaQueryFactory(jpaQueryFactory);
             return jpaQueryFactory;
         }
     }
