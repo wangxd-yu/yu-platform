@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  */
 @ConditionalOnProperty(prefix = "yu.multidb", name = "enabled", havingValue = "true")
 @Configuration
-@Import({DynamicDataSourceServiceDbConfig.class, DynamicDataSourceServiceFeignConfig.class})
+@Import({DynamicDataSourceServiceDbConfig.class, DynamicDataSourceServicePropConfig.class, DynamicDataSourceServiceFeignConfig.class})
 public class DataSourceConfig {
 
     @Resource

@@ -6,7 +6,6 @@ import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.endpoint.domain.EndpointDO;
 import org.yu.serve.system.module.endpoint.domain.QEndpointDO;
 import org.yu.serve.system.module.endpoint.repository.EndpointRepository;
-import org.yu.serve.system.module.menu.domain.QMenuDO;
 import org.yu.serve.system.module.menu.domain.QMenuEndpointDO;
 import org.yu.serve.system.module.role.domain.QRoleDO;
 import org.yu.serve.system.module.role.domain.QRoleMenuDO;

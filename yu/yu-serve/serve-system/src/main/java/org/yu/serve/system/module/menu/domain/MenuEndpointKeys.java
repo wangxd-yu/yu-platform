@@ -1,5 +1,6 @@
 package org.yu.serve.system.module.menu.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,9 @@ import java.io.Serializable;
  * @author wangxd
  * @date 2021-09-10
  */
-@Getter@Setter
+@Getter
+@Setter
+@EqualsAndHashCode
 public class MenuEndpointKeys implements Serializable {
     private String menuId;
     private String endpointId;

@@ -16,17 +16,17 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * 动态数据源处理实现类
+ * 动态数据源处理实现类-feign
  *
  * @author wangxd
  * @date 2021-03-18 22:22
  */
 @Slf4j
-public class DynamicDataSourceServiceImpl implements DynamicDataSourceService {
+public class DynamicDataSourceServiceFeignImpl implements DynamicDataSourceService {
 
     private final DataSourceFeign dataSourceFeign;
 
-    public DynamicDataSourceServiceImpl(DataSourceFeign dataSourceFeign) {
+    public DynamicDataSourceServiceFeignImpl(DataSourceFeign dataSourceFeign) {
         this.dataSourceFeign = dataSourceFeign;
     }
 

@@ -24,34 +24,22 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
-      username: root
-      password: 123456
-      initial-size: 3
-      min-idle: 3
-      max-active: 15
-      max-wait: 5000
-      time-between-eviction-runs-millis: 90000
-      min-evictable-idle-time-millis: 1800000
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      validation-query: select 1
-      filters: stat
-      stat-view-servlet:
-        url-pattern: /druid/*
-        reset-enable: false
-      web-stat-filter:
-        url-pattern: /*
-        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
-
+    url: jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
 yu:
   multidb:
     enabled: true
-    type: db  #type：多数据源配置信息获取类型， db: 数据库中获取；feign: 微服务 feign获取；prop：配置文件获取
+    type: prop  #type：多数据源配置信息获取类型， db: 数据库中获取；feign: 微服务 feign获取；prop：配置文件获取
+    tenant:
+      1000:
+        url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+        username: root
+        password: 123456
+      1001:
+        url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+        username: root
+        password: 123456
 logging:
   level:
     org:
