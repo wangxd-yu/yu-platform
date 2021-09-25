@@ -68,6 +68,12 @@ export default [
         path: '/system/user',
         component: './system/User',
       },
+      {
+        name: '端点管理',
+        icon: 'smile',
+        path: '/system/endpoint',
+        component: './system/Endpoint',
+      },
     ],
   },
   {
@@ -77,16 +83,16 @@ export default [
     component: './TableList',
   },
   {
-    path: '/',
-    redirect: '/welcome',
-  },
-  {
     name: '查询表格',
     icon: 'smile',
     path: '/ListTableList',
     component: './ListTableList',
   },
   {
-    component: './404',
+    path: '/',
+    redirect: '/welcome',
   },
+  {
+    component: './404',
+  }
 ];

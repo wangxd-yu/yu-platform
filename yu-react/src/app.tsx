@@ -178,7 +178,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       request: (params, defaultMenuData) => {
         // initialState.currentUser 中包含了所有用户信息
         // const menuData = await fetchMenuData();
-        return YuApi.queryList(yuUrlSystem(`/menu/build`), YuServe.Auth);
+        return YuApi.queryList(yuUrlSystem(`/menu/build`));
       }
     }
   };
