@@ -1,61 +1,70 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Switch } from 'antd';
+import { Button, Switch, Tag } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryUser,getUser, addUser, updateUser, deleteUser } from './service';
+import { queryEndpoint,getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint } from './service';
 import * as YuCrud from '@/utils/yuCrud';
-import type { UserData, TableListPagination } from './data';
+import type { EndpointData, TableListPagination } from './data';
 import EndpointForm from './components/EndpointForm'
-import type { DataNode } from 'rc-tree/lib/interface';
-import * as YuApi from '@/utils/yuApi';
-import type { DeptData } from '../Dept/data';
-import { yuUrlSystem } from '@/utils/yuUrl';
 
-const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
-  const item: DataNode[] = [];
-  if (Array.isArray(data)) {
-    data?.forEach((deptData: DeptData) => {
-      const newData: DataNode = {} as DataNode;
-      newData.key = deptData.no as string;
-      newData.title = deptData.name;
-      newData.children = deptData.children ? handleTreeDataRecursion(deptData.children) : []; // 如果还有子集，就再次调用自己
-      item.push(newData);
-    });
+const methodMap = {
+  POST: {
+    color: 'blue',
+    text: 'POST',
+  },
+  PUT: {
+    color: 'green',
+    text: 'PUT',
+  },
+  GET: {
+    color: 'volcano',
+    text: 'GET',
+  },
+  DELETE: {
+    color: 'red',
+    text: 'DELETE',
   }
-  return item;
-}
+};
 
-const UserTable: React.FC<UserData> = () => {
+const EndpointTable: React.FC<EndpointData> = () => {
   /** 新建窗口的弹窗 */
   const [endpointFormVisible, setEndpointFormVisible] = useState<boolean>(false);
-  const [userCurrentRow, setUserCurrentRow] = useState<UserData>();
-  const [deptTree, setDeptTree] = useState<DataNode[]>();
+  const [endpointCurrentRow, setEndpointCurrentRow] = useState<EndpointData>();
   const endpointFormRef = useRef<FormInstance>();
-  const userActionRef = useRef<ActionType>();
+  const endpointActionRef = useRef<ActionType>();
 
-  useEffect(() => {
-    YuApi.queryList<DeptData>(yuUrlSystem('/dept')).then(res => {
-      setDeptTree(handleTreeDataRecursion(res.data));
-    });
-  }, []);
-
-  const columns: ProColumns<UserData>[] = [
+  const columns: ProColumns<EndpointData>[] = [
     {
-      title: '用户账号',
-      tip: '用户账号是唯一的 key',
-      dataIndex: 'username'
+      title: '端点名称',
+      dataIndex: 'label'
     },
     {
-      title: '用户昵称',
-      dataIndex: 'name',
+      title: '端点路径',
+      dataIndex: 'pattern',
     },
     {
-      title: '所属部门',
-      dataIndex: 'deptName',
-      search: false,
+      title: '请求方法',
+      align: 'center',
+      dataIndex: 'method',
+      valueType: 'select',
+      valueEnum: {
+        POST: {
+          text: 'POST',
+        },
+        PUT: {
+          text: 'PUT',
+        },
+        GET: {
+          text: 'GET',
+        },
+        DELETE: {
+          text: 'DELETE',
+        }
+      },
+      render: (_, record) => <Tag color={methodMap[record.method].color}>{methodMap[record.method].text}</Tag>,
     },
     {
       title: '状态',
@@ -77,7 +86,6 @@ const UserTable: React.FC<UserData> = () => {
     {
       title: '创建时间',
       align: 'center',
-      sorter: true,
       search: false,
       dataIndex: 'createTime',
       valueType: 'dateTime'
@@ -91,7 +99,7 @@ const UserTable: React.FC<UserData> = () => {
         <a
           key="update"
           onClick={async () => {
-            await getUser(record.id, setUserCurrentRow)
+            await getEndpoint(record.id, setEndpointCurrentRow)
             setEndpointFormVisible(true);
           }}
         >
@@ -99,9 +107,9 @@ const UserTable: React.FC<UserData> = () => {
         </a>,
         <a key="subscribeAlert"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteUser)
-            if (userActionRef.current) {
-              userActionRef.current.reload();
+            await YuCrud.handleDelete(record.id, deleteEndpoint)
+            if (endpointActionRef.current) {
+              endpointActionRef.current.reload();
             }
           }}>
           删除
@@ -112,9 +120,9 @@ const UserTable: React.FC<UserData> = () => {
 
   return (
     <PageContainer>
-      <ProTable<UserData, TableListPagination>
+      <ProTable<EndpointData, TableListPagination>
         headerTitle="查询表格"
-        actionRef={userActionRef}
+        actionRef={endpointActionRef}
         rowKey="id"
         search={{
           labelWidth: 120,
@@ -125,44 +133,43 @@ const UserTable: React.FC<UserData> = () => {
             key="primary"
             onClick={() => {
               endpointFormRef?.current?.resetFields();
-              setUserCurrentRow(undefined)
+              setEndpointCurrentRow(undefined)
               setEndpointFormVisible(true);
             }}
           >
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={queryUser}
+        request={queryEndpoint}
         columns={columns}
       />
       <EndpointForm
-        deptTree={deptTree}
         width="500px"
-        title={!userCurrentRow?.id ? '更新用户' : '新建用户'}
+        title={endpointCurrentRow?.id ? '更新端点' : '新建端点'}
         visible={endpointFormVisible}
         onVisibleChange={(visible) => {
           if (visible) {
             endpointFormRef?.current?.resetFields();
           } else {
             setEndpointFormVisible(false);
-            setUserCurrentRow(undefined);
+            setEndpointCurrentRow(undefined);
           }
         }}
         formRef={endpointFormRef}
-        initialValues={userCurrentRow || {}}
+        initialValues={endpointCurrentRow || {}}
         onFinish={async (value) => {
-          const data = { ...userCurrentRow, ...value };
+          const data = { ...endpointCurrentRow, ...value };
           let success;
           if (!data.id) {
-            success = await YuCrud.handleAdd(data as UserData, addUser);
+            success = await YuCrud.handleAdd(data as EndpointData, addEndpoint);
           } else {
-            success = await YuCrud.handleUpdate(data as UserData, updateUser);
+            success = await YuCrud.handleUpdate(data as EndpointData, updateEndpoint);
           }
           if (success) {
             setEndpointFormVisible(false);
             endpointFormRef?.current?.resetFields();
-            if (userActionRef.current) {
-              userActionRef.current.reload();
+            if (endpointActionRef.current) {
+              endpointActionRef.current.reload();
             }
           }
         }}
@@ -170,4 +177,4 @@ const UserTable: React.FC<UserData> = () => {
     </PageContainer >
   );
 };
-export default UserTable;
+export default EndpointTable;

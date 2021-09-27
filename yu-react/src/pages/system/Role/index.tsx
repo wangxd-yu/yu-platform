@@ -156,7 +156,7 @@ const RoleTable: React.FC = () => {
       />
       <RoleForm
         width="500px"
-        title={!roleCurrentRow?.id ? '更新角色' : '新建角色'}
+        title={roleCurrentRow?.id ? '更新角色' : '新建角色'}
         visible={createRoleVisible}
         onVisibleChange={(visible) => {
           if (visible) {

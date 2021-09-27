@@ -138,7 +138,7 @@ const UserTable: React.FC<UserData> = () => {
       <UserForm
         deptTree={deptTree}
         width="500px"
-        title={!userCurrentRow?.id ? '更新用户' : '新建用户'}
+        title={userCurrentRow?.id ? '更新用户' : '新建用户'}
         visible={userFormVisible}
         onVisibleChange={(visible) => {
           if (visible) {

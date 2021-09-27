@@ -165,7 +165,7 @@ const TableList: React.FC = () => {
         columns={columns}
       />
       <DictForm1
-        title={!dictCurrentRow?.id ? '更新字典' : '新建字典'}
+        title={dictCurrentRow?.id ? '更新字典' : '新建字典'}
         visible={createDictVisible}
         onVisibleChange={handleDictVisible}
         formRef={dictFormRef}

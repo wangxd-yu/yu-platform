@@ -1,17 +1,9 @@
-export type UserData = {
+export type EndpointData = {
   id?: string;
-  deptNo: string;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+  label: string;
+  enabled?: boolean;
+  pattern: string;
+  method: string;
 };
 
 export type TableListPagination = {
