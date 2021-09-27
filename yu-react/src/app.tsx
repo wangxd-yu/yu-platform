@@ -55,7 +55,7 @@ export async function getInitialState(): Promise<{
 // 不需要 auth 认证的接口地址
 const noAuthUrlArr = [
   `${yuServePrefix(YuServe.Auth)}/oauth/token`   // 登录接口
-  //`/oauth/token`
+  // `/oauth/token`
 ]
 
 function isUrlNeedAuthentication(url: string) {
@@ -173,7 +173,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     menu: {
       // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
       params: {
-        userId: initialState?.currentUser?.userid,
+        userId: initialState?.currentUser?.username,
       },
       request: (params, defaultMenuData) => {
         // initialState.currentUser 中包含了所有用户信息
