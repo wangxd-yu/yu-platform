@@ -9,6 +9,7 @@ import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
 import { queryMenu, addMenu, updateMenu, deleteMenu } from './service'
 import MenuForm from './components/MenuForm'
+import MenuEndpointsForm from './components/MenuEndpointsForm'
 
 export enum MenuTypeEnum {
   FOLDER = 'FOLDER',
@@ -42,6 +43,8 @@ const MenuPage: React.FC = () => {
   const [menuFormVisible, setMenuFormVisible] = useState<boolean>(false);
   const [menuCurrentRow, setMenuCurrentRow] = useState<MenuData>();
   const [menuDataList, setMenuDataList] = useState<MenuData[]>();
+  const [showMenuEndpointsDetail, setShowMenuEndpointsDetail] = useState<boolean>(false);
+  const [menuEndpointsCurrentRow, setMenuEndpointsCurrentRow] = useState<any>();
   const menuFormRef = useRef<FormInstance>();
   const menuActionRef = useRef<ActionType>();
 
@@ -111,6 +114,15 @@ const MenuPage: React.FC = () => {
           }}
         >
           编辑
+        </a>,
+        <a
+          key="config"
+          onClick={async () => {
+            setShowMenuEndpointsDetail(true);
+            setMenuEndpointsCurrentRow(record);
+          }}
+        >
+          端点分配
         </a>,
         <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
           onConfirm={async () => {
@@ -195,6 +207,22 @@ const MenuPage: React.FC = () => {
           }}
         />
       }
+      <MenuEndpointsForm
+        width="500px"
+        title={'新建端点'}
+        formType="DrawerForm"
+        visible={showMenuEndpointsDetail}
+        onVisibleChange={(visible) => {
+          if (!visible) {
+            setShowMenuEndpointsDetail(false);
+            setMenuEndpointsCurrentRow(undefined);
+          }
+        }}
+        initialValues={{}}
+        onFinish={async (value) => {
+          
+        }}
+      />
     </PageContainer>
   );
 };

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.yu.common.jpa.domain.JpaBaseDO;
 import org.yu.common.querydsl.domain.DslBaseDO;
 import org.yu.common.querydsl.service.DslBaseService;
 
@@ -12,7 +13,7 @@ import org.yu.common.querydsl.service.DslBaseService;
  * @author wangxd
  * @date 2020-11-25
  */
-public abstract class DslBaseController<M extends DslBaseService<DO, ID>, DO extends DslBaseDO<?>, ID> {
+public abstract class DslBaseController<M extends DslBaseService<DO, ID>, DO extends DslBaseDO, ID> {
 
     protected final M dslBaseService;
 

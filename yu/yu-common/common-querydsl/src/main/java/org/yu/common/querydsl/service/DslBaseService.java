@@ -1,26 +1,22 @@
 package org.yu.common.querydsl.service;
 
 import org.springframework.data.domain.Pageable;
-import org.yu.common.jpa.service.BaseService;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
+import org.yu.common.querydsl.domain.DslBaseDO;
 
 /**
  * @author wangxd
  * @date 2020-11-30
  */
-public interface DslBaseService<DO, ID> extends BaseService<DO, ID> {
+public interface DslBaseService<DO extends DslBaseDO, ID> {
 
-    @Override
     DO save(DO domain);
 
-    @Override
     void update(DO domain);
 
-    @Override
     void delete(ID id);
 
-    @Override
     DO getById(ID id);
 
     <Q> MultiDataResult<DO> query(Q query, Pageable pageable);

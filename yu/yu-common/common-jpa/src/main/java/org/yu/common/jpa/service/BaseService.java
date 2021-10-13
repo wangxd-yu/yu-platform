@@ -1,10 +1,12 @@
 package org.yu.common.jpa.service;
 
+import org.yu.common.jpa.domain.JpaBaseDO;
+
 /**
  * @author wangxd
  * @date 2020-11-09
  */
-public interface BaseService<DO, ID> {
+public interface BaseService<DO extends JpaBaseDO, ID> {
 
     DO save(DO domain);
 

@@ -3,12 +3,13 @@ package org.yu.common.jpa.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.yu.common.jpa.domain.JpaBaseDO;
 
 /**
  * @author wangxd
  * @date 2020-11-09
  */
-public abstract class JpaBaseServiceImpl<M extends JpaRepository<DO, ID>, DO, ID> implements BaseService<DO, ID> {
+public abstract class JpaBaseServiceImpl<M extends JpaRepository<DO, ID>, DO extends JpaBaseDO, ID> implements BaseService<DO, ID> {
 
     @Autowired
     protected M baseRepository;
@@ -22,6 +23,7 @@ public abstract class JpaBaseServiceImpl<M extends JpaRepository<DO, ID>, DO, ID
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(DO domain) {
+        domain.setUpdateTime(null);
         baseRepository.save(domain);
     }
 

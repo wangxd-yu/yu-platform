@@ -8,13 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.api.TreeNode;
+import org.yu.common.querydsl.domain.DslBaseDO;
 import org.yu.common.querydsl.query.util.WrapDataUtil;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.repository.DslBaseRepository;
@@ -22,14 +22,13 @@ import org.yu.common.querydsl.repository.DslBaseRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * @author wangxd
  * @date 2020-11-25
  */
 @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO, ID> implements DslBaseService<DO, ID> {
+public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO extends DslBaseDO, ID> implements DslBaseService<DO, ID> {
     @Autowired(required = false)
     protected M baseRepository;
 
@@ -105,7 +104,7 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
             }
 
             if (typeEnum == null) {
-                if(pageable != null) {
+                if (pageable != null) {
                     typeEnum = MultiDataTypeEnum.PAGE;
                 } else {
                     typeEnum = MultiDataTypeEnum.LIST;

@@ -19,7 +19,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_datasource")
-public class DataSourceDBDO extends DslBaseDO<Long> implements Serializable {
+public class DataSourceDO extends DslBaseDO<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
