@@ -76,7 +76,7 @@ const DeptPage: React.FC = () => {
         </a>,
         <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
           onConfirm={async () => {
-            await YuCrud.handleDelete(record.id, deleteDept);
+            await YuCrud.handleDelete(deleteDept, record.id);
             if (deptActionRef.current) {
               deptActionRef.current.reload();
             }

@@ -81,7 +81,7 @@ const TableList: React.FC = () => {
         </a>,
         <a key="subscribeAlert"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteDict)
+            await YuCrud.handleDelete(deleteDict, record.id)
             if (actionRef.current) {
               actionRef.current.reload();
             }
@@ -123,7 +123,7 @@ const TableList: React.FC = () => {
         </a>,
         <a key="deleteDictItem"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteDictItem);
+            await YuCrud.handleDelete(deleteDictItem, record.id);
             if (itemActionRef.current) {
               itemActionRef.current.reload();
             }

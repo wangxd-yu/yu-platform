@@ -99,7 +99,7 @@ const UserTable: React.FC<UserData> = () => {
         </a>,
         <a key="subscribeAlert"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteUser)
+            await YuCrud.handleDelete(deleteUser, record.id)
             if (userActionRef.current) {
               userActionRef.current.reload();
             }

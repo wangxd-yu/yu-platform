@@ -64,12 +64,12 @@ export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promis
  * 删除
  */
 
-export const handleDelete = async (id: string | number, deleteHandler: (id: string | number) => Promise<any>) => {
+export const handleDelete = async (deleteHandler: (...fields: (string | number)[]) => Promise<any>, ...fields: string[] | number[]) => {
   const hide = message.loading('正在删除');
-  if (!id) return true;
+  if (!fields) return true;
 
   try {
-    await deleteHandler(id);
+    await deleteHandler(...fields);
     hide();
     message.success('删除成功，即将刷新');
     return true;

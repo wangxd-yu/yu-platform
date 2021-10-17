@@ -24,7 +24,7 @@ export async function updateRole(record: RoleData) {
 }
 
 /** 新建角色 */
-export async function addRole<RoleData>(record: RoleData) {
+export async function addRole(record: RoleData) {
   return YuApi.add<RoleData>(record, roleUrl);
 }
 

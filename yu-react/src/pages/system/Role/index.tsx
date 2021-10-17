@@ -118,7 +118,7 @@ const RoleTable: React.FC = () => {
         </a>,
         <a key="subscribeAlert"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteRole)
+            await YuCrud.handleDelete(deleteRole, record.id)
             if (actionRef.current) {
               actionRef.current.reload();
             }
