@@ -10,7 +10,7 @@ import * as YuCrud from '@/utils/yuCrud';
 import type { EndpointData, TableListPagination } from './data';
 import EndpointForm from './components/EndpointForm'
 
-const methodMap = {
+export const methodMap = {
   POST: {
     color: 'blue',
     text: 'POST',
@@ -107,7 +107,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
         </a>,
         <a key="subscribeAlert"
           onClick={async () => {
-            await YuCrud.handleDelete(record.id, deleteEndpoint)
+            await YuCrud.handleDelete(deleteEndpoint, record.id)
             if (endpointActionRef.current) {
               endpointActionRef.current.reload();
             }

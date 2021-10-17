@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import type { FormInstance } from 'antd';
+import { Modal } from 'antd';
+import { Drawer } from 'antd';
 import { Button, Tag, Space, Popconfirm } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuData } from './data';
@@ -7,9 +9,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
-import { queryMenu, addMenu, updateMenu, deleteMenu } from './service'
+import { queryMenu, addMenu, updateMenu, deleteMenu, queryMenuEndponits, queryEndponitList, saveMenuEndpoints, deleteMenuEndpoint } from './service'
 import MenuForm from './components/MenuForm'
-import MenuEndpointsForm from './components/MenuEndpointsForm'
+import type { EndpointData } from '../Endpoint/data';
+import { methodMap } from '../Endpoint';
+
+import _ from 'lodash'
 
 export enum MenuTypeEnum {
   FOLDER = 'FOLDER',
@@ -44,9 +49,13 @@ const MenuPage: React.FC = () => {
   const [menuCurrentRow, setMenuCurrentRow] = useState<MenuData>();
   const [menuDataList, setMenuDataList] = useState<MenuData[]>();
   const [showMenuEndpointsDetail, setShowMenuEndpointsDetail] = useState<boolean>(false);
-  const [menuEndpointsCurrentRow, setMenuEndpointsCurrentRow] = useState<any>();
+  const [currentMenuEndpointIds, setCurrentMenuEndpointIds] = useState<string[]>([]);
+  const [showEndpointsModal, setShowEndpointsModal] = useState<boolean>(false);
   const menuFormRef = useRef<FormInstance>();
   const menuActionRef = useRef<ActionType>();
+  const menuEndpointsActionRef = useRef<ActionType>();
+
+  const [selectedEndpoints, setSelectedEndpoints] = useState<React.Key[]>();
 
   const columns: ProColumns<MenuData>[] = [
     {
@@ -59,7 +68,7 @@ const MenuPage: React.FC = () => {
       width: 60,
       align: 'center',
       dataIndex: 'type',
-      render: (_, record) => {
+      render: (__, record) => {
         const menuType = menuTypeArr.find(item => item.value === record.type);
         return (<Space>
           <Tag color={menuType?.color} key={menuType?.label}>
@@ -105,7 +114,7 @@ const MenuPage: React.FC = () => {
       width: 180,
       key: 'option',
       valueType: 'option',
-      render: (_: any, record: any) => [
+      render: (__: any, record: any) => [
         <a
           key="update"
           onClick={() => {
@@ -119,14 +128,14 @@ const MenuPage: React.FC = () => {
           key="config"
           onClick={async () => {
             setShowMenuEndpointsDetail(true);
-            setMenuEndpointsCurrentRow(record);
+            setMenuCurrentRow(record);
           }}
         >
           端点分配
         </a>,
         <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
           onConfirm={async () => {
-            await YuCrud.handleDelete(record.id, deleteMenu);
+            await YuCrud.handleDelete(deleteMenu, record.id);
             if (menuActionRef.current) {
               menuActionRef.current.reload();
             }
@@ -139,6 +148,59 @@ const MenuPage: React.FC = () => {
       ],
     },
   ];
+
+  const endponitColumns: ProColumns<EndpointData>[] = [
+    {
+      title: '端点名称',
+      dataIndex: 'label'
+    },
+    {
+      title: '端点路径',
+      dataIndex: 'pattern',
+    },
+    {
+      title: '请求方法',
+      align: 'center',
+      dataIndex: 'method',
+      valueType: 'select',
+      valueEnum: {
+        POST: {
+          text: 'POST',
+        },
+        PUT: {
+          text: 'PUT',
+        },
+        GET: {
+          text: 'GET',
+        },
+        DELETE: {
+          text: 'DELETE',
+        }
+      },
+      render: (__, record) => <Tag color={methodMap[record.method].color}>{methodMap[record.method].text}</Tag>,
+    }
+  ];
+
+  const endponitColumnsWithOption: ProColumns<EndpointData>[] = _.concat(endponitColumns, {
+    title: '操作',
+    align: 'center',
+    key: 'option',
+    valueType: 'option',
+    render: (__: any, record: any) => [
+      <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+        onConfirm={async () => {
+          await YuCrud.handleDelete(deleteMenuEndpoint, menuCurrentRow?.id, record.id);
+          if (menuEndpointsActionRef.current) {
+            menuEndpointsActionRef.current.reload();
+          }
+        }}
+      >
+        <a key="delete" href="#">
+          删除
+        </a>
+      </Popconfirm>
+    ],
+  });
 
   return (
     <PageContainer>
@@ -170,7 +232,7 @@ const MenuPage: React.FC = () => {
               setMenuFormVisible(true);
             }}
           >
-            <PlusOutlined /> 新建
+            <PlusOutlined /> 分配端点
           </Button>,
         ]}
       />
@@ -207,22 +269,94 @@ const MenuPage: React.FC = () => {
           }}
         />
       }
-      <MenuEndpointsForm
-        width="500px"
-        title={'新建端点'}
-        formType="DrawerForm"
+      <Drawer
+        title={menuCurrentRow?.name}
+        width={800}
         visible={showMenuEndpointsDetail}
-        onVisibleChange={(visible) => {
-          if (!visible) {
-            setShowMenuEndpointsDetail(false);
-            setMenuEndpointsCurrentRow(undefined);
-          }
+        onClose={() => {
+          setShowMenuEndpointsDetail(false);
         }}
-        initialValues={{}}
-        onFinish={async (value) => {
-          
-        }}
-      />
+        closable={false}
+      >
+        {
+          showMenuEndpointsDetail &&
+          <ProTable<EndpointData>
+            actionRef={menuEndpointsActionRef}
+            columns={endponitColumnsWithOption}
+            params={{
+              menuId: menuCurrentRow?.id,
+            }}
+            request={queryMenuEndponits}
+            onLoad={(datasorce) => {
+              setCurrentMenuEndpointIds(datasorce.map(item => item.id))
+            }}
+            rowKey="id"
+            pagination={{
+              showQuickJumper: true,
+            }}
+            search={false}
+            dateFormatter="string"
+            headerTitle={menuCurrentRow?.name}
+            toolBarRender={() => [
+              <Button type="primary" key="primary"
+                onClick={() => {
+                  //dictItemFormRef?.current?.resetFields();
+                  setShowEndpointsModal(true);
+                  //handleDictItemVisible(true);
+                }}
+              >
+                <PlusOutlined /> 新建
+              </Button>,
+            ]}
+          />
+        }
+      </Drawer>
+      {showEndpointsModal &&
+        <Modal title="分配端点" visible={showEndpointsModal}
+          onOk={() => {
+            saveMenuEndpoints(menuCurrentRow?.id as string, selectedEndpoints as string[]).then(() => {
+              setSelectedEndpoints(undefined);
+              menuEndpointsActionRef.current?.reload()
+              setShowEndpointsModal(false);
+            })
+          }}
+          onCancel={() => {
+            setSelectedEndpoints(undefined);
+            setShowEndpointsModal(false);
+          }}
+        >
+
+          <ProTable<EndpointData>
+            columns={endponitColumns}
+            rowSelection={{
+              // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+              // 注释该行则默认不显示下拉选项
+              //selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+              selectedRowKeys: selectedEndpoints,
+              //defaultSelectedRowKeys: currentMenuEndpointIds,
+              onChange: (selectedRowKeys) => {
+                setSelectedEndpoints(selectedRowKeys);
+              },
+              getCheckboxProps: record => ({
+                disabled: currentMenuEndpointIds.indexOf(record.id as string) > -1
+              }),
+            }}
+            params={{
+              menuId: menuCurrentRow?.id,
+            }}
+            request={queryEndponitList}
+            rowKey="id"
+            pagination={{
+              showQuickJumper: true,
+            }}
+            search={false}
+            options={false}
+            defaultSize="small"
+            dateFormatter="string"
+          />
+
+        </Modal>
+      }
     </PageContainer>
   );
 };

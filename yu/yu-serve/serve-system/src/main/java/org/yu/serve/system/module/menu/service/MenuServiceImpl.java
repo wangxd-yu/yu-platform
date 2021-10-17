@@ -1,24 +1,31 @@
 package org.yu.serve.system.module.menu.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
+import org.yu.serve.system.module.endpoint.domain.EndpointDO;
+import org.yu.serve.system.module.endpoint.domain.QEndpointDO;
 import org.yu.serve.system.module.menu.domain.MenuDO;
+import org.yu.serve.system.module.menu.domain.MenuEndpointDO;
 import org.yu.serve.system.module.menu.domain.QMenuDO;
+import org.yu.serve.system.module.menu.domain.QMenuEndpointDO;
 import org.yu.serve.system.module.menu.dto.MenuBuildDTO;
 import org.yu.serve.system.module.menu.dto.MenuDTO;
 import org.yu.serve.system.module.menu.eumus.MenuTypeEnum;
+import org.yu.serve.system.module.menu.repository.MenuEndpointRepository;
 import org.yu.serve.system.module.menu.repository.MenuRepository;
 import org.yu.serve.system.module.menu.vo.MenuMetaVO;
 import org.yu.serve.system.module.menu.vo.MenuVO;
 import org.yu.serve.system.module.role.domain.QRoleDO;
 import org.yu.serve.system.module.role.domain.QRoleMenuDO;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wangxd
@@ -26,11 +33,20 @@ import java.util.List;
  */
 @Service
 public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, String> implements MenuService {
+    private final QMenuDO qMenuDO = QMenuDO.menuDO;
+    private final QRoleDO qRoleDO = QRoleDO.roleDO;
+    private final QMenuEndpointDO qMenuEndpointDO = QMenuEndpointDO.menuEndpointDO;
+    private final QEndpointDO qEndpointDO = QEndpointDO.endpointDO;
+
+    private final MenuEndpointRepository menuEndpointRepository;
+
+    public MenuServiceImpl(MenuEndpointRepository menuEndpointRepository) {
+        this.menuEndpointRepository = menuEndpointRepository;
+    }
+
     @Override
     public List<MenuBuildDTO> findByRoleCodes(Set<String> roleCodes) {
         JPAQueryFactory jpaQueryFactory = super.getJPAQueryFactory();
-        QMenuDO qMenuDO = QMenuDO.menuDO;
-        QRoleDO qRoleDO = QRoleDO.roleDO;
         QRoleMenuDO qRoleMenuDO = QRoleMenuDO.roleMenuDO;
 
         return jpaQueryFactory.select(YuQueryHelp.getJpaDTOSelect(MenuBuildDTO.class))
@@ -135,5 +151,33 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
     @Override
     public List<MenuDO> findByPid(String pid) {
         return baseRepository.findByPid(pid);
+    }
+
+    @Override
+    public Object getMenuEndpoints(String id, Pageable pageable) {
+        JPAQuery<EndpointDO> jpaQuery = getJPAQueryFactory()
+                .select(qEndpointDO)
+                .from(qEndpointDO, qMenuEndpointDO)
+                .where(
+                        qMenuEndpointDO.menuId.eq(id),
+                        qEndpointDO.id.eq(qMenuEndpointDO.endpointId)
+                );
+        return getMultiDataResult(jpaQuery, pageable);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Object saveMenuEndpoints(String id, String[] endpointsIds) {
+        List<MenuEndpointDO> menuEndpointDOS = Arrays.stream(endpointsIds).map(endpointsId -> new MenuEndpointDO(id, endpointsId)).collect(Collectors.toList());
+        return menuEndpointRepository.saveAll(menuEndpointDOS);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteMenuEndpoint(String id, String endpointId) {
+        getJPAQueryFactory().delete(qMenuEndpointDO).where(
+                qMenuEndpointDO.menuId.eq(id),
+                qMenuEndpointDO.endpointId.eq(endpointId)
+        ).execute();
     }
 }

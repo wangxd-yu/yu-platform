@@ -1,5 +1,6 @@
 package org.yu.serve.system.module.menu.service;
 
+import org.springframework.data.domain.Pageable;
 import org.yu.common.querydsl.service.DslBaseService;
 import org.yu.serve.system.module.menu.domain.MenuDO;
 import org.yu.serve.system.module.menu.dto.MenuBuildDTO;
@@ -33,4 +34,10 @@ public interface MenuService extends DslBaseService<MenuDO, String> {
     Object getMenuTree(List<MenuDO> menus);
 
     List<MenuDO> findByPid(String pid);
+
+    Object getMenuEndpoints(String id, Pageable pageable);
+
+    Object saveMenuEndpoints(String id, String[] endpointsIds);
+
+    void deleteMenuEndpoint(String id, String endpointId);
 }

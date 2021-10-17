@@ -1,11 +1,11 @@
 package org.yu.serve.system.module.menu.controller;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.common.querydsl.util.TreeUtil;
@@ -17,6 +17,7 @@ import org.yu.serve.system.module.menu.service.MenuService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -55,5 +56,21 @@ public class MenuController extends DslBaseApiController<MenuService, MenuDO, St
     @GetMapping("tree")
     public ResponseEntity<Object> getMenuTree() {
         return new ResponseEntity<>(menuService.getMenuTree(menuService.findByPid("0")), HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/endpoints")
+    public ResponseEntity<Object> getMenuEndpoints(@PathVariable String id, Pageable pageable) {
+        return new ResponseEntity<>(menuService.getMenuEndpoints(id, pageable), HttpStatus.OK);
+    }
+
+    @PostMapping("{id}/endpoints")
+    public ResponseEntity<Object> saveMenuEndpoints(@PathVariable String id, @RequestBody Map<String, List<String>> map) {
+        return new ResponseEntity<>(menuService.saveMenuEndpoints(id, Convert.toStrArray(map.get("endpointIds"))), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("{id}/endpoints/{endpointId}")
+    public ResponseEntity<Object> deleteMenuEndpoint(@PathVariable String id, @PathVariable String endpointId) {
+        menuService.deleteMenuEndpoint(id, endpointId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

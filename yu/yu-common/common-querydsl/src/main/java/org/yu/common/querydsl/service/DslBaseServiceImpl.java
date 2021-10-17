@@ -93,6 +93,11 @@ public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO
         return queryForReturnType(jpaQuery, pageable, getMultiDataType(typeEnum, pageable));
     }
 
+    @Override
+    public <DTO> MultiDataResult<DTO> getMultiDataResult(JPAQuery<DTO> jpaQuery, Pageable pageable, MultiDataTypeEnum typeEnum) {
+        return queryForReturnType(jpaQuery, pageable, getMultiDataType(typeEnum, pageable));
+    }
+
     private MultiDataTypeEnum getMultiDataType(MultiDataTypeEnum typeEnum, Pageable pageable) {
         if (typeEnum == null) {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

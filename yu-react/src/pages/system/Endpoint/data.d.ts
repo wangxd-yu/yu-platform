@@ -1,5 +1,5 @@
 export type EndpointData = {
-  id?: string;
+  id: string;
   label: string;
   enabled?: boolean;
   pattern: string;
