@@ -38,10 +38,10 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
     @Transactional(rollbackFor = Exception.class)
     public DeptDO save(DeptDO deptDO) {
         //TODO 合法校验
-        if(StringUtils.isEmpty(deptDO.getPno())) {
+        if (StringUtils.isEmpty(deptDO.getPno())) {
             deptDO.setPno(ROOT_PNO);
         } else {
-            if(this.getByNo(deptDO.getPno()) == null) {
+            if (this.getByNo(deptDO.getPno()) == null) {
                 throw new BadRequestException("上级部门编号错误！");
             }
         }
@@ -98,5 +98,14 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
     @Override
     public <T extends DeptTreeDTO> List<T> queryAll(DeptQuery query, Class clazz) {
         return super.queryDTO(query, null, clazz).getData();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changeEnabled(String id, boolean enabled) {
+        getJPAQueryFactory().update(qDeptDO)
+                .set(qDeptDO.enabled, enabled)
+                .where(qDeptDO.id.eq(id))
+                .execute();
     }
 }

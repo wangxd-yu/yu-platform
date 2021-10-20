@@ -138,4 +138,13 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
                 .join(qUserRoleDO).on(qUserRoleDO.userId.eq(userId).and(qUserRoleDO.roleId.eq(qRoleDO.id)))
                 .fetch());
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void changeEnabled(String id, boolean enabled) {
+        getJPAQueryFactory().update(qUserDO)
+                .set(qUserDO.enabled, enabled)
+                .where(qUserDO.id.eq(id))
+                .execute();
+    }
 }

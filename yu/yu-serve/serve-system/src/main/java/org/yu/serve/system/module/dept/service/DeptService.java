@@ -16,4 +16,6 @@ public interface DeptService extends DslBaseService<DeptDO, String> {
     DeptDO getByNo(String deptNo);
 
     <T extends DeptTreeDTO> List<T> queryAll(DeptQuery query, Class clazz);
+
+    void changeEnabled(String id, boolean enabled);
 }

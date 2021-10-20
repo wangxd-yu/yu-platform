@@ -18,4 +18,6 @@ public interface UserService extends DslBaseService<UserDO, String> {
     UserFullDTO getUserInfo(String userId);
 
     Set<String> getRoleCodesByUserId(String userId);
+
+    void changeEnabled(String id, boolean enabled);
 }

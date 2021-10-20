@@ -5,7 +5,7 @@ import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryUser,getUser, addUser, updateUser, deleteUser } from './service';
+import { queryUser,getUser, addUser, updateUser, deleteUser,disableUser,enableUser } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { UserData, TableListPagination } from './data';
 import UserForm from './components/UserForm'
@@ -71,8 +71,16 @@ const UserTable: React.FC<UserData> = () => {
         }
       },
       render: (_: any, record: any) => [
-        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用" />
-      ]
+        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用"  onChange={() => {
+          if(record.enabled) {
+            disableUser(record.id)
+          } else {
+            enableUser(record.id)
+          }
+          userActionRef.current?.reload()
+        }}/>
+      ],
+      
     },
     {
       title: '创建时间',
@@ -149,7 +157,7 @@ const UserTable: React.FC<UserData> = () => {
           }
         }}
         formRef={userFormRef}
-        initialValues={userCurrentRow || {}}
+        initialValues={userCurrentRow || {enabled: true}}
         onFinish={async (value) => {
           const data = { ...userCurrentRow, ...value };
           let success;

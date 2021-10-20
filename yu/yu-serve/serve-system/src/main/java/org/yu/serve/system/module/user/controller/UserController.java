@@ -39,4 +39,16 @@ public class UserController extends DslBaseApiController<UserService, UserDO, St
     public ResponseEntity<Object> save(@RequestBody UserDO domain) throws Exception {
         return super.save(domain);
     }
+
+    @PutMapping("{id}/enable")
+    public ResponseEntity<Object> enable(@PathVariable String id) {
+        this.dslBaseService.changeEnabled(id, true);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("{id}/disable")
+    public ResponseEntity<Object> disable(@PathVariable String id) {
+        this.dslBaseService.changeEnabled(id, false);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

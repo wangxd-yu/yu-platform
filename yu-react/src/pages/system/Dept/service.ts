@@ -49,3 +49,11 @@ export async function getSubDeptTypes(params: any) {
     })
   });
 }
+
+export async function enableDept(id: string) {
+  return YuApi.update(`${deptUrl}/${id}/enable`)
+}
+
+export async function disableDept(id: string) {
+  return YuApi.update(`${deptUrl}/${id}/disable`)
+}

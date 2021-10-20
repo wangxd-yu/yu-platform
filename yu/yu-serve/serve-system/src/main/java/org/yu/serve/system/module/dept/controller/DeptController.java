@@ -2,9 +2,7 @@ package org.yu.serve.system.module.dept.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.dept.domain.DeptDO;
@@ -42,5 +40,17 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
     @GetMapping(value = "/tree")
     public ResponseEntity<Object> getDeptTree() {
         return new ResponseEntity<>(deptTreeService.getShowTreeByDeptNo(YuContextHolder.getYuContext().getClientUser().getDeptNo()), HttpStatus.OK);
+    }
+
+    @PutMapping("{id}/enable")
+    public ResponseEntity<Object> enable(@PathVariable String id) {
+        this.dslBaseService.changeEnabled(id, true);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("{id}/disable")
+    public ResponseEntity<Object> disable(@PathVariable String id) {
+        this.dslBaseService.changeEnabled(id, false);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

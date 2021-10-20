@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
-import { queryDept, addDept, updateDept, deleteDept } from './service'
+import { queryDept, addDept, updateDept, deleteDept, disableDept, enableDept } from './service'
 import DeptForm from './components/DeptForm'
 
 const DeptPage: React.FC = () => {
@@ -37,7 +37,15 @@ const DeptPage: React.FC = () => {
       align: 'center',
       dataIndex: 'enabled',
       render: (_: any, record: any) => [
-        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用" />
+        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用"
+          onClick={() => {
+            if (record.enabled) {
+              disableDept(record.id)
+            } else {
+              enableDept(record.id)
+            }
+            deptActionRef.current?.reload()
+          }} />
       ]
     },
     {
@@ -129,7 +137,7 @@ const DeptPage: React.FC = () => {
         <DeptForm
           formRef={deptFormRef}
           visible={deptFormVisible}
-          initialValues={deptCurrentRow || {}}
+          initialValues={deptCurrentRow || { enabled: true }}
           isAdd={!deptCurrentRow?.id}
           deptDataList={deptDataList}
           onVisibleChange={(visible) => {

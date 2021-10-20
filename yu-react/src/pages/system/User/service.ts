@@ -30,3 +30,11 @@ export async function addUser(record: UserData) {
 export async function deleteUser(id: string | number) {
   return YuApi.deleteById(id, userUrl)
 }
+
+export async function enableUser(id: string) {
+  return YuApi.update(`${userUrl}/${id}/enable`)
+}
+
+export async function disableUser(id: string) {
+  return YuApi.update(`${userUrl}/${id}/disable`)
+}

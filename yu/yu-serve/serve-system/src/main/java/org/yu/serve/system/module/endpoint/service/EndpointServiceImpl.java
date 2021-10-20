@@ -81,6 +81,7 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void changeEnabled(String id, boolean enabled) {
+        //TODO 业务逻辑
         getJPAQueryFactory().update(qEndpointDO)
                 .set(qEndpointDO.enabled, enabled)
                 .where(qEndpointDO.id.eq(id))
