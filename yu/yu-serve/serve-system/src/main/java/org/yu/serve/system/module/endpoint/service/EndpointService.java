@@ -19,4 +19,6 @@ public interface EndpointService extends DslBaseService<EndpointDO, String> {
     Map<String, Set<String>> getEndpointRoles();
 
     Set<EndpointLessDTO> getRequestMappingInfos();
+
+    void changeEnabled(String id, boolean enabled);
 }

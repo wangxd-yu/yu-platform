@@ -18,11 +18,11 @@ export async function getUser(id: number, cb: any) {
 
 /** 更新用户 PUT /api_sy/user */
 export async function updateUser(record: UserData) {
-  return YuApi.update<UserData>(record, userUrl);
+  return YuApi.update<UserData>(userUrl, record);
 }
 
 /** 新建用户 */
-export async function addUser<UserData>(record: UserData) {
+export async function addUser(record: UserData) {
   return YuApi.add<UserData>(record, userUrl);
 }
 

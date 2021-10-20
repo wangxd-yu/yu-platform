@@ -20,7 +20,7 @@ export async function getRole(id: number) {
 
 /** 更新角色 PUT /api_sy/role */
 export async function updateRole(record: RoleData) {
-  return YuApi.update<RoleData>(record, roleUrl);
+  return YuApi.update<RoleData>(roleUrl, record);
 }
 
 /** 新建角色 */

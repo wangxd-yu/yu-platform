@@ -45,12 +45,12 @@ export async function getDict(id: number) {
 
 /** 更新字典 PUT /api_sy/dict */
 export async function updateDict(record: Dict) {
-  return YuApi.update<Dict>(record, dictUrl);
+  return YuApi.update<Dict>(dictUrl, record);
 }
 
 /** 更新字典 PUT /api_sy/dict */
 export async function updateDictItem(record: DictItem) {
-  return YuApi.update<DictItem>(record, dictItemUrl);
+  return YuApi.update<DictItem>(dictItemUrl, record);
 }
 
 /** 新建字典 */

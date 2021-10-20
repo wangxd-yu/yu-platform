@@ -22,7 +22,7 @@ export async function getMenu(id: number) {
 
 /** 更新菜单 PUT /api_sy/menu */
 export async function updateMenu(record: MenuData) {
-  return YuApi.update<MenuData>(record, menuUrl);
+  return YuApi.update<MenuData>(menuUrl, record);
 }
 
 /** 新建菜单 */

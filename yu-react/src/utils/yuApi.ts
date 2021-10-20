@@ -111,7 +111,7 @@ export async function add<T>(record: T, url: string) {
 }
 
 /** 更新请求 */
-export async function update<T>(record: T, url: string) {
+export async function update<T>(url: string, record?: T) {
   return request<T>(url, {
     method: 'PUT',
     data: record,

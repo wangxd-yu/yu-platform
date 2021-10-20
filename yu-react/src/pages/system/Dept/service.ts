@@ -19,11 +19,11 @@ export async function getDept(id: number) {
 
 /** 更新部门 PUT /api_sy/dept */
 export async function updateDept(record: DeptData) {
-  return YuApi.update<DeptData>(record, deptUrl);
+  return YuApi.update<DeptData>(deptUrl, record);
 }
 
 /** 新建部门 */
-export async function addDept<DeptData>(record: DeptData) {
+export async function addDept(record: DeptData) {
   return YuApi.add<DeptData>(record, deptUrl);
 }
 

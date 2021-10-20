@@ -5,7 +5,7 @@ import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryEndpoint,getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint } from './service';
+import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, enableEndpoint, disableEndpoint } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { EndpointData, TableListPagination } from './data';
 import EndpointForm from './components/EndpointForm'
@@ -80,7 +80,18 @@ const EndpointTable: React.FC<EndpointData> = () => {
         }
       },
       render: (_: any, record: any) => [
-        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用" />
+        <Switch key="enabled"
+          checked={record.enabled}
+          checkedChildren="启用"
+          unCheckedChildren="停用"
+          onChange={() => {
+            if(record.enabled) {
+              disableEndpoint(record.id)
+            } else {
+              enableEndpoint(record.id)
+            }
+            endpointActionRef.current?.reload()
+          }} />
       ]
     },
     {
@@ -156,7 +167,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
           }
         }}
         formRef={endpointFormRef}
-        initialValues={endpointCurrentRow || {}}
+        initialValues={endpointCurrentRow || { enabled: true }}
         onFinish={async (value) => {
           const data = { ...endpointCurrentRow, ...value };
           let success;

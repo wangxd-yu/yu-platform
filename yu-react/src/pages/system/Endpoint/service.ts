@@ -18,15 +18,23 @@ export async function getEndpoint(id: number, cb: any) {
 
 /** 更新端点 PUT */
 export async function updateEndpoint(record: EndpointData) {
-  return YuApi.update<EndpointData>(record, endpointUrl);
+  return YuApi.update<EndpointData>(endpointUrl, record);
 }
 
 /** 新建端点 */
-export async function addEndpoint<EndpointData>(record: EndpointData) {
+export async function addEndpoint(record: EndpointData) {
   return YuApi.add<EndpointData>(record, endpointUrl);
 }
 
 /** 删除规则 DELETE */
 export async function deleteEndpoint(id: string | number) {
   return YuApi.deleteById(id, endpointUrl)
+}
+
+export async function enableEndpoint(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/enable`)
+}
+
+export async function disableEndpoint(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/disable`)
 }

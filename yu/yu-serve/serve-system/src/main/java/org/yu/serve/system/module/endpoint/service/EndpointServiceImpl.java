@@ -2,6 +2,7 @@ package org.yu.serve.system.module.endpoint.service;
 
 import com.querydsl.core.Tuple;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
@@ -75,5 +76,14 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
             ));
             return endpointLessDTOS;
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void changeEnabled(String id, boolean enabled) {
+        getJPAQueryFactory().update(qEndpointDO)
+                .set(qEndpointDO.enabled, enabled)
+                .where(qEndpointDO.id.eq(id))
+                .execute();
     }
 }
