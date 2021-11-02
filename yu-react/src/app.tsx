@@ -130,6 +130,11 @@ export const request: RequestConfig = {
         description: '您的网络发生异常，无法连接服务器',
         message: '网络异常',
       });
+    } else {
+      notification.error({
+        description: error.data.data,
+        message: error.data.message,
+      });
     }
     throw error;
   },

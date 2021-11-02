@@ -1,6 +1,7 @@
 package org.yu.common.core.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -8,12 +9,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.yu.common.core.exception.ServiceException;
 import org.yu.common.core.exception.EntityExistException;
 import org.yu.common.core.exception.EntityNotFoundException;
+import org.yu.common.core.exception.ServiceException;
 import org.yu.common.core.util.ThrowableUtil;
 
-import java.util.Objects;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,21 +38,6 @@ public class GlobalExceptionHandler {
         // 打印堆栈信息
         log.error(ThrowableUtil.getStackTrace(e));
         ApiError apiError = new ApiError(BAD_REQUEST.value(), e.getMessage());
-        return buildResponseEntity(apiError);
-    }
-
-    /**
-     * 参数校验异常处理器
-     *
-     * @return
-     */
-    @ExceptionHandler(BindException.class)
-    public ResponseEntity<?> bindExceptionHandler(BindException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        Set<String> messageSet = bindingResult.getAllErrors().stream()
-                .map(objectError -> objectError.getDefaultMessage())
-                .collect(Collectors.toSet());
-        ApiError apiError = new ApiError(BAD_REQUEST.value(), BAD_REQUEST.value(), e.getMessage(), messageSet);
         return buildResponseEntity(apiError);
     }
 
@@ -93,14 +80,51 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理所有接口数据验证异常
+     * 处理Get请求中 使用@Valid 验证路径中请求实体校验失败后抛出的异常
+     */
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<?> bindExceptionHandler(BindException e) {
+        // 打印堆栈信息
+        log.error(ThrowableUtil.getStackTrace(e));
+        //获得绑定的返回对象
+        BindingResult bindingResult = e.getBindingResult();
+        //获得校验未通过的所有提示
+        Set<String> messageSet = bindingResult.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toSet());
+        ApiError apiError = new ApiError(BAD_REQUEST.value(), BAD_REQUEST.value(), "参数校验失败", messageSet);
+        return buildResponseEntity(apiError);
+    }
+
+    /**
+     * 处理请求参数格式错误 @RequestParam上validate失败后抛出的异常是javax.validation.ConstraintViolationException
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
+        // 打印堆栈信息
+        log.error(ThrowableUtil.getStackTrace(e));
+        //获得校验未通过的所有提示
+        Set<String> messageSet = e.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toSet());
+        ApiError apiError = new ApiError(BAD_REQUEST.value(), BAD_REQUEST.value(), "参数校验失败", messageSet);
+        return buildResponseEntity(apiError);
+    }
+
+    /**
+     * 处理请求参数格式错误 @RequestBody上validate失败后抛出的异常是MethodArgumentNotValidException异常。
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         // 打印堆栈信息
         log.error(ThrowableUtil.getStackTrace(e));
-        String[] str = Objects.requireNonNull(e.getBindingResult().getAllErrors().get(0).getCodes())[1].split("\\.");
-        ApiError apiError = new ApiError(BAD_REQUEST.value(), str[1] + ":" + e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        //获得绑定的返回对象
+        BindingResult bindingResult = e.getBindingResult();
+        //获得校验未通过的所有提示
+        Set<String> messageSet = bindingResult.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toSet());
+        ApiError apiError = new ApiError(BAD_REQUEST.value(), BAD_REQUEST.value(), "参数校验失败", messageSet);
         return buildResponseEntity(apiError);
     }
 
