@@ -14,6 +14,10 @@ spring:
   jpa:
     open-in-view: false
     properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true

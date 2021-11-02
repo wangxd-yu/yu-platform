@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;
+import org.yu.common.querydsl.valid.annotation.YuDependValid;
+import org.yu.common.querydsl.valid.annotation.YuUniqueValid;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -17,10 +19,12 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "sys_dict_detail")
+@YuUniqueValid(props = {"dictId", "code"})
 public class DictDetailDO extends DslBaseTenantDO<String> {
     /**
      * 字典id
      */
+    @YuDependValid(domain = DictDO.class, prop = "id")
     private String dictId;
 
     /**

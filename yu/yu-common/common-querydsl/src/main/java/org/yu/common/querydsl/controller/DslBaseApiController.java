@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import org.yu.common.querydsl.domain.DslBaseDO;
 import org.yu.common.querydsl.service.DslBaseService;
 
+import javax.validation.Valid;
+
 /**
  * @author wangxd
  * @date 2020-11-25
@@ -27,13 +29,13 @@ public abstract class DslBaseApiController<M extends DslBaseService<DO, ID>, DO 
 
     @Override
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody DO domain) throws Exception {
+    public ResponseEntity<Object> save(@RequestBody @Valid DO domain) throws Exception {
         return super.save(domain);
     }
 
     @Override
     @PutMapping
-    public ResponseEntity<Object> update(@RequestBody DO domain) {
+    public ResponseEntity<Object> update(@RequestBody @Valid DO domain) {
         return super.update(domain);
     }
 

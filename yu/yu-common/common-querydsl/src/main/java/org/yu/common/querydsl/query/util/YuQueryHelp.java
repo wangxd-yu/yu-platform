@@ -269,7 +269,8 @@ public class YuQueryHelp {
         }
     }
 
-    private static <C> Predicate getPredicateByField(EntityPath<?> domain, Field field, C criteria) throws IllegalAccessException {
+    public static <C> Predicate getPredicateByField(EntityPath<?> domain, Field field, C criteria) throws IllegalAccessException {
+        // TODO 修改bug
         YuQueryColumn query = field.getAnnotation(YuQueryColumn.class);
         if (query != null) {
             String propName = query.propName();
@@ -298,7 +299,7 @@ public class YuQueryHelp {
         return null;
     }
 
-    private static <T> Predicate getPredicate(EntityPath<T> domain, YuOperatorEnum operatorEnum, YuDateTimeEnum dateTimeEnum, String attributeName, Object val) {
+    public static <T> Predicate getPredicate(EntityPath<T> domain, YuOperatorEnum operatorEnum, YuDateTimeEnum dateTimeEnum, String attributeName, Object val) {
         if (val == null) {
             return null;
         }
@@ -331,7 +332,7 @@ public class YuQueryHelp {
         return predicate;
     }
 
-    private static Expression<?> getFieldValue(EntityPath<?> domain, String fieldName) {
+    public static Expression<?> getFieldValue(EntityPath<?> domain, String fieldName) {
         if (!fieldName.contains(".")) {
             return (Expression<?>) ReflectUtils.getFieldValue(domain, fieldName);
         }
@@ -347,7 +348,7 @@ public class YuQueryHelp {
     /**
      * 获取 queryDSL生成的 实体类对象
      */
-    private static EntityPath<?> getEntityPath(Class<?> cla) {
+    public static EntityPath<?> getEntityPath(Class<?> cla) {
         //从 静态变量中获取 EntityPath
         /*//TODO 系统运行一段时间后，map中的 Class对象可能会被 回收，若确认会回收此处就 不能使用 map，直接 Class.forName获取
         EntityPath entityPath = null;

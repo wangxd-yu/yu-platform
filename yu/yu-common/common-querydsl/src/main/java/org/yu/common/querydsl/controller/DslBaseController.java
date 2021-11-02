@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.yu.common.jpa.domain.JpaBaseDO;
 import org.yu.common.querydsl.domain.DslBaseDO;
 import org.yu.common.querydsl.service.DslBaseService;
+
+import javax.validation.Valid;
 
 /**
  * @author wangxd
@@ -25,7 +26,7 @@ public abstract class DslBaseController<M extends DslBaseService<DO, ID>, DO ext
         return new ResponseEntity<>(dslBaseService.getById(id), HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> save(@RequestBody DO domain) throws Exception {
+    public ResponseEntity<Object> save(@Valid @RequestBody DO domain) throws Exception {
         if (domain.getId() != null) {
             throw new Exception("A new " + domain.getClass().getSimpleName() + " cannot already have an ID");
         }

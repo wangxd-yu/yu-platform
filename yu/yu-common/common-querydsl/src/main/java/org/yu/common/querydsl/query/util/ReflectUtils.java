@@ -8,6 +8,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.yu.common.querydsl.exception.YuQueryException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -40,6 +41,20 @@ public class ReflectUtils {
         }
 
         return fieldMap.values();
+    }
+
+
+    /**
+     * 根据注解类标注的字段
+     */
+    public static <T extends Annotation> List<Field> getFieldsByAnnotation(Class<?> cl, Class<T> annotationClass) {
+        List<Field> fields = new ArrayList<>(1);
+        for (Field field : ReflectUtils.getDistinctFields(cl)) {
+            if(field.isAnnotationPresent(annotationClass)) {
+                fields.add(field);
+            }
+        }
+        return fields;
     }
 
     public static <T> T invoke(Object obj, String methodName) {
