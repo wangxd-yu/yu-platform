@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.yu.common.core.context.YuContextHolder;
-import org.yu.common.core.exception.BadRequestException;
+import org.yu.common.core.exception.ServiceException;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.dept.domain.QDeptDO;
@@ -42,7 +42,7 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
             deptDO.setPno(ROOT_PNO);
         } else {
             if (this.getByNo(deptDO.getPno()) == null) {
-                throw new BadRequestException("上级部门编号错误！");
+                throw new ServiceException("上级部门编号错误！");
             }
         }
         deptDO.setNo(this.genNo(deptDO.getPno()));
@@ -72,7 +72,7 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
 
         int deptNum = Integer.parseInt(maxSubNo.substring(maxSubNo.length() - 3));
         if (deptNum >= 999) {
-            throw new BadRequestException("不能在当前父机构下创建子机构，机构编号已用完，请联系管理员！");
+            throw new ServiceException("不能在当前父机构下创建子机构，机构编号已用完，请联系管理员！");
         }
         maxSubNo = pno + String.format("%03d", deptNum + 1);
         return maxSubNo;

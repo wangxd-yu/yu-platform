@@ -376,7 +376,7 @@ public class YuQueryHelp {
         return null;
           /*//不是 QueryDSL生成的类，抛出异常 TODO 重新定义一个异常类型
             if(!cla.getSimpleName().startsWith("Q")) {
-                throw new BadRequestException("参数类错误！");
+                throw new ServiceException("参数类错误！");
             }*/
     }
 }

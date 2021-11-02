@@ -8,25 +8,25 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 /**
  * @author wangxd
  * @date 2018-11-23
- * 统一异常处理
+ * 业务异常
  */
 @Getter
-public class BadRequestException extends RuntimeException{
+public class ServiceException extends RuntimeException{
 
     private Integer status = BAD_REQUEST.value();
 
     private Integer code;
 
-    public BadRequestException(String msg){
+    public ServiceException(String msg){
         super(msg);
     }
 
-    public BadRequestException(Integer code,String msg){
+    public ServiceException(Integer code, String msg){
         super(msg);
         this.code = code;
     }
 
-    public BadRequestException(HttpStatus status,String msg){
+    public ServiceException(HttpStatus status, String msg){
         super(msg);
         this.status = status.value();
     }

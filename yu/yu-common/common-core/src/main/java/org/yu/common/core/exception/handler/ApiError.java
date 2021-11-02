@@ -19,6 +19,7 @@ class ApiError {
     private LocalDateTime timestamp;
     private String message;
     private Integer code;
+    private Object data;
 
     private ApiError() {
         timestamp = LocalDateTime.now();
@@ -35,6 +36,14 @@ class ApiError {
         this.status = status;
         this.code = code;
         this.message = message;
+    }
+
+    public ApiError(Integer status,Integer code,String message, Object data) {
+        this();
+        this.status = status;
+        this.code = code;
+        this.message = message;
+        this.data = data;
     }
 }
 

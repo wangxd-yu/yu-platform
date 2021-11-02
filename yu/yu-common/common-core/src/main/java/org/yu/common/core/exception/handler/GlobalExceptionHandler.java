@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.yu.common.core.exception.BadRequestException;
+import org.yu.common.core.exception.ServiceException;
 import org.yu.common.core.exception.EntityExistException;
 import org.yu.common.core.exception.EntityNotFoundException;
 import org.yu.common.core.util.ThrowableUtil;
@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
     /**
      * 处理自定义异常
      */
-    @ExceptionHandler(value = BadRequestException.class)
-    public ResponseEntity<ApiError> badRequestException(BadRequestException e) {
+    @ExceptionHandler(value = ServiceException.class)
+    public ResponseEntity<ApiError> badRequestException(ServiceException e) {
         // 打印堆栈信息
         log.error(ThrowableUtil.getStackTrace(e));
         ApiError apiError;

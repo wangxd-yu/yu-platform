@@ -3,7 +3,7 @@ package org.yu.serve.system.module.user.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yu.common.core.exception.BadRequestException;
+import org.yu.common.core.exception.ServiceException;
 import org.yu.common.core.exception.EntityExistException;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
@@ -72,7 +72,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     @Transactional(rollbackFor = Exception.class)
     public void update(UserDO domain) {
         if(domain.getId() == null) {
-            throw new BadRequestException("参数错误：id不存在！");
+            throw new ServiceException("参数错误：id不存在！");
         }
         UserDO dbUser = baseRepository.findByUsername(domain.getUsername());
         if (dbUser != null && !dbUser.getId().equals(domain.getId())) {
@@ -86,7 +86,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
 
     @Override
     public UserDO getById(String id) {
-        UserDO userDO = baseRepository.findById(id).orElseThrow(() -> new BadRequestException("数据不存在！"));
+        UserDO userDO = baseRepository.findById(id).orElseThrow(() -> new ServiceException("数据不存在！"));
         Set<String> roleIds = new HashSet<>(getJPAQueryFactory()
                 .select(qUserRoleDO.roleId)
                 .from(qUserRoleDO)
