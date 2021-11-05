@@ -16,7 +16,7 @@ public class YuContextHolder implements AutoCloseable {
         return CTX.get();
     }
 
-    public static Integer getTenantId() {
+    public static String getTenantId() {
         return CTX.get() == null ? null : CTX.get().getTenantId();
     }
 

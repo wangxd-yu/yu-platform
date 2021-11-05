@@ -3,6 +3,7 @@ package org.yu.cloud.common.multidb.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
 import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
 import org.yu.cloud.common.multidb.service.impl.DynamicDataSourceServiceDbImpl;
 
@@ -29,5 +30,11 @@ public class DynamicDataSourceServiceDbConfig {
             }
         }
         return dynamicDataSourceService;
+    }
+
+    @Bean
+    public MultiTenantProperties getMultiTenantProperties() {
+        //TODO 后续处理（impl实现类中赋值）
+        return new MultiTenantProperties();
     }
 }

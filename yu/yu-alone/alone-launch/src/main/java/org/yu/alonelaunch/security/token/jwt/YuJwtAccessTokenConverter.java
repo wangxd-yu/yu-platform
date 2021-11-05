@@ -27,10 +27,10 @@ public class YuJwtAccessTokenConverter extends JwtAccessTokenConverter {
             if (map.get("user_name") != null) {
                 SecurityUser extendedPrincipal = SecurityUser.builder()
                         .id((String) map.get("id"))
-                        .clientId((String)map.get("client_id"))
+                        .clientId((String) map.get("client_id"))
                         .username((String) map.get("user_name"))
-                        .deptNo((String)map.get("deptNo"))
-                        .tenantId((Integer) map.get("tenantId"))
+                        .deptNo((String) map.get("deptNo"))
+                        .tenantId((String) map.get("tenantId"))
                         .build();
                 Collection<? extends GrantedAuthority> authorities = userAuthentication.getAuthorities();
                 userAuthentication = new UsernamePasswordAuthenticationToken(extendedPrincipal, userAuthentication.getCredentials(), authorities);

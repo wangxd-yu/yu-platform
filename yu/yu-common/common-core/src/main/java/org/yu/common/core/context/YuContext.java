@@ -13,7 +13,7 @@ public class YuContext {
     /**
      * 非用户操作时，存放 租户id（系统调用时）
      */
-    private Integer tenantId;
+    private String tenantId;
 
     private String clientId;
 
@@ -21,7 +21,7 @@ public class YuContext {
 
     private Object jpaQueryFactory;
 
-    public Integer getTenantId() {
+    public String getTenantId() {
         if(clientUser != null) {
             return clientUser.getTenantId();
         }

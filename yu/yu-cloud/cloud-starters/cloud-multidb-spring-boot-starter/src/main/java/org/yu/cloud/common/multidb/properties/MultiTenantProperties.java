@@ -14,6 +14,6 @@ import java.util.Map;
  */
 @Data
 @ConfigurationProperties(prefix = "yu.multidb")
-public class TenantDataSourceProperties {
-    private Map<String, DataSourceProperties> tenant;
+public class MultiTenantProperties {
+    private Map<String, TenantProperties> tenants;
 }

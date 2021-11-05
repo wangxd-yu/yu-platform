@@ -22,7 +22,7 @@ public class LoginUser {
     /**
      * 租户ID
      */
-    private Integer tenantId;
+    private String tenantId;
     private String clientId;
     private String username;
     private Set<String> roles;

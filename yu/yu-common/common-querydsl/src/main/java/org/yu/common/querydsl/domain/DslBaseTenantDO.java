@@ -17,5 +17,5 @@ public abstract class DslBaseTenantDO<ID extends Serializable> extends DslBaseDO
     /**
      * 租户id
      */
-    private Integer tenantId;
+    private String tenantId;
 }

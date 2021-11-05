@@ -35,15 +35,25 @@ yu:
   multidb:
     enabled: true
     type: prop  #type：多数据源配置信息获取类型， db: 数据库中获取；feign: 微服务 feign获取；prop：配置文件获取
-    tenant:
-      1000:
-        url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
-        username: root
-        password: 123456
+    tenants:
       1001:
-        url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
-        username: root
-        password: 123456
+        admins: admin,superadmin
+        datasource:
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          username: root
+          password: 123456
+      1002:
+        admins: admin,superadmin
+        datasource:
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          username: root
+          password: 123456
+      1003:
+        admins: admin,superadmin
+        datasource:
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_3?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          username: root
+          password: 123456
 logging:
   level:
     org:

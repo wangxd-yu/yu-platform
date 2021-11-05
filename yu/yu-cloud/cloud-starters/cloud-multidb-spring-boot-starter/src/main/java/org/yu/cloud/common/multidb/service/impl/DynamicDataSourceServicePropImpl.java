@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.yu.cloud.common.multidb.config.DynamicDataSource;
-import org.yu.cloud.common.multidb.properties.TenantDataSourceProperties;
+import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
 import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
 
 import javax.annotation.Resource;
@@ -26,7 +26,7 @@ public class DynamicDataSourceServicePropImpl implements DynamicDataSourceServic
     private DataSourceProperties dataSourceProperties;
 
     @Resource
-    private TenantDataSourceProperties tenantDataSourceProperties;
+    private MultiTenantProperties multiTenantProperties;
 
     @Override
     public DataSource getSpringDefaultDataSource() {
@@ -38,10 +38,10 @@ public class DynamicDataSourceServicePropImpl implements DynamicDataSourceServic
 
     @Override
     public Map<Object, Object> getTargetDataSource() {
-        tenantDataSourceProperties.getTenant().forEach((key, value) ->
+        multiTenantProperties.getTenants().forEach((key, value) ->
                 DynamicDataSource.dynamicTargetDataSources.put(
                         key,
-                        value.initializeDataSourceBuilder().type(HikariDataSource.class).build()
+                        value.getDatasource().initializeDataSourceBuilder().type(HikariDataSource.class).build()
                 )
         );
         return DynamicDataSource.dynamicTargetDataSources;

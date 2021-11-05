@@ -33,7 +33,7 @@ public class YuContextFilter extends OncePerRequestFilter {
             LoginUser loginUser = new LoginUser();
             loginUser.setId(userJsonObject.getStr("id"));
             loginUser.setDeptNo(userJsonObject.getStr("deptNo"));
-            loginUser.setTenantId(userJsonObject.getInt("tenantId"));
+            loginUser.setTenantId(userJsonObject.getStr("tenantId"));
             loginUser.setClientId(userJsonObject.getStr("client_id"));
             loginUser.setUsername(userJsonObject.getStr("user_name"));
             loginUser.setRoles(new HashSet<>(Convert.toList(String.class, userJsonObject.get("authorities"))));
@@ -44,7 +44,7 @@ public class YuContextFilter extends OncePerRequestFilter {
         } else {
             String tenantId = httpServletRequest.getHeader("tenantId");
             if (StrUtil.isNotBlank(tenantId)) {
-                yuContext.setTenantId(Integer.valueOf(tenantId));
+                yuContext.setTenantId(tenantId);
             }
         }
 

@@ -1,6 +1,7 @@
 package org.yu.alonelaunch.interceptor;
 
 import cn.hutool.core.collection.CollectionUtil;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,16 +12,20 @@ import org.springframework.web.servlet.ModelAndView;
 import org.yu.alonelaunch.security.constant.MessageConstant;
 import org.yu.alonelaunch.security.pojo.SecurityUser;
 import org.yu.alonelaunch.security.util.TenantUtil;
+import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
 import org.yu.common.core.context.YuContext;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.dto.LoginUser;
+import org.yu.common.core.event.EndpointEvent;
 import org.yu.serve.system.module.endpoint.service.EndpointService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +39,9 @@ public class YuAuthInterceptor implements HandlerInterceptor {
     @Resource
     private EndpointService endpointService;
 
+    @Resource
+    private MultiTenantProperties multiTenantProperties;
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
@@ -44,12 +52,12 @@ public class YuAuthInterceptor implements HandlerInterceptor {
      * 存放 不同tenant的 地址权限 对应关系
      * 不同租户的 端点 访问权限控制 数据结构
      */
-    private static Map<Integer, Map<String, Set<String>>> tenantPathRolesMap = new HashMap<>(2);
+    private static Map<String, Map<String, Set<String>>> tenantPathRolesMap;
 
     @PostConstruct
     public void init() {
-        List<Integer> tenants = new ArrayList<>(Arrays.asList(1000, 1001));
-        tenants.forEach(tenantId -> {
+        tenantPathRolesMap = new HashMap<>(multiTenantProperties.getTenants().size());
+        multiTenantProperties.getTenants().forEach((tenantId, value) -> {
             YuContext yuContext = new YuContext();
             new YuContextHolder(yuContext);
             YuContextHolder.getYuContext().setTenantId(tenantId);
@@ -61,11 +69,21 @@ public class YuAuthInterceptor implements HandlerInterceptor {
         tenantPathRolesMap.put(1000, pathRolesMap);*/
     }
 
+    @EventListener(classes = EndpointEvent.class)
+    public void listener() {
+        // 此处如果改为异步执行， tenantId 需要传入，不能直接从 YuContextHolder中获取
+        tenantPathRolesMap.put(YuContextHolder.getTenantId(), endpointService.getEndpointRoles());
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         new YuContextHolder(populateYuContext());
         if (YuContextHolder.getYuContext() != null) {
-            checkPathPermission(request);
+            // 不是超级管理员（超级管理员不走 权限校验）
+            if (YuContextHolder.getYuContext().getClientUser() != null
+                    && !multiTenantProperties.getTenants().get(YuContextHolder.getTenantId()).getAdmins().contains(YuContextHolder.getYuContext().getClientUser().getUsername())) {
+                checkPathPermission(request);
+            }
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
@@ -98,7 +116,7 @@ public class YuAuthInterceptor implements HandlerInterceptor {
         Map<String, Set<String>> pathRolesMap = tenantPathRolesMap.get(YuContextHolder.getTenantId());
         Set<String> roles = pathRolesMap == null ? null : pathRolesMap.get(path);
         if (roles != null
-                && !CollectionUtil.containsAny(YuContextHolder.getYuContext().getClientUser().getRoles(),pathRolesMap.get(path))) {
+                && !CollectionUtil.containsAny(YuContextHolder.getYuContext().getClientUser().getRoles(), pathRolesMap.get(path))) {
             throw new AccessDeniedException(MessageConstant.PERMISSION_DENIED);
         }
     }

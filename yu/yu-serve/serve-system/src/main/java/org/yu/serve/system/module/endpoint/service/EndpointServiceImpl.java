@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.yu.common.core.event.EndpointEvent;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.endpoint.domain.EndpointDO;
 import org.yu.serve.system.module.endpoint.domain.QEndpointDO;
@@ -54,6 +55,7 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
                 .leftJoin(qMenuEndpointDO).on(qEndpointDO.id.eq(qMenuEndpointDO.endpointId))
                 .leftJoin(qRoleMenuDO).on(qMenuEndpointDO.menuId.eq(qRoleMenuDO.menuId))
                 .leftJoin(qRoleDO).on(qRoleMenuDO.roleId.eq(qRoleDO.id))
+                .where(qEndpointDO.enabled.eq(true))
                 .fetch();
         return tupleList.stream().collect(Collectors.groupingBy(
                 tuple -> tuple.get(qEndpointDO.pattern) + "[" + tuple.get(qEndpointDO.method) + "]",
@@ -63,9 +65,7 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
 
     @Override
     public Set<EndpointLessDTO> getRequestMappingInfos() {
-        if(endpointLessDTOS != null) {
-            return endpointLessDTOS;
-        } else {
+        if (endpointLessDTOS == null) {
             RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
             //获取url与类和方法的对应信息
             endpointLessDTOS = new HashSet<>();
@@ -74,17 +74,17 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
                             endpointLessDTOS.add(new EndpointLessDTO(pattern, method))
                     )
             ));
-            return endpointLessDTOS;
         }
+        return endpointLessDTOS;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void changeEnabled(String id, boolean enabled) {
-        //TODO 业务逻辑
         getJPAQueryFactory().update(qEndpointDO)
                 .set(qEndpointDO.enabled, enabled)
                 .where(qEndpointDO.id.eq(id))
                 .execute();
+        applicationContext.publishEvent(new EndpointEvent(this));
     }
 }

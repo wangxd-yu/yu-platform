@@ -37,7 +37,7 @@ public class SecurityUser implements UserDetails {
     /**
      * 租户编号
      */
-    private Integer tenantId;
+    private String tenantId;
     /**
      * 用户名
      */

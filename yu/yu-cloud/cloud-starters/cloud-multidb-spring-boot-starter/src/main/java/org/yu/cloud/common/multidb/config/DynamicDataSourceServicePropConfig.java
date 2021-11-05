@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.yu.cloud.common.multidb.properties.TenantDataSourceProperties;
+import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
 import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
 import org.yu.cloud.common.multidb.service.impl.DynamicDataSourceServicePropImpl;
 
@@ -14,7 +14,7 @@ import org.yu.cloud.common.multidb.service.impl.DynamicDataSourceServicePropImpl
  * @author wangxd
  * @date 2021-08-29
  */
-@EnableConfigurationProperties(TenantDataSourceProperties.class)
+@EnableConfigurationProperties(MultiTenantProperties.class)
 @ConditionalOnProperty(prefix = "yu.multidb", name = "type", havingValue = "prop")
 @Configuration
 public class DynamicDataSourceServicePropConfig {
