@@ -232,7 +232,7 @@ const MenuPage: React.FC = () => {
               setMenuFormVisible(true);
             }}
           >
-            <PlusOutlined /> 分配端点
+            <PlusOutlined /> 新建
           </Button>,
         ]}
       />
