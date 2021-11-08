@@ -14,11 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>org.yu</groupId>
-            <artifactId>cloud-multidb-spring-boot-starter</artifactId>
+            <artifactId>common-web-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.yu</groupId>
-            <artifactId>common-querydsl</artifactId>
+            <artifactId>cloud-multidb-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.yu</groupId>

@@ -1,4 +1,4 @@
-package org.yu.common.core.exception;
+package org.yu.common.web.exception;
 
 import org.springframework.util.StringUtils;
 

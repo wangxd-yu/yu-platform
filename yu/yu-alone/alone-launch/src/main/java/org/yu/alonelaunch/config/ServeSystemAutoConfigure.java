@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 @EnableJpaRepositories("org.yu.serve.system")
 @EntityScan("org.yu.serve.system")
-//TODO org.yu.common.querydsl 移走
-@ComponentScan(value = {"org.yu.serve.system", "org.yu.common"})
+@ComponentScan(value = {"org.yu.serve.system"})
 public class ServeSystemAutoConfigure {
 }

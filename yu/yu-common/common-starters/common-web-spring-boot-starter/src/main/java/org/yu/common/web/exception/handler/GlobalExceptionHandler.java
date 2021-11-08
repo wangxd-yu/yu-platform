@@ -1,4 +1,4 @@
-package org.yu.common.core.exception.handler;
+package org.yu.common.web.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -9,9 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.yu.common.core.exception.EntityExistException;
-import org.yu.common.core.exception.EntityNotFoundException;
-import org.yu.common.core.exception.ServiceException;
+import org.yu.common.web.exception.EntityExistException;
+import org.yu.common.web.exception.EntityNotFoundException;
+import org.yu.common.web.exception.ServiceException;
 import org.yu.common.core.util.ThrowableUtil;
 
 import javax.validation.ConstraintViolation;

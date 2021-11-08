@@ -1,11 +1,11 @@
-package org.yu.common.querydsl.valid.constraint;
+package org.yu.common.web.valid.constraint;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
 import org.yu.common.querydsl.query.enums.YuOperatorEnum;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
-import org.yu.common.querydsl.util.QueryDslUtil;
-import org.yu.common.querydsl.valid.annotation.YuDependValid;
+import org.yu.common.web.util.QueryDslUtil;
+import org.yu.common.web.valid.annotation.YuDependValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

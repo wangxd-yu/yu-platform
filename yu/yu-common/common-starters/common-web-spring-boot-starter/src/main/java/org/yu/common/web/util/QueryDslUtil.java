@@ -1,7 +1,6 @@
-package org.yu.common.querydsl.util;
+package org.yu.common.web.util;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.stereotype.Component;
 import org.yu.common.core.context.YuContextHolder;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +11,6 @@ import javax.persistence.PersistenceContext;
  * @author wangxd
  * @date 2021-10-29 8:45
  */
-@Component
 public class QueryDslUtil {
 
     private static QueryDslUtil queryDslUtil;

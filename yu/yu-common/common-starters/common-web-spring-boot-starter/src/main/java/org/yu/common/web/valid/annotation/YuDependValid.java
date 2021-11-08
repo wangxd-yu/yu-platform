@@ -1,22 +1,22 @@
-package org.yu.common.querydsl.valid.annotation;
+package org.yu.common.web.valid.annotation;
 
-import org.yu.common.querydsl.valid.constraint.YuUniqueConstraint;
+import org.yu.common.web.valid.constraint.YuDependConstraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * YU 自定义唯一校验
+ * YU 自定义依赖校验
  *
  * @author wangxd
  * @date 2021-10-23 23:12
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = YuUniqueConstraint.class)
-@Repeatable(YuUniqueValid.List.class)
-public @interface YuUniqueValid {
+@Constraint(validatedBy = YuDependConstraint.class)
+@Repeatable(YuDependValid.List.class)
+public @interface YuDependValid {
     /**
      * 失败后提示信息
      */
@@ -35,19 +35,16 @@ public @interface YuUniqueValid {
     Class<?> domain() default Void.class;
 
     /**
-     * 检索条件数组（默认 主键，以@Id注解的字段）
+     * 依赖的字段名
      */
-    // String[] keys() default {};
+    String prop() default "";
 
-    /**
-     * 唯一字段数组
-     */
-    String[] props() default {};
+    boolean exist() default true;
 
-    @Target(ElementType.TYPE)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     public @interface List {
-        YuUniqueValid[] value();
+        YuDependValid[] value();
     }
 }

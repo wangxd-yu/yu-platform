@@ -3,7 +3,7 @@ package org.yu.serve.system.module.dict.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;
-import org.yu.common.querydsl.valid.annotation.YuUniqueValid;
+import org.yu.common.web.valid.annotation.YuUniqueValid;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

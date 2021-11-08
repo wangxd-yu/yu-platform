@@ -1,4 +1,4 @@
-package org.yu.common.querydsl.valid.constraint;
+package org.yu.common.web.valid.constraint;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
@@ -11,8 +11,8 @@ import org.springframework.util.ReflectionUtils;
 import org.yu.common.querydsl.query.enums.YuOperatorEnum;
 import org.yu.common.querydsl.query.util.ReflectUtils;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
-import org.yu.common.querydsl.util.QueryDslUtil;
-import org.yu.common.querydsl.valid.annotation.YuUniqueValid;
+import org.yu.common.web.util.QueryDslUtil;
+import org.yu.common.web.valid.annotation.YuUniqueValid;
 
 import javax.persistence.Id;
 import javax.validation.ConstraintValidator;

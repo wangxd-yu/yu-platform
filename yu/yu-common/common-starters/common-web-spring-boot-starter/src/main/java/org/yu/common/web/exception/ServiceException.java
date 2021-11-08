@@ -1,4 +1,4 @@
-package org.yu.common.core.exception;
+package org.yu.common.web.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

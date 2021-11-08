@@ -1,6 +1,6 @@
-package org.yu.common.querydsl.valid.constraint;
+package org.yu.common.web.valid.constraint;
 
-import org.yu.common.querydsl.valid.annotation.YuValid;
+import org.yu.common.web.valid.annotation.YuValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
