@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  
+org.yu.common.web.config.WebAutoConfigure,\
+org.yu.common.web.async.AsyncExecutorConfig
