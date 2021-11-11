@@ -27,6 +27,7 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    show-sql: true
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
     username: root
@@ -58,5 +59,5 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        #security: DEBUG
         web: ERROR

@@ -29,6 +29,9 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class DslBaseDO<ID extends Serializable> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 主键
      */

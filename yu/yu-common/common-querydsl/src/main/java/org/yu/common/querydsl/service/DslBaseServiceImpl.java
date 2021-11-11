@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020-11-25
  */
 @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-public abstract class DslBaseServiceImpl<M extends DslBaseRepository<DO, ID>, DO extends DslBaseDO, ID> implements DslBaseService<DO, ID> {
+public abstract class DslBaseServiceImpl<R extends DslBaseRepository<DO, ID>, DO extends DslBaseDO, ID> implements DslBaseService<DO, ID> {
     @Autowired(required = false)
-    protected M baseRepository;
+    protected R baseRepository;
 
     @PersistenceContext
     protected EntityManager entityManager;

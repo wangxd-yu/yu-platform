@@ -7,7 +7,6 @@ import org.yu.common.querydsl.domain.DslBaseDO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /**
  * 数据源DO
@@ -19,9 +18,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tb_datasource")
-public class DataSourceDO extends DslBaseDO<Long> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class DataSourceDO extends DslBaseDO<Long> {
 
     /**
      * 组id
