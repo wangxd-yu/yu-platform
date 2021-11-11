@@ -1,5 +1,6 @@
 package org.yu.common.web.async;
 
+import com.alibaba.ttl.threadpool.TtlExecutors;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,6 @@ public class AsyncExecutorConfig {
         taskExecutor.setThreadNamePrefix(asyncExecutorProperties.getThreadNamePrefix());
         taskExecutor.setRejectedExecutionHandler(asyncExecutorProperties.getRejectedExecutionHandler().getRejectedExecutionHandler());
         taskExecutor.initialize();
-        return taskExecutor;
+        return TtlExecutors.getTtlExecutor(taskExecutor);
     }
 }
