@@ -12,11 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.yu.alonelaunch.security.constant.MessageConstant;
 import org.yu.alonelaunch.security.pojo.SecurityUser;
 import org.yu.alonelaunch.security.util.TenantUtil;
-import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
 import org.yu.common.core.context.YuContext;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.dto.LoginUser;
 import org.yu.common.core.event.EndpointEvent;
+import org.yu.common.multidb.properties.MultiTenantProperties;
 import org.yu.serve.system.module.endpoint.service.EndpointService;
 
 import javax.annotation.PostConstruct;

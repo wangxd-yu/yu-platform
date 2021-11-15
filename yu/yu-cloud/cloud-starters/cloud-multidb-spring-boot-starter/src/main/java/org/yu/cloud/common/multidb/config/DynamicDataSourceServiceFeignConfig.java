@@ -6,8 +6,8 @@ import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
 import org.yu.cloud.common.multidb.service.impl.DynamicDataSourceServiceFeignImpl;
+import org.yu.common.multidb.service.DynamicDataSourceService;
 import org.yu.tenant.service.api.datasource.feign.DataSourceFeign;
 
 import javax.annotation.PostConstruct;
@@ -39,9 +39,9 @@ public class DynamicDataSourceServiceFeignConfig {
 
     @Bean
     public DynamicDataSourceService getDynamicDataSourceService() {
-        if(dynamicDataSourceService == null) {
+        if (dynamicDataSourceService == null) {
             synchronized (this) {
-                if(dynamicDataSourceService == null) {
+                if (dynamicDataSourceService == null) {
                     dynamicDataSourceService = new DynamicDataSourceServiceFeignImpl(dataSourceFeign);
                     return dynamicDataSourceService;
                 }

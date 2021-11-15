@@ -16,5 +16,6 @@
     <modules>
         <module>common-redis-spring-boot-starter</module>
         <module>common-web-spring-boot-starter</module>
+        <module>common-multidb-spring-boot-starter</module>
     </modules>
 </project>

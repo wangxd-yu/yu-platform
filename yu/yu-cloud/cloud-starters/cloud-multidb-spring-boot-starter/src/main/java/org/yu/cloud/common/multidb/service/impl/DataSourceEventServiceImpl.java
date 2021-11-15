@@ -1,6 +1,6 @@
 package org.yu.cloud.common.multidb.service.impl;
 
-import org.yu.cloud.common.multidb.config.DynamicDataSource;
+import org.yu.common.multidb.config.DynamicDataSource;
 import org.yu.tenant.service.api.datasource.service.DataSourceEventService;
 
 /**

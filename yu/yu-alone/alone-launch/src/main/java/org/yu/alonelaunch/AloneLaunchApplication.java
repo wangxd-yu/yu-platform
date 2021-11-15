@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.yu.alonelaunch.config.EnableServeSystem;
-import org.yu.cloud.common.multidb.config.EnableMultiDatabase;
+import org.yu.common.multidb.config.EnableMultiDatabase;
 
 /**
  * @author 王晓冬

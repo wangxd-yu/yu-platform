@@ -1,4 +1,4 @@
-package org.yu.cloud.common.multidb.domain;
+package org.yu.common.multidb.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

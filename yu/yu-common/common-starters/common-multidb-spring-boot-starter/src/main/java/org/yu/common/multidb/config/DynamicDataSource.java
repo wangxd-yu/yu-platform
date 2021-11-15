@@ -1,4 +1,4 @@
-package org.yu.cloud.common.multidb.config;
+package org.yu.common.multidb.config;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,8 +22,8 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         String tenantId = YuContextHolder.getYuContext() != null ? YuContextHolder.getYuContext().getTenantId().toString() : null;
-        if(tenantId == null) {
-            HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        if (tenantId == null) {
+            HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             tenantId = req.getParameter("tenantId");
         }
         return tenantId;

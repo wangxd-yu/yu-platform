@@ -29,7 +29,7 @@ spring:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     show-sql: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 123456
 yu:
@@ -40,19 +40,19 @@ yu:
       1001:
         admins: admin,superadmin
         datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
           username: root
           password: 123456
       1002:
         admins: admin,superadmin
         datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
           username: root
           password: 123456
       1003:
         admins: admin,superadmin
         datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_3?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_3?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
           username: root
           password: 123456
 logging:

@@ -1,11 +1,11 @@
-package org.yu.cloud.common.multidb.config;
+package org.yu.common.multidb.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
+import org.yu.common.multidb.service.DynamicDataSourceService;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -16,9 +16,9 @@ import javax.sql.DataSource;
  * @author wangxd
  * @date 2021-03-18 22:19
  */
-@ConditionalOnProperty(prefix = "yu.multidb", name = "enabled", havingValue = "true")
 @Configuration
-@Import({DynamicDataSourceServiceDbConfig.class, DynamicDataSourceServicePropConfig.class, DynamicDataSourceServiceFeignConfig.class})
+@ConditionalOnProperty(prefix = "yu.multidb", name = "enabled", havingValue = "true")
+@Import({DynamicDataSourceServiceDbConfig.class, DynamicDataSourceServicePropConfig.class})
 public class DataSourceConfig {
 
     @Resource

@@ -1,4 +1,4 @@
-package org.yu.cloud.common.multidb.config;
+package org.yu.common.multidb.config;
 
 import org.springframework.context.annotation.Import;
 

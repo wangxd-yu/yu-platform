@@ -1,4 +1,4 @@
-package org.yu.cloud.common.multidb.service;
+package org.yu.common.multidb.service;
 
 import javax.sql.DataSource;
 import java.util.Map;

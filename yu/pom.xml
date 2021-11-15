@@ -65,6 +65,11 @@
                 <artifactId>common-web-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>common-multidb-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- 自定义 starter -->
             <dependency>

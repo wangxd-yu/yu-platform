@@ -1,6 +1,6 @@
-package org.yu.cloud.common.multidb.repository;
+package org.yu.common.multidb.repository;
 
-import org.yu.cloud.common.multidb.domain.DataSourceDO;
+import org.yu.common.multidb.domain.DataSourceDO;
 import org.yu.common.querydsl.repository.DslBaseRepository;
 
 /**

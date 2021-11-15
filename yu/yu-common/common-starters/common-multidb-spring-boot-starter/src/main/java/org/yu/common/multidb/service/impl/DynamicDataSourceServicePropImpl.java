@@ -1,11 +1,11 @@
-package org.yu.cloud.common.multidb.service.impl;
+package org.yu.common.multidb.service.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.yu.cloud.common.multidb.config.DynamicDataSource;
-import org.yu.cloud.common.multidb.properties.MultiTenantProperties;
-import org.yu.cloud.common.multidb.service.DynamicDataSourceService;
+import org.yu.common.multidb.config.DynamicDataSource;
+import org.yu.common.multidb.properties.MultiTenantProperties;
+import org.yu.common.multidb.service.DynamicDataSourceService;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
