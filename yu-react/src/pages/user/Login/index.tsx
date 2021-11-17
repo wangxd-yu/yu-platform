@@ -16,6 +16,8 @@ import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
 
+const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu/` : '/';
+
 const LoginMessage: React.FC<{
   content: string;
 }> = ({ content }) => (
@@ -52,7 +54,7 @@ const Login: React.FC = () => {
       console.log(msg)
 
       if (msg.token) {
-        localStorage.setItem('token', msg.token);
+        localStorage.setItem('oauth_token', JSON.stringify(msg));
         const defaultloginSuccessMessage = '登录成功！';
         message.success(defaultloginSuccessMessage);
         await fetchUserInfo();
@@ -84,7 +86,7 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <Link to="/">
-              <img alt="logo" className={styles.logo} src="/logo.svg" />
+              <img alt="logo" className={styles.logo} src={`${PUBLIC_PATH}logo.svg`}/>
               <span className={styles.title}>Ant Design</span>
             </Link>
           </div>

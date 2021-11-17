@@ -37,14 +37,18 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: {},
-    };
+  // 如果是登录页面 或者 token为空，不执行
+  if (history.location.pathname.indexOf(loginPath) < 0 && localStorage.getItem('oauth_token')) {
+    const oauthToken = JSON.parse(localStorage.getItem('oauth_token') as string);
+    if (oauthToken.expiration > new Date().getTime()) {
+      const currentUser = await fetchUserInfo();
+      return {
+        fetchUserInfo,
+        currentUser,
+        settings: {},
+      };
+    }
+
   }
   return {
     fetchUserInfo,
@@ -65,14 +69,17 @@ function isUrlNeedAuthentication(url: string) {
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   // 需要 token 认证
   if (isUrlNeedAuthentication(url)) {
-    let authHeader = {};
-    if (localStorage.getItem('token')) {
-      authHeader = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    const oauthToken = JSON.parse(localStorage.getItem('oauth_token') as string)
+    if(oauthToken.expiration > new Date().getTime()) {
+      let authHeader = {};
+      if (localStorage.getItem('token')) {
+        authHeader = { Authorization: `${oauthToken.tokenHead}${oauthToken.token}` };
+      }
+      return {
+        url: `${url}`,
+        options: { ...options, interceptors: true, headers: authHeader },
+      };
     }
-    return {
-      url: `${url}`,
-      options: { ...options, interceptors: true, headers: authHeader },
-    };
   }
   // 不需要token认证
   return {
@@ -136,6 +143,7 @@ export const request: RequestConfig = {
         message: error.data.message,
       });
     }
+    console.log(error)
     throw error;
   },
 };
@@ -178,12 +186,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     menu: {
       // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
       params: {
-        userId: initialState?.currentUser?.username,
+        username: initialState?.currentUser?.username,
       },
       request: (params, defaultMenuData) => {
         // initialState.currentUser 中包含了所有用户信息
         // const menuData = await fetchMenuData();
-        return YuApi.queryList(yuUrlSystem(`/menu/build`));
+        if (params.username) {
+          return YuApi.queryList(yuUrlSystem(`/menu/build`));
+        }
       }
     }
   };

@@ -46,10 +46,12 @@ public class AuthController {
     @RequestMapping(value = "/token", method = RequestMethod.POST)
     public ResponseEntity<Oauth2TokenDTO> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+        assert oAuth2AccessToken != null;
         Oauth2TokenDTO oauth2TokenDto = Oauth2TokenDTO.builder()
                 .token(oAuth2AccessToken.getValue())
                 .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
                 .expiresIn(oAuth2AccessToken.getExpiresIn())
+                .expiration(oAuth2AccessToken.getExpiration().getTime())
                 .tokenHead("Bearer ").build();
         logLoginService.asyncSave(this.map2LogLoginDO(parameters.get("username")));
         return new ResponseEntity<>(oauth2TokenDto, HttpStatus.OK);
@@ -61,7 +63,7 @@ public class AuthController {
         UserAgent ua = UserAgentUtil.parse(request.getHeader("User-Agent"));
         logLoginDO.setUsername(username);
         logLoginDO.setBrowser(ua.getBrowser().getName());
-        String ip = ServletUtil.getClientIP(request, null);
+        String ip = ServletUtil.getClientIP(request);
         logLoginDO.setIp(ip);
         logLoginDO.setLocation(AddressUtil.getRealAddressByIP(ip));
         logLoginDO.setOs(ua.getOs().getName());

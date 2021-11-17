@@ -5,6 +5,8 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV } = process.env;
+const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu/` : '/';
+
 export default defineConfig({
   hash: true,
   antd: {},
@@ -60,4 +62,6 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  base: PUBLIC_PATH,
+  publicPath: PUBLIC_PATH,
 });
