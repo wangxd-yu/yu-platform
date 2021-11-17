@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.yu.common.core.context.YuContextHolder;
-import org.yu.common.web.exception.ServiceException;
+import org.yu.common.core.exception.ServiceException;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.dept.domain.QDeptDO;
