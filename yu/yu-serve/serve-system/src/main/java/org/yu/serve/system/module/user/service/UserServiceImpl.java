@@ -78,6 +78,10 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
         if (dbUser != null && !dbUser.getId().equals(domain.getId())) {
             throw new EntityExistException(UserDO.class, "username", domain.getUsername());
         }
+        //修改用户名
+        if(dbUser == null) {
+            dbUser = baseRepository.findById(domain.getId()).get();
+        }
         assert dbUser != null;
         domain.setPassword(dbUser.getPassword());
         baseRepository.save(domain);
