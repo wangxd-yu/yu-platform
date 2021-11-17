@@ -4,6 +4,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.yu.common.core.context.YuContextHolder;
+import org.yu.common.core.exception.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -25,6 +26,9 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         if (tenantId == null) {
             HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             tenantId = req.getParameter("tenantId");
+        }
+        if (!super.getResolvedDataSources().containsKey(tenantId)) {
+            throw new ServiceException("租户编号不存在！");
         }
         return tenantId;
     }
