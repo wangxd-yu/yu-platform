@@ -72,7 +72,7 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
     const oauthToken = JSON.parse(localStorage.getItem('oauth_token') as string)
     if(oauthToken.expiration > new Date().getTime()) {
       let authHeader = {};
-      if (localStorage.getItem('token')) {
+      if (oauthToken.token) {
         authHeader = { Authorization: `${oauthToken.tokenHead}${oauthToken.token}` };
       }
       return {
