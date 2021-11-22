@@ -11,6 +11,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import fixMenuItemIcon from './utils/fixMenuItemIcon';
 import * as YuApi from '@/utils/yuApi';
 import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
+import { getOauthToken, isTokenEfective } from './utils/AuthUtil';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -38,17 +39,17 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   // 如果是登录页面 或者 token为空，不执行
-  if (history.location.pathname.indexOf(loginPath) < 0 && localStorage.getItem('oauth_token')) {
-    const oauthToken = JSON.parse(localStorage.getItem('oauth_token') as string);
-    if (oauthToken.expiration > new Date().getTime()) {
+  if (history.location.pathname.indexOf(loginPath) < 0 && getOauthToken()) {
+    if (isTokenEfective()) {
       const currentUser = await fetchUserInfo();
       return {
         fetchUserInfo,
         currentUser,
         settings: {},
       };
+    } else {
+      localStorage.clear()
     }
-
   }
   return {
     fetchUserInfo,
@@ -69,8 +70,8 @@ function isUrlNeedAuthentication(url: string) {
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   // 需要 token 认证
   if (isUrlNeedAuthentication(url)) {
-    const oauthToken = JSON.parse(localStorage.getItem('oauth_token') as string)
-    if(oauthToken.expiration > new Date().getTime()) {
+    const oauthToken = getOauthToken()
+    if(isTokenEfective()) {
       let authHeader = {};
       if (oauthToken.token) {
         authHeader = { Authorization: `${oauthToken.tokenHead}${oauthToken.token}` };
@@ -160,9 +161,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!isTokenEfective() && location.pathname !== loginPath) {
         history.push(loginPath);
-      }
+      } else if (isTokenEfective() && !initialState?.currentUser){
+        history.push("/")
+      } 
     },
     links: isDev
       ? [

@@ -16,8 +16,6 @@ import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
 
-const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu/` : '/';
-
 const LoginMessage: React.FC<{
   content: string;
 }> = ({ content }) => (
@@ -36,6 +34,7 @@ const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -86,7 +85,7 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <Link to="/">
-              <img alt="logo" className={styles.logo} src={`${PUBLIC_PATH}logo.svg`}/>
+              <img alt="logo" className={styles.logo} src={`${YU_PUBLIC_PATH}logo.svg`}/>
               <span className={styles.title}>Ant Design</span>
             </Link>
           </div>
