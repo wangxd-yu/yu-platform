@@ -110,9 +110,7 @@ const DeptPage: React.FC = () => {
           return dataList;
         }}
         rowKey="id"
-        pagination={{
-          hideOnSinglePage: true,
-        }}
+        pagination={false}
         expandable={{
           expandRowByClick: false
         }}

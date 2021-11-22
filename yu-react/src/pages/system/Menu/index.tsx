@@ -208,14 +208,13 @@ const MenuPage: React.FC = () => {
         columns={columns}
         actionRef={menuActionRef}
         request={queryMenu}
+        footer={() => ''}
         postData={(dataList) => {
           setMenuDataList(dataList)
           return dataList;
         }}
         rowKey="id"
-        pagination={{
-          hideOnSinglePage: true,
-        }}
+        pagination={false}
         expandable={{
           expandRowByClick: false
         }}

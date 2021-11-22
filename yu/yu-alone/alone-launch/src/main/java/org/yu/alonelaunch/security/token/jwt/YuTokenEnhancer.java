@@ -6,7 +6,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 import org.yu.alonelaunch.security.pojo.SecurityUser;
-import org.yu.common.core.context.YuContextHolder;
 
 import java.util.HashMap;
 import java.util.Map;
