@@ -5,6 +5,8 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV } = process.env;
+
+//非根目录部署 设置项目名 yu
 const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu/` : '/';
 
 export default defineConfig({
@@ -64,4 +66,7 @@ export default defineConfig({
   exportStatic: {},
   base: PUBLIC_PATH,
   publicPath: PUBLIC_PATH,
+  define: {
+    YU_PUBLIC_PATH: PUBLIC_PATH
+  }
 });
