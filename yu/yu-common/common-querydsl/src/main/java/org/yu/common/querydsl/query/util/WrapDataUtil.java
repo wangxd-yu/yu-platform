@@ -1,13 +1,17 @@
 package org.yu.common.querydsl.query.util;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.AbstractJPAQuery;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.api.TreeNode;
 import org.yu.common.querydsl.util.TreeUtil;
 
+import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,10 +41,18 @@ public class WrapDataUtil {
     }
 
     public static <T> MultiDataResult<T> toPage(AbstractJPAQuery<T, ?> jpaQuery, Pageable pageable) {
-        QueryResults<T> queryResults = jpaQuery
-                .limit(pageable.getPageSize())
-                .offset((long) pageable.getPageNumber() * pageable.getPageSize())
-                .fetchResults();
+        jpaQuery.limit(pageable.getPageSize())
+                .offset((long) pageable.getPageNumber() * pageable.getPageSize());
+
+        if (!pageable.getSort().isEmpty()) {
+            PathBuilder<Entity> entityPath = new PathBuilder<>(Entity.class, jpaQuery.getMetadata().getJoins().get(0).getTarget().toString());
+            for (Sort.Order order : pageable.getSort()) {
+                PathBuilder<Object> path = entityPath.get(order.getProperty());
+                jpaQuery.orderBy(new OrderSpecifier(com.querydsl.core.types.Order.valueOf(order.getDirection().name()), path));
+            }
+        }
+
+        QueryResults<T> queryResults = jpaQuery.fetchResults();
         return MultiDataResult.<T>builder()
                 .type(MultiDataTypeEnum.PAGE)
                 .data(queryResults.getResults())
