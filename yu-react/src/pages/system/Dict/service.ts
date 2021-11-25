@@ -17,10 +17,9 @@ export async function queryDict(
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
-  },
-  options?: { [key: string]: any },
+  }
 ) {
-  return YuApi.queryPage<Dict>(dictUrl, params, options);
+  return YuApi.queryPage<Dict>(dictUrl, params);
 }
 
 /** 获取规则列表 GET /api_sy/dictDetail */
@@ -31,10 +30,9 @@ export async function queryDictItem(
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
-  },
-  options?: { [key: string]: any },
+  }
 ) {
-  return YuApi.queryPage<DictItem>(dictItemUrl, params, options);
+  return YuApi.queryPage<DictItem>(dictItemUrl, params);
 }
 
 export async function getDict(id: number) {

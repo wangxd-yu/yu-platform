@@ -7,10 +7,9 @@ const deptUrl = yuUrlSystem('/dept');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryDept(
-  params: any,
-  options?: Record<string, any>,
+  params: any
 ) {
-  return YuApi.queryList<DeptData>(deptUrl, params, options);
+  return YuApi.queryList<DeptData>(deptUrl, params);
 }
 
 export async function getDept(id: number) {

@@ -1,15 +1,16 @@
 import type { EndpointData } from './data';
 import * as YuApi from '@/utils/yuApi';
 import { yuUrlSystem } from '@/utils/yuUrl';
+import type { SortOrder } from 'antd/lib/table/interface';
 
 const endpointUrl = yuUrlSystem('/endpoint');
 
 /** 获取规则列表 GET */
 export async function queryEndpoint(
   params?: any,
-  options?: Record<string, any>,
+  sort?: Record<string, SortOrder>
 ) {
-  return YuApi.queryPage<EndpointData>(endpointUrl, params, options);
+  return YuApi.queryPage<EndpointData>(endpointUrl, params, sort);
 }
 
 export async function getEndpoint(id: number, cb: any) {

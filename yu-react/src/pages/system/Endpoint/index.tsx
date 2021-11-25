@@ -39,11 +39,13 @@ const EndpointTable: React.FC<EndpointData> = () => {
   const columns: ProColumns<EndpointData>[] = [
     {
       title: '端点名称',
-      dataIndex: 'label'
+      dataIndex: 'label',
+      sorter: true,
     },
     {
       title: '端点路径',
       dataIndex: 'pattern',
+      sorter: true,
     },
     {
       title: '请求方法',
@@ -98,6 +100,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
       title: '创建时间',
       align: 'center',
       search: false,
+      sorter: true,
       dataIndex: 'createTime',
       valueType: 'dateTime'
     },

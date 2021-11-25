@@ -10,10 +10,9 @@ const endpointUrl = yuUrlSystem('/endpoint')
 
 /** 获取规则列表 GET /api/rule */
 export async function queryMenu(
-  params?: any,
-  options?: Record<string, any>,
+  params?: any
 ) {
-  return YuApi.queryTree<MenuData>(menuUrl, params, options);
+  return YuApi.queryTree<MenuData>(menuUrl, params);
 }
 
 export async function getMenu(id: number) {
@@ -37,10 +36,9 @@ export async function deleteMenu(id: string | number) {
 
 /** 获取规则列表 GET /api/menu/${id}/endpoints */
 export async function queryMenuEndponits(
-  params?: any,
-  options?: Record<string, any>,
+  params?: any
 ) {
-  return YuApi.queryList<EndpointData>(`${menuUrl}/${params.menuId}/endpoints`, params, options);
+  return YuApi.queryList<EndpointData>(`${menuUrl}/${params.menuId}/endpoints`, params);
 }
 
 export async function deleteMenuEndpoint(menuId: string | number, endpointId: string | number) {
@@ -58,8 +56,7 @@ export async function saveMenuEndpoints(id: string, endpointIds: string[]) {
 }
 
 export async function queryEndponitList(
-  params?: any,
-  options?: Record<string, any>,
+  params?: any
 ) {
-  return YuApi.queryList<EndpointData>(endpointUrl, params, options);
+  return YuApi.queryList<EndpointData>(endpointUrl, params);
 }

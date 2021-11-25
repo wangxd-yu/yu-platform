@@ -6,10 +6,9 @@ const userUrl = yuUrlSystem('/user');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryUser(
-  params?: any,
-  options?: Record<string, any>,
+  params?: any
 ) {
-  return YuApi.queryPage<UserData>(userUrl, params, options);
+  return YuApi.queryPage<UserData>(userUrl, params);
 }
 
 export async function getUser(id: number, cb: any) {

@@ -239,7 +239,7 @@ const MenuPage: React.FC = () => {
         <MenuForm
           formRef={menuFormRef}
           visible={menuFormVisible}
-          initialValues={menuCurrentRow || {}}
+          initialValues={menuCurrentRow || {type: MenuTypeEnum.FOLDER}}
           isAdd={!menuCurrentRow?.id}
           menuDataList={menuDataList}
           onVisibleChange={(visible) => {

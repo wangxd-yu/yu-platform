@@ -1,3 +1,4 @@
+import type { SortOrder } from 'antd/lib/table/interface';
 import { request } from 'umi';
 
 // 转换分页参数 
@@ -34,8 +35,21 @@ const queryMulti = <T> (pa: {
     /** 页面的容量 */
     pageSize?: number;
   },
+  sort?: Record<string, SortOrder>,
   options?: Record<string, any>
 }, cb: (params: any) => any) => {
+  let allParams: any = cb(pa.params)
+  if(pa.sort && Object.keys(pa.sort).length > 0) {
+    const sortColumn = Object.keys(pa.sort)[0]
+    let sort
+    if(pa.sort[sortColumn] === 'descend') {
+      sort = `${sortColumn},desc`
+    } else {
+      sort = `${sortColumn},asc`
+    }
+    allParams = {...allParams, sort}
+  }
+  
   return request<{
     data: T[];
     /** 列表的内容总数 */
@@ -43,7 +57,7 @@ const queryMulti = <T> (pa: {
     success?: boolean;
   }>(pa.url, {
     method: 'GET',
-    params: cb(pa.params),
+    params: allParams,
     ...(pa.options || {}),
   });
 };
@@ -57,9 +71,11 @@ export async function queryPage<T>(
     /** 页面的容量 */
     pageSize?: number;
   },
-  options?: Record<string, any>,
+  sort?: Record<string, SortOrder>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _filter?: Record<string, React.ReactText[] | null>
 ) {
-  return queryMulti<T>({ url, params, options }, transferPageParams);
+  return queryMulti<T>({ url, params,sort }, transferPageParams);
 }
 
 export async function queryList<T>(

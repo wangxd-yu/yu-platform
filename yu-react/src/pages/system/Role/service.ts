@@ -8,10 +8,9 @@ const roleUrl = yuUrlSystem('/role');
 
 /** 获取规则列表 GET /api/rule */
 export async function queryRole(
-  params: any,
-  options?: Record<string, any>,
+  params: any
 ) {
-  return YuApi.queryPage<RoleData>(roleUrl, params, options);
+  return YuApi.queryPage<RoleData>(roleUrl, params);
 }
 
 export async function getRole(id: number) {
