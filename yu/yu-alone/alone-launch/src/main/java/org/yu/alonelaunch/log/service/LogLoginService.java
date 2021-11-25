@@ -10,7 +10,9 @@ import org.yu.common.querydsl.service.DslBaseService;
  */
 public interface LogLoginService extends DslBaseService<LogLoginDO, String> {
     /**
-     * 异步保存
+     * 异步保存 日志
+     *
+     * @param logLoginDO domain对象
      */
     @Async
     public void asyncSave(LogLoginDO logLoginDO);

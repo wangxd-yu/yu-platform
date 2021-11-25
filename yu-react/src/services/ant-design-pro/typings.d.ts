@@ -101,4 +101,27 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type TableListPagination = {
+    total?: number;
+    pageSize?: number;
+    current?: number;
+  };
+  
+  type TableListData = {
+    list: TableListItem[];
+    pagination: Partial<TableListPagination>;
+  };
+  
+  type TableListParams = {
+    status?: string;
+    name?: string;
+    desc?: string;
+    key?: number;
+    pageSize?: number;
+    currentPage?: number;
+    filter?: Record<string, any[]>;
+    sorter?: Record<string, any>;
+  };
+  
 }

@@ -67,6 +67,7 @@ export default [
         icon: 'smile',
         path: '/system/user',
         component: './system/User',
+        footerRender:false
       },
       {
         name: '端点管理',
@@ -75,6 +76,28 @@ export default [
         component: './system/Endpoint',
       },
     ],
+  },
+  {
+    path: '/log',
+    name: '日志管理',
+    icon: 'smile',
+    routes: [
+      {
+        name: '登录日志',
+        path: '/log/login',
+        component: './log/LoginLog',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
+      },
+      {
+        name: '接口日志',
+        path: '/log/endpoint',
+        component: './log/EndpointLog',
+      },
+    ]
   },
   {
     name: '表格管理',
