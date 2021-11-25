@@ -45,6 +45,8 @@ public class WrapDataUtil {
                 .offset((long) pageable.getPageNumber() * pageable.getPageSize());
 
         if (!pageable.getSort().isEmpty()) {
+            // 优先使用 前端传递 排序参数（将初始排序清空）
+            jpaQuery.getMetadata().clearOrderBy();
             PathBuilder<Entity> entityPath = new PathBuilder<>(Entity.class, jpaQuery.getMetadata().getJoins().get(0).getTarget().toString());
             for (Sort.Order order : pageable.getSort()) {
                 PathBuilder<Object> path = entityPath.get(order.getProperty());
