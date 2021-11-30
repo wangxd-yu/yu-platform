@@ -4,7 +4,6 @@ import org.yu.common.querydsl.service.DslBaseService;
 import org.yu.serve.system.module.endpoint.domain.EndpointDO;
 import org.yu.serve.system.module.endpoint.dto.EndpointLessDTO;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

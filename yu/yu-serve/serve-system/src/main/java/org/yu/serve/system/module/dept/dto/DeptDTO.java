@@ -3,8 +3,6 @@ package org.yu.serve.system.module.dept.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.yu.common.querydsl.query.annotation.YuDTO;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;

@@ -1,8 +1,8 @@
 package org.yu.serve.system.module.user.repository;
 
 import org.springframework.stereotype.Repository;
-import org.yu.serve.system.module.user.domain.UserDO;
 import org.yu.common.querydsl.repository.DslBaseRepository;
+import org.yu.serve.system.module.user.domain.UserDO;
 
 /**
  * @author wangxd

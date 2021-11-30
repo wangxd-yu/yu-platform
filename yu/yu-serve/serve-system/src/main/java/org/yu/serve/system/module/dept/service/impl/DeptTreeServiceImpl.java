@@ -1,13 +1,12 @@
 package org.yu.serve.system.module.dept.service.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Service;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.serve.system.module.dept.domain.QDeptDO;
 import org.yu.serve.system.module.dept.dto.DeptTreeDTO;
 import org.yu.serve.system.module.dept.service.DeptTreeService;
-import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;

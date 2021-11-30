@@ -1,9 +1,9 @@
 package org.yu.serve.system.module.user.service;
 
+import org.yu.common.querydsl.service.DslBaseService;
 import org.yu.serve.system.module.user.domain.UserDO;
 import org.yu.serve.system.module.user.dto.UserDTO;
 import org.yu.serve.system.module.user.dto.UserFullDTO;
-import org.yu.common.querydsl.service.DslBaseService;
 
 import java.util.Set;
 

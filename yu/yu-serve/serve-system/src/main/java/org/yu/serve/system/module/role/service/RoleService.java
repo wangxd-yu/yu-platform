@@ -1,6 +1,5 @@
 package org.yu.serve.system.module.role.service;
 
-import org.springframework.http.ResponseEntity;
 import org.yu.common.querydsl.service.DslBaseService;
 import org.yu.serve.system.module.role.domain.RoleDO;
 

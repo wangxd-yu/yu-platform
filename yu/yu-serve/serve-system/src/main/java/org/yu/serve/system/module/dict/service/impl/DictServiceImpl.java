@@ -3,7 +3,6 @@ package org.yu.serve.system.module.dict.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
-import org.yu.common.web.valid.annotation.YuDependValid;
 import org.yu.serve.system.module.dict.domain.DictDO;
 import org.yu.serve.system.module.dict.repository.DictRepository;
 import org.yu.serve.system.module.dict.service.DictDetailService;

@@ -1,7 +1,5 @@
 package org.yu.serve.system.module.dept.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;

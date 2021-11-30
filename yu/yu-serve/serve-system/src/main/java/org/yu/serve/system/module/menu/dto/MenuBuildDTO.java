@@ -3,9 +3,9 @@ package org.yu.serve.system.module.menu.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.yu.common.querydsl.api.TreeNode;
 import org.yu.common.querydsl.query.annotation.YuDTO;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;
-import org.yu.common.querydsl.api.TreeNode;
 import org.yu.serve.system.module.menu.domain.MenuDO;
 
 import java.util.List;

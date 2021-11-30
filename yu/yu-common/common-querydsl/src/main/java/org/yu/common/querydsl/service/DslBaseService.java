@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.domain.DslBaseDO;
-import org.yu.common.querydsl.query.util.YuQueryHelp;
 
 /**
  * @author wangxd

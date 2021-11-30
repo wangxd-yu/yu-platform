@@ -1,9 +1,9 @@
 package org.yu.serve.system.module.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.yu.common.querydsl.domain.DslBaseDeptDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.yu.common.querydsl.domain.DslBaseDeptDO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

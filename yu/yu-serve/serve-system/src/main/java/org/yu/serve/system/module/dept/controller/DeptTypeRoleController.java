@@ -1,10 +1,10 @@
 package org.yu.serve.system.module.dept.controller;
 
-import org.yu.serve.system.module.dept.domain.DeptTypeRoleDO;
-import org.yu.serve.system.module.dept.service.DeptTypeRoleService;
-import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.yu.common.querydsl.controller.DslBaseApiController;
+import org.yu.serve.system.module.dept.domain.DeptTypeRoleDO;
+import org.yu.serve.system.module.dept.service.DeptTypeRoleService;
 
 /**
  * @author wangxd

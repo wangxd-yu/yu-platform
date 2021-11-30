@@ -1,7 +1,7 @@
 package org.yu.serve.system.module.dict.service;
 
-import org.yu.serve.system.module.dict.domain.DictDO;
 import org.yu.common.querydsl.service.DslBaseService;
+import org.yu.serve.system.module.dict.domain.DictDO;
 
 /**
  * @author wangxd

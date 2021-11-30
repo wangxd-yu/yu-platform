@@ -3,7 +3,6 @@ package org.yu.common.web.config;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.yu.common.web.async.AsyncExecutorConfig;
 import org.yu.common.web.async.AsyncExecutorProperties;
 import org.yu.common.web.exception.handler.GlobalExceptionHandler;
 import org.yu.common.web.util.QueryDslUtil;
