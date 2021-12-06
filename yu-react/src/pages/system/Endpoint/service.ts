@@ -32,10 +32,18 @@ export async function deleteEndpoint(id: string | number) {
   return YuApi.deleteById(id, endpointUrl)
 }
 
-export async function enableEndpoint(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/enable`)
+export async function accessEnable(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/accessEnable`)
 }
 
-export async function disableEndpoint(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/disable`)
+export async function accessDisable(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/accessDisable`)
+}
+
+export async function logEnable(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/logEnable`)
+}
+
+export async function logDisable(id: string) {
+  return YuApi.update(`${endpointUrl}/${id}/logDisable`)
 }

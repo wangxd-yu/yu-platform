@@ -5,7 +5,7 @@ import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, enableEndpoint, disableEndpoint } from './service';
+import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, accessEnable, accessDisable, logEnable, logDisable } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { EndpointData, TableListPagination } from './data';
 import EndpointForm from './components/EndpointForm'
@@ -69,9 +69,9 @@ const EndpointTable: React.FC<EndpointData> = () => {
       render: (_, record) => <Tag color={methodMap[record.method].color}>{methodMap[record.method].text}</Tag>,
     },
     {
-      title: '状态',
+      title: '权限',
       align: 'center',
-      dataIndex: 'enabled',
+      dataIndex: 'accessEnabled',
       valueType: 'select',
       valueEnum: {
         true: {
@@ -82,15 +82,43 @@ const EndpointTable: React.FC<EndpointData> = () => {
         }
       },
       render: (_: any, record: any) => [
-        <Switch key="enabled"
-          checked={record.enabled}
+        <Switch key="accessEnabled"
+          checked={record.accessEnabled}
           checkedChildren="启用"
           unCheckedChildren="停用"
           onChange={() => {
-            if(record.enabled) {
-              disableEndpoint(record.id)
+            if(record.accessEnabled) {
+              accessDisable(record.id)
             } else {
-              enableEndpoint(record.id)
+              accessEnable(record.id)
+            }
+            endpointActionRef.current?.reload()
+          }} />
+      ]
+    },
+    {
+      title: '日志',
+      align: 'center',
+      dataIndex: 'logEnabled',
+      valueType: 'select',
+      valueEnum: {
+        true: {
+          text: '启用',
+        },
+        false: {
+          text: '停用',
+        }
+      },
+      render: (_: any, record: any) => [
+        <Switch key="logEnabled"
+          checked={record.logEnabled}
+          checkedChildren="启用"
+          unCheckedChildren="停用"
+          onChange={() => {
+            if(record.logEnabled) {
+              logDisable(record.id)
+            } else {
+              logEnable(record.id)
             }
             endpointActionRef.current?.reload()
           }} />

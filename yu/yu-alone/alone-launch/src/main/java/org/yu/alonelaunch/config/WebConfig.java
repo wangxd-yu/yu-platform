@@ -1,10 +1,8 @@
 package org.yu.alonelaunch.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.yu.alonelaunch.interceptor.YuAuthInterceptor;
 
 /**
  * This is Description
@@ -15,10 +13,10 @@ import org.yu.alonelaunch.interceptor.YuAuthInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    public YuAuthInterceptor yuAuthInterceptor() {
+    //@Bean
+    /*public YuAuthInterceptor yuAuthInterceptor() {
         return new YuAuthInterceptor();
-    }
+    }*/
 
     /*@Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -32,6 +30,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(this.yuAuthInterceptor()).addPathPatterns("/**");
+        //registry.addInterceptor(this.yuAuthInterceptor()).addPathPatterns("/**");
     }
 }

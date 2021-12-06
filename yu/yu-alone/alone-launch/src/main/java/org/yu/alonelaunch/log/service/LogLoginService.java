@@ -15,5 +15,5 @@ public interface LogLoginService extends DslBaseService<LogLoginDO, String> {
      * @param logLoginDO domain对象
      */
     @Async
-    public void asyncSave(LogLoginDO logLoginDO);
+    void asyncSave(LogLoginDO logLoginDO);
 }

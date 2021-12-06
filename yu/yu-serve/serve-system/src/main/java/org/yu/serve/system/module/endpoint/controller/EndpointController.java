@@ -33,15 +33,27 @@ public class EndpointController extends DslBaseApiController<EndpointService, En
         return super.query(query, pageable);
     }
 
-    @PutMapping("{id}/enable")
-    public ResponseEntity<Object> enable(@PathVariable String id) {
-        this.dslBaseService.changeEnabled(id, true);
+    @PutMapping("{id}/accessEnable")
+    public ResponseEntity<Object> accessEnable(@PathVariable String id) {
+        this.dslBaseService.changeAccessEnabled(id, true);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("{id}/disable")
-    public ResponseEntity<Object> disable(@PathVariable String id) {
-        this.dslBaseService.changeEnabled(id, false);
+    @PutMapping("{id}/accessDisable")
+    public ResponseEntity<Object> accessDisable(@PathVariable String id) {
+        this.dslBaseService.changeAccessEnabled(id, false);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("{id}/logEnable")
+    public ResponseEntity<Object> logEnable(@PathVariable String id) {
+        this.dslBaseService.changeLogEnabled(id, true);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("{id}/logDisable")
+    public ResponseEntity<Object> logDisable(@PathVariable String id) {
+        this.dslBaseService.changeLogEnabled(id, false);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -26,6 +26,9 @@ public class EndpointDO extends DslBaseTenantDO<String> {
     @Enumerated(EnumType.STRING)
     private RequestMethod method;
 
-    @Column(name = "is_enabled")
-    private Boolean enabled;
+    @Column(name = "is_access_enabled")
+    private Boolean accessEnabled;
+
+    @Column(name = "is_log_enabled")
+    private Boolean logEnabled;
 }

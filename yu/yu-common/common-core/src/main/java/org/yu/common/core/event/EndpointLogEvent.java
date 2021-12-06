@@ -4,10 +4,10 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * @author wangxd
- * @date 2021-11-03 11:00
+ * @date 2021-11-30 11:00
  */
-public class EndpointEvent extends ApplicationEvent {
-    public EndpointEvent(Object source) {
+public class EndpointLogEvent extends ApplicationEvent {
+    public EndpointLogEvent(Object source) {
         super(source);
     }
 }

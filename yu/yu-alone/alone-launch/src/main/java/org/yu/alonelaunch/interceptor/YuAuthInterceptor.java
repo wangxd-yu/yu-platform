@@ -1,78 +1,82 @@
 package org.yu.alonelaunch.interceptor;
 
-import cn.hutool.core.collection.CollectionUtil;
-import org.springframework.context.event.EventListener;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.ModelAndView;
-import org.yu.alonelaunch.security.constant.MessageConstant;
-import org.yu.alonelaunch.security.pojo.SecurityUser;
-import org.yu.alonelaunch.security.util.TenantUtil;
-import org.yu.common.core.context.YuContext;
-import org.yu.common.core.context.YuContextHolder;
-import org.yu.common.core.dto.LoginUser;
-import org.yu.common.core.event.EndpointEvent;
-import org.yu.common.multidb.properties.MultiTenantProperties;
-import org.yu.serve.system.module.endpoint.service.EndpointService;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 /**
  * YU 请求拦截器，用于处理 YuContextHolder填充、端点权限控制
  *
  * @author wangxd
  * @date 2021-09-05
  */
+/*@Slf4j
 public class YuAuthInterceptor implements HandlerInterceptor {
 
     @Resource
     private EndpointService endpointService;
 
     @Resource
+    private LogEndpointService logEndpointService;
+
+    @Resource
     private MultiTenantProperties multiTenantProperties;
+
+    *//**
+     * 权限路径 map
+     * 存放 不同tenant的 地址权限 对应关系
+     * 不同租户的 端点 访问权限控制 数据结构
+     *//*
+    private static Map<String, Map<String, Set<String>>> tenantAccessPathMap;
+    *//**
+     * 日志路径 map
+     *//*
+    private static Map<String, Set<String>> tenantLogPathMap;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+        //需要记录日志
+        if (tenantLogPathMap.get(YuContextHolder.getTenantId()).contains(getPath(request))) {
+            ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
+            ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
+            LogEndpointDO logEndpointDO = LogEndpointDO.builder()
+                    .username(YuContextHolder.getYuContext().getClientUser().getUsername())
+                    .userId(YuContextHolder.getYuContext().getClientUser().getId())
+                    .ip(ServletUtil.getClientIP(requestWrapper))
+                    .method(requestWrapper.getMethod())
+                    .handler(requestWrapper.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE).toString())
+                    .pattern((String) requestWrapper.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE))
+                    .url(requestWrapper.getRequestURL().toString())
+                    .request(new String(requestWrapper.getContentAsByteArray()))
+                    .response(new String(responseWrapper.getContentAsByteArray()))
+                    .httpStatus(responseWrapper.getStatus())
+                    .build();
+            logEndpointService.asyncSave(logEndpointDO);
+        }
         YuContextHolder.clearContext();
     }
 
-    /**
-     * 存放 不同tenant的 地址权限 对应关系
-     * 不同租户的 端点 访问权限控制 数据结构
-     */
-    private static Map<String, Map<String, Set<String>>> tenantPathRolesMap;
-
     @PostConstruct
     public void init() {
-        tenantPathRolesMap = new HashMap<>(multiTenantProperties.getTenants().size());
+        tenantAccessPathMap = new HashMap<>(multiTenantProperties.getTenants().size());
+        tenantLogPathMap = new HashMap<>(multiTenantProperties.getTenants().size());
         multiTenantProperties.getTenants().forEach((tenantId, value) -> {
             YuContext yuContext = new YuContext();
             new YuContextHolder(yuContext);
             YuContextHolder.getYuContext().setTenantId(tenantId);
-            tenantPathRolesMap.put(tenantId, endpointService.getEndpointRoles());
+            tenantAccessPathMap.put(tenantId, endpointService.getAccessEndpoints());
+            tenantLogPathMap.put(tenantId, endpointService.getLogEndpoints());
             YuContextHolder.clearContext();
         });
-        /*Map<String, Set<String>> pathRolesMap = new HashMap<>(4);
-        pathRolesMap.put("/user/{id}[GET]", Stream.of("XXX", "SSS").collect(Collectors.toSet()));
-        tenantPathRolesMap.put(1000, pathRolesMap);*/
     }
 
-    @EventListener(classes = EndpointEvent.class)
-    public void listener() {
-        // 此处如果改为异步执行， tenantId 需要传入，不能直接从 YuContextHolder中获取
-        tenantPathRolesMap.put(YuContextHolder.getTenantId(), endpointService.getEndpointRoles());
+    @EventListener(classes = EndpointAccessEvent.class)
+    public void accessListener() {
+        // 此处如果改为异步执行， tenantId 需要传入，不能直接从 YuContextHolder中获取(使用阿里 TtlExecutors 解决)
+        tenantAccessPathMap.put(YuContextHolder.getTenantId(), endpointService.getAccessEndpoints());
+    }
+
+    @EventListener(classes = EndpointLogEvent.class)
+    public void logListener() {
+        // 此处如果改为异步执行， tenantId 需要传入，不能直接从 YuContextHolder中获取(使用阿里 TtlExecutors 解决)
+        tenantLogPathMap.put(YuContextHolder.getTenantId(), endpointService.getLogEndpoints());
     }
 
     @Override
@@ -113,7 +117,7 @@ public class YuAuthInterceptor implements HandlerInterceptor {
 
     private void checkPathPermission(HttpServletRequest httpServletRequest) {
         String path = getPath(httpServletRequest);
-        Map<String, Set<String>> pathRolesMap = tenantPathRolesMap.get(YuContextHolder.getTenantId());
+        Map<String, Set<String>> pathRolesMap = tenantAccessPathMap.get(YuContextHolder.getTenantId());
         Set<String> roles = pathRolesMap == null ? null : pathRolesMap.get(path);
         if (roles != null
                 && !CollectionUtil.containsAny(YuContextHolder.getYuContext().getClientUser().getRoles(), pathRolesMap.get(path))) {
@@ -126,4 +130,4 @@ public class YuAuthInterceptor implements HandlerInterceptor {
         String bestMatchingPattern = (String) httpServletRequest.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         return bestMatchingPattern + "[" + method + "]";
     }
-}
+}*/

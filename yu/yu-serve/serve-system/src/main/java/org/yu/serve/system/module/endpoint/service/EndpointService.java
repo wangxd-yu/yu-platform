@@ -15,9 +15,13 @@ import java.util.Set;
  */
 public interface EndpointService extends DslBaseService<EndpointDO, String> {
 
-    Map<String, Set<String>> getEndpointRoles();
+    Map<String, Set<String>> getAccessEndpoints();
+
+    Set<String> getLogEndpoints();
 
     Set<EndpointLessDTO> getRequestMappingInfos();
 
-    void changeEnabled(String id, boolean enabled);
+    void changeAccessEnabled(String id, boolean enabled);
+
+    void changeLogEnabled(String id, boolean enabled);
 }

@@ -8,6 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.yu.alonelaunch.security.filter.YuFilter;
+
+import javax.annotation.Resource;
 
 /**
  * Security 配置文件
@@ -30,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Resource
+    private YuFilter logFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -40,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 所有请求必须被认证，登录之后可访问
                 .anyRequest().authenticated()
                 // 防止iframe 造成跨域
-                .and().headers().frameOptions().disable();;
+                .and().headers().frameOptions().disable();
+        http.addFilterBefore(logFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
