@@ -56,7 +56,7 @@ const MenuForm: React.FC<MenuFormProps> = (props: MenuFormProps) => {
     const handleTreeData = (data: MenuData[]) => {
         return [{
             key: 0,
-            value: 0,
+            value: "0",
             title: "顶级目录",
             disabled: disableTreeNode(MenuTypeEnum.FOLDER),
             children: handleTreeDataRecursion(data)
