@@ -28,4 +28,7 @@ public class UserTableQuery extends AbstractQuery {
 
     @YuQueryColumn(operator = YuOperatorEnum.INNER_LIKE)
     private String username;
+
+    @YuQueryColumn
+    private Boolean enabled;
 }
