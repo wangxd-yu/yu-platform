@@ -112,6 +112,7 @@ const MenuPage: React.FC = () => {
     {
       title: '操作',
       width: 180,
+      align: 'center',
       key: 'option',
       valueType: 'option',
       render: (__: any, record: any) => [
