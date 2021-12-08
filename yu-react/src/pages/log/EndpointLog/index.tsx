@@ -13,6 +13,14 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
 
   const columns: ProColumns<LogEndpointData>[] = [
     {
+      title: '端点名称',
+      dataIndex: 'endpointName'
+    },
+    {
+      title: '端点路径',
+      dataIndex: 'pattern'
+    },
+    {
       title: '登录用户',
       align: 'center',
       dataIndex: 'username',
@@ -27,15 +35,11 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
       title: '请求方法',
       align: 'center',
       dataIndex: 'method'
-    },
+    },/* 
     {
       title: '处理器',
       dataIndex: 'handler'
-    },
-    {
-      title: '端点路径',
-      dataIndex: 'pattern'
-    },
+    }, */
     {
       title: '响应状态',
       align: 'center',

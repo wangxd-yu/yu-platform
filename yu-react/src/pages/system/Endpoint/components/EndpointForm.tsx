@@ -15,14 +15,15 @@ const EndpointForm: React.FC<YuFormProps> = (props: YuFormProps) => {
   const [endpointList, setEndpointList] = useState<Map<string,EndpointLessDTO[]>>(new Map());
 
   useEffect(() => {
-    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoint/all')).then(res => {
+    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoints')).then(res => {
       setEndpointList(new Map(Object.entries<EndpointLessDTO[]>(_.groupBy(res, 'pattern') as unknown as {pattern: EndpointLessDTO[]})))
     });
   }, []);
 
   return (
     <YuForm {...props}>
-      <ProFormSwitch name="enabled" label="状态"/>
+      <ProFormSwitch name="accessEnabled" label="权限状态"/>
+      <ProFormSwitch name="logEnabled" label="日志状态"/>
       <ProFormText
         rules={[
           {

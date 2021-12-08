@@ -87,7 +87,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
           checkedChildren="启用"
           unCheckedChildren="停用"
           onChange={() => {
-            if(record.accessEnabled) {
+            if (record.accessEnabled) {
               accessDisable(record.id)
             } else {
               accessEnable(record.id)
@@ -115,7 +115,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
           checkedChildren="启用"
           unCheckedChildren="停用"
           onChange={() => {
-            if(record.logEnabled) {
+            if (record.logEnabled) {
               logDisable(record.id)
             } else {
               logEnable(record.id)
@@ -198,7 +198,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
           }
         }}
         formRef={endpointFormRef}
-        initialValues={endpointCurrentRow || { enabled: true }}
+        initialValues={endpointCurrentRow || { accessEnabled: true, logEnabled: false }}
         onFinish={async (value) => {
           const data = { ...endpointCurrentRow, ...value };
           let success;

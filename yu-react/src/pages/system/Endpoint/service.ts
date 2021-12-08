@@ -3,14 +3,14 @@ import * as YuApi from '@/utils/yuApi';
 import { yuUrlSystem } from '@/utils/yuUrl';
 import type { SortOrder } from 'antd/lib/table/interface';
 
-const endpointUrl = yuUrlSystem('/endpoint');
+const endpointUrl = yuUrlSystem('/endpoints');
 
 /** 获取规则列表 GET */
 export async function queryEndpoint(
   params?: any,
   sort?: Record<string, SortOrder>
 ) {
-  return YuApi.queryPage<EndpointData>(endpointUrl, params, sort);
+  return YuApi.queryPage<EndpointData>(`${endpointUrl}/:search`, params, sort);
 }
 
 export async function getEndpoint(id: number, cb: any) {
@@ -33,17 +33,17 @@ export async function deleteEndpoint(id: string | number) {
 }
 
 export async function accessEnable(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/accessEnable`)
+  return YuApi.update(`${endpointUrl}/${id}:accessEnable`)
 }
 
 export async function accessDisable(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/accessDisable`)
+  return YuApi.update(`${endpointUrl}/${id}:accessDisable`)
 }
 
 export async function logEnable(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/logEnable`)
+  return YuApi.update(`${endpointUrl}/${id}:logEnable`)
 }
 
 export async function logDisable(id: string) {
-  return YuApi.update(`${endpointUrl}/${id}/logDisable`)
+  return YuApi.update(`${endpointUrl}/${id}:logDisable`)
 }
