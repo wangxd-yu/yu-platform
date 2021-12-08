@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Switch, Tag } from 'antd';
+import { Button, Popconfirm, Switch, Tag } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -147,15 +147,18 @@ const EndpointTable: React.FC<EndpointData> = () => {
         >
           编辑
         </a>,
-        <a key="subscribeAlert"
-          onClick={async () => {
+        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+          onConfirm={async () => {
             await YuCrud.handleDelete(deleteEndpoint, record.id)
             if (endpointActionRef.current) {
               endpointActionRef.current.reload();
             }
-          }}>
-          删除
-        </a>,
+          }}
+        >
+          <a key="delete" href="#">
+            删除
+          </a>
+        </Popconfirm>
       ],
     },
   ];

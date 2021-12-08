@@ -6,4 +6,9 @@ export type LogEndpointData = {
   handler?: string;
   pattern?: string;
   url?: string;
+  httpStatus?: string;
+  createTime?: string;
+  time?: string;
+  request?: string;
+  response?: string;
 };

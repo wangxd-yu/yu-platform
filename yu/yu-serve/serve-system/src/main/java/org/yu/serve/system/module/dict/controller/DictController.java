@@ -48,7 +48,7 @@ public class DictController extends DslBaseController<DictService, DictDO, Strin
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteValid(
-            @YuDependValid(domain = DictDetailDO.class, prop = "dictId", exist = false)
+            @YuDependValid(domain = DictDetailDO.class, prop = "dictId", exist = false, message = "存在关联的字典明细")
             @PathVariable String id) {
         return super.delete(id);
     }

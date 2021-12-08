@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Switch } from 'antd';
+import { Button, Popconfirm, Switch } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryUser,getUser, addUser, updateUser, deleteUser,disableUser,enableUser } from './service';
+import { queryUser, getUser, addUser, updateUser, deleteUser, disableUser, enableUser } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { UserData, TableListPagination } from './data';
 import UserForm from './components/UserForm'
@@ -71,16 +71,16 @@ const UserTable: React.FC<UserData> = () => {
         }
       },
       render: (_: any, record: any) => [
-        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用"  onChange={() => {
-          if(record.enabled) {
+        <Switch key="enabled" checked={record.enabled} checkedChildren="启用" unCheckedChildren="停用" onChange={() => {
+          if (record.enabled) {
             disableUser(record.id)
           } else {
             enableUser(record.id)
           }
           userActionRef.current?.reload()
-        }}/>
+        }} />
       ],
-      
+
     },
     {
       title: '创建时间',
@@ -105,15 +105,18 @@ const UserTable: React.FC<UserData> = () => {
         >
           编辑
         </a>,
-        <a key="subscribeAlert"
-          onClick={async () => {
+        <Popconfirm key="deleteConfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+          onConfirm={async () => {
             await YuCrud.handleDelete(deleteUser, record.id)
             if (userActionRef.current) {
               userActionRef.current.reload();
             }
-          }}>
-          删除
-        </a>,
+          }}
+        >
+          <a key="delete" href="#">
+            删除
+          </a>
+        </Popconfirm>
       ],
     },
   ];
@@ -157,7 +160,7 @@ const UserTable: React.FC<UserData> = () => {
           }
         }}
         formRef={userFormRef}
-        initialValues={userCurrentRow || {enabled: true}}
+        initialValues={userCurrentRow || { enabled: true }}
         onFinish={async (value) => {
           const data = { ...userCurrentRow, ...value };
           let success;

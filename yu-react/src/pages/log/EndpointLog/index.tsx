@@ -4,7 +4,7 @@ import type { LogEndpointData } from './data';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import { getLogEndpoint, queryLogEndpoint } from './service';
-import { Button, Drawer } from 'antd';
+import { Drawer } from 'antd';
 import ProDescriptions from '@ant-design/pro-descriptions';
 
 const LogEndpointTable: React.FC<LogEndpointData> = () => {
@@ -121,13 +121,9 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
           <ProDescriptions.Item label="method">
             {logEndpointCurrentRow?.method}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="handler">
-            {logEndpointCurrentRow?.handler}
-          </ProDescriptions.Item>
           <ProDescriptions.Item label="pattern">
             {logEndpointCurrentRow?.pattern}
           </ProDescriptions.Item>
-
           <ProDescriptions.Item label="handler">
             {logEndpointCurrentRow?.handler}
           </ProDescriptions.Item>
