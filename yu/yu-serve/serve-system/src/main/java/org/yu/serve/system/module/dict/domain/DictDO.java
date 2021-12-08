@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "sys_dict")
-@YuUniqueValid(props = "code")
+@YuUniqueValid(props = "code", message = "已存在字典编号：${code}")
 public class DictDO extends DslBaseTenantDO<String> {
     /**
      * 编号

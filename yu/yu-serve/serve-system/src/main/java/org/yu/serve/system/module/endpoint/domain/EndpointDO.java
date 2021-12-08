@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;
+import org.yu.common.web.valid.annotation.YuUniqueValid;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "sys_endpoint")
+@YuUniqueValid(props = {"pattern", "method"}, message = "已存在端点：【${method}】${pattern}")
 public class EndpointDO extends DslBaseTenantDO<String> {
 
     private String label;

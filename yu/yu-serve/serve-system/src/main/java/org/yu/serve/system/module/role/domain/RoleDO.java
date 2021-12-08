@@ -3,6 +3,7 @@ package org.yu.serve.system.module.role.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.yu.common.querydsl.domain.DslBaseTenantDO;
+import org.yu.common.web.valid.annotation.YuUniqueValid;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "sys_role")
+@YuUniqueValid(props = "code", message = "已存在角色编号：${code}")
 public class RoleDO extends DslBaseTenantDO<String> implements Serializable {
     @NotBlank
     private String code;
