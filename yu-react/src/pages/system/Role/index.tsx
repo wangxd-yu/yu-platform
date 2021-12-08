@@ -1,5 +1,5 @@
 import { FolderOutlined, PlusOutlined, ProfileOutlined, SecurityScanOutlined } from '@ant-design/icons';
-import { Button, Tree } from 'antd';
+import { Button, Popconfirm, Tree } from 'antd';
 import type { FormInstance } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -116,15 +116,18 @@ const RoleTable: React.FC = () => {
         >
           权限分配
         </a>,
-        <a key="subscribeAlert"
-          onClick={async () => {
+        <Popconfirm key="deleteConfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+          onConfirm={async () => {
             await YuCrud.handleDelete(deleteRole, record.id)
             if (actionRef.current) {
               actionRef.current.reload();
             }
-          }}>
-          删除
-        </a>,
+          }}
+        >
+          <a key="delete" href="#">
+            删除
+          </a>
+        </Popconfirm>
       ],
     },
   ];

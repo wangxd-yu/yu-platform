@@ -82,7 +82,7 @@ const DeptPage: React.FC = () => {
         >
           添加下级
         </a>,
-        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+        <Popconfirm key="deleteConfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
           onConfirm={async () => {
             await YuCrud.handleDelete(deleteDept, record.id);
             if (deptActionRef.current) {

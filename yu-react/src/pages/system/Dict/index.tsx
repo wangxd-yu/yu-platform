@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer } from 'antd';
+import { Button, Drawer, Popconfirm } from 'antd';
 import type { FormInstance } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -79,15 +79,18 @@ const TableList: React.FC = () => {
         >
           字典配置
         </a>,
-        <a key="subscribeAlert"
-          onClick={async () => {
+        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+          onConfirm={async () => {
             await YuCrud.handleDelete(deleteDict, record.id)
             if (actionRef.current) {
               actionRef.current.reload();
             }
-          }}>
-          删除
-        </a>,
+          }}
+        >
+          <a key="delete" href="#">
+            删除
+          </a>
+        </Popconfirm>
       ],
     },
   ];
@@ -121,15 +124,18 @@ const TableList: React.FC = () => {
         >
           编辑
         </a>,
-        <a key="deleteDictItem"
-          onClick={async () => {
+        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+          onConfirm={async () => {
             await YuCrud.handleDelete(deleteDictItem, record.id);
             if (itemActionRef.current) {
               itemActionRef.current.reload();
             }
-          }}>
-          删除
-        </a>,
+          }}
+        >
+          <a key="delete" href="#">
+            删除
+          </a>
+        </Popconfirm>
       ],
     },
   ]

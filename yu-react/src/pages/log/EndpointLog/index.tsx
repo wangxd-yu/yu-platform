@@ -100,16 +100,16 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
         closable={false}
       >
         <ProDescriptions column={1} bordered>
-          <ProDescriptions.Item label="url">
+          <ProDescriptions.Item label="请求地址">
             {logEndpointCurrentRow?.url}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="httpStatus">
+          <ProDescriptions.Item label="响应状态">
             {logEndpointCurrentRow?.httpStatus}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="createTime">
+          <ProDescriptions.Item label="请求时间">
             {logEndpointCurrentRow?.createTime}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="time">
+          <ProDescriptions.Item label="请求耗时(ms)">
             {logEndpointCurrentRow?.time}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="用户名">
@@ -118,19 +118,19 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
           <ProDescriptions.Item label="IP">
             {logEndpointCurrentRow?.ip}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="method">
+          <ProDescriptions.Item label="请求方法">
             {logEndpointCurrentRow?.method}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="pattern">
+          <ProDescriptions.Item label="端点路径">
             {logEndpointCurrentRow?.pattern}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="handler">
+          <ProDescriptions.Item label="处理器">
             {logEndpointCurrentRow?.handler}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="JSON 代码块" valueType="jsonCode">
+          <ProDescriptions.Item label="请求体" valueType="jsonCode">
             {logEndpointCurrentRow?.request}
           </ProDescriptions.Item>
-          <ProDescriptions.Item label="JSON 代码块" valueType="jsonCode">
+          <ProDescriptions.Item label="响应体" valueType="jsonCode">
             {logEndpointCurrentRow?.response}
           </ProDescriptions.Item>
         </ProDescriptions>
