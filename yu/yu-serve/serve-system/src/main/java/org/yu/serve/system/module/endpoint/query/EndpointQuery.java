@@ -27,5 +27,8 @@ public class EndpointQuery {
     private RequestMethod method;
 
     @YuQueryColumn
-    private Boolean enabled;
+    private Boolean accessEnabled;
+
+    @YuQueryColumn
+    private Boolean logEnabled;
 }
