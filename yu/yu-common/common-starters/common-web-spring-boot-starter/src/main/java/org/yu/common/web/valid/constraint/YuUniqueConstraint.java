@@ -19,10 +19,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author wangxd
@@ -52,18 +51,21 @@ public class YuUniqueConstraint implements ConstraintValidator<YuUniqueValid, Ob
             expressions.add(YuQueryHelp.getFieldValue(entityPath, idField.getName()));
         }
 
+        Map<String, Object> fieldMaps = new HashMap<>(2);
         String[] props = yuUniqueValid.props();
+
+        boolean retFlag = false;
         Tuple tuple = QueryDslUtil.getJPAQueryFactory()
                 .select(expressions.toArray(new Expression[0]))
                 .from(entityPath)
-                .where(getPredicateAll(entityPath, object, props))
+                .where(getPredicateAll(entityPath, object, props, fieldMaps))
                 .fetchFirst();
         if (tuple == null) {
-            return true;
+            retFlag = true;
         } else {
             //新增时，如果tuple不为空，直接报错
             if (isAdd(idFields, object)) {
-                return false;
+                retFlag = false;
             }
             //更新时，需要判断是否 为当前数据
             else {
@@ -75,19 +77,46 @@ public class YuUniqueConstraint implements ConstraintValidator<YuUniqueValid, Ob
                             idFields.get(i).setAccessible(true);
                         }
                         if (!idFields.get(i).get(object).equals(tuple.get(expressions.get(i)))) {
-                            return false;
+                            retFlag = false;
+                            break;
                         }
                         if (!accessFlag) {
                             idFields.get(i).setAccessible(false);
                         }
                     }
-                    return true;
+                    retFlag = true;
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return false;
+        if (!retFlag) {
+            //定义正则表达式
+            String reg = "\\$\\{(.*?)}";
+            //编译正则表达式
+            Pattern patten = Pattern.compile(reg);
+            // 指定要匹配的字符串
+            Matcher matcher = patten.matcher(constraintValidatorContext.getDefaultConstraintMessageTemplate());
+
+            boolean isMatch = false;
+            StringBuffer sb = new StringBuffer();
+            //此处find（）每次被调用后，会偏移到下一个匹配
+            while (matcher.find()) {
+                isMatch = true;
+                String key = matcher.group(1);
+                //TODO 默认都可以转为 String
+                String value = fieldMaps.get(key).toString();
+                matcher.appendReplacement(sb, value == null ? "" : value);
+            }
+            if (isMatch) {
+                matcher.appendTail(sb);
+                //禁用默认的message的值
+                constraintValidatorContext.disableDefaultConstraintViolation();
+                //重新添加错误提示语句
+                constraintValidatorContext.buildConstraintViolationWithTemplate(sb.toString()).addConstraintViolation();
+            }
+        }
+        return retFlag;
     }
 
 
@@ -118,13 +147,14 @@ public class YuUniqueConstraint implements ConstraintValidator<YuUniqueValid, Ob
         return false;
     }
 
-    public static <C> Predicate getPredicateAll(EntityPath<?> entityPath, Object object, String[] keys) {
+    public static <C> Predicate getPredicateAll(EntityPath<?> entityPath, Object object, String[] keys, Map<String, Object> fieldMaps) {
         List<Predicate> predicates = new ArrayList<>();
         Collection<Field> fields = ReflectUtils.getDistinctFields(object.getClass());
         AccessibleObject.setAccessible(fields.toArray(new AccessibleObject[0]), true);
         for (Field field : fields) {
             if (Arrays.asList(keys).contains(field.getName())) {
                 try {
+                    fieldMaps.put(field.getName(), field.get(object));
                     Predicate predicate = YuQueryHelp.getPredicate(entityPath, YuOperatorEnum.EQUAL, null, field.getName(), field.get(object));
                     if (predicate != null) {
                         predicates.add(predicate);
