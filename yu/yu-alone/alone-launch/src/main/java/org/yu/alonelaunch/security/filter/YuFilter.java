@@ -62,7 +62,7 @@ public class YuFilter extends OncePerRequestFilter {
     /**
      * 日志路径 map
      */
-    private static Map<String, Set<String>> tenantLogPathMap;
+    private static Map<String, Map<String, String>> tenantLogPathMap;
 
     public YuFilter(EndpointService endpointService, LogEndpointService logEndpointService) {
         this.endpointService = endpointService;
@@ -155,10 +155,13 @@ public class YuFilter extends OncePerRequestFilter {
             e.printStackTrace();
         } finally {
             //需要记录日志
-            if (tenantLogPathMap.get(YuContextHolder.getTenantId()).contains(getPath(requestWrapper))) {
+            String path = getPath(requestWrapper);
+            String endpointId = tenantLogPathMap.get(YuContextHolder.getTenantId()).get(path);
+            if (endpointId != null) {
                 String request = new String(requestWrapper.getContentAsByteArray());
                 String response = new String(responseWrapper.getContentAsByteArray());
                 LogEndpointDO logEndpointDO = LogEndpointDO.builder()
+                        .endpointId(endpointId)
                         .username(YuContextHolder.getYuContext().getClientUser().getUsername())
                         .userId(YuContextHolder.getYuContext().getClientUser().getId())
                         .ip(ServletUtil.getClientIP(requestWrapper))

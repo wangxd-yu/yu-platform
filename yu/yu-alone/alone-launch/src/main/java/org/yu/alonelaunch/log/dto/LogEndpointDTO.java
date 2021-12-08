@@ -3,6 +3,8 @@ package org.yu.alonelaunch.log.dto;
 import lombok.Data;
 import org.yu.alonelaunch.log.domain.LogEndpointDO;
 import org.yu.common.querydsl.query.annotation.YuDTO;
+import org.yu.common.querydsl.query.annotation.YuDTOField;
+import org.yu.serve.system.module.endpoint.domain.EndpointDO;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +16,9 @@ import java.time.LocalDateTime;
 @YuDTO(domain = LogEndpointDO.class)
 public class LogEndpointDTO {
     private String id;
+
+    @YuDTOField(domain = EndpointDO.class, propName = "label")
+    private String endpointName;
 
     private String username;
 

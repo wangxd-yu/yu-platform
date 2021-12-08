@@ -18,6 +18,8 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "log_endpoint")
 public class LogEndpointDO extends DslBaseTenantDO<String> {
+
+    private String endpointId;
     /**
      * 登录用户名
      */

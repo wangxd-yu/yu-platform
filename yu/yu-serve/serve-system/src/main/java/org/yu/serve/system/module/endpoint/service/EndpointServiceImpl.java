@@ -65,15 +65,18 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
     }
 
     @Override
-    public Set<String> getLogEndpoints() {
+    public Map<String, String> getLogEndpoints() {
         List<Tuple> tupleList = getJPAQueryFactory().select(
                         qEndpointDO.pattern,
-                        qEndpointDO.method
+                        qEndpointDO.method,
+                        qEndpointDO.id
                 ).from(qEndpointDO)
                 .where(qEndpointDO.logEnabled.eq(true))
                 .fetch();
-        return tupleList.stream().map(tuple -> tuple.get(qEndpointDO.pattern) + "[" + tuple.get(qEndpointDO.method) + "]")
-                .collect(Collectors.toSet());
+        return tupleList.stream().collect(Collectors.toMap(
+                tuple -> tuple.get(qEndpointDO.pattern) + "[" + tuple.get(qEndpointDO.method) + "]",
+                tuple -> tuple.get(qEndpointDO.id)
+        ));
     }
 
     @Override
