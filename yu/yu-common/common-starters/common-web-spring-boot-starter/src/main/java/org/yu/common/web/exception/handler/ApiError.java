@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class ApiError {
+public class ApiError {
 
     private Integer status;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

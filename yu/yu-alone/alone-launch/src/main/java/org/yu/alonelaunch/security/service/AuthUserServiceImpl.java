@@ -8,9 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.yu.alonelaunch.security.constant.MessageConstant;
+import org.yu.alonelaunch.constant.MessageConstant;
 import org.yu.alonelaunch.security.pojo.SecurityUser;
 import org.yu.serve.system.module.user.domain.UserDO;
 import org.yu.serve.system.module.user.repository.UserRepository;
@@ -28,12 +27,10 @@ import java.util.stream.Collectors;
 @Service("authUserService")
 public class AuthUserServiceImpl implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public AuthUserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserService userService) {
-        this.passwordEncoder = passwordEncoder;
+    public AuthUserServiceImpl(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }

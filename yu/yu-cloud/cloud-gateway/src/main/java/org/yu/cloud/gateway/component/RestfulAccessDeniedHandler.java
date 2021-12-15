@@ -13,7 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.yu.cloud.gateway.api.CommonResult;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 自定义返回结果：没有权限访问时
@@ -27,7 +27,7 @@ public class RestfulAccessDeniedHandler implements ServerAccessDeniedHandler {
         response.setStatusCode(HttpStatus.OK);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         String body = JSONUtil.toJsonStr(CommonResult.forbidden(denied.getMessage()));
-        DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(Charset.forName("UTF-8")));
+        DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(buffer));
     }
 }

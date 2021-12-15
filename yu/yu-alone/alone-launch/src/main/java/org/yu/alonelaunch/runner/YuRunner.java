@@ -3,7 +3,8 @@ package org.yu.alonelaunch.runner;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.yu.alonelaunch.security.filter.YuFilter;
+import org.yu.alonelaunch.filter.LogEndpointFilter;
+import org.yu.alonelaunch.interceptor.YuAuthInterceptor;
 
 import javax.annotation.Resource;
 
@@ -15,10 +16,14 @@ import javax.annotation.Resource;
 public class YuRunner implements ApplicationRunner {
 
     @Resource
-    private YuFilter yuFilter;
+    private YuAuthInterceptor yuAuthInterceptor;
+
+    @Resource
+    private LogEndpointFilter logEndpointFilter;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        yuFilter.init();
+    public void run(ApplicationArguments args) {
+        yuAuthInterceptor.init();
+        logEndpointFilter.init();
     }
 }

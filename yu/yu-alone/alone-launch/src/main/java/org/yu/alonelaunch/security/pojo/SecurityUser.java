@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.yu.alonelaunch.security.util.TenantUtil;
+import org.yu.alonelaunch.util.TenantUtil;
 import org.yu.serve.system.module.user.domain.UserDO;
 
 import java.util.Collection;

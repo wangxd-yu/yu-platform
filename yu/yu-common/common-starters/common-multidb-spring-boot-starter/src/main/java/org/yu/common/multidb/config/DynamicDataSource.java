@@ -22,12 +22,12 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        String tenantId = YuContextHolder.getYuContext() != null ? YuContextHolder.getYuContext().getTenantId().toString() : null;
-        if (tenantId == null) {
+        String tenantId = YuContextHolder.getYuContext() != null ? YuContextHolder.getYuContext().getTenantId() : null;
+        if (tenantId == null && RequestContextHolder.getRequestAttributes() != null) {
             HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             tenantId = req.getParameter("tenantId");
         }
-        if (!super.getResolvedDataSources().containsKey(tenantId)) {
+        if (tenantId != null && !super.getResolvedDataSources().containsKey(tenantId)) {
             throw new ServiceException("租户编号不存在！");
         }
         return tenantId;

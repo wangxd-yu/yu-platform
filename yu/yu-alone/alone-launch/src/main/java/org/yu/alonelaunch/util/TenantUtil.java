@@ -1,4 +1,4 @@
-package org.yu.alonelaunch.security.util;
+package org.yu.alonelaunch.util;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
