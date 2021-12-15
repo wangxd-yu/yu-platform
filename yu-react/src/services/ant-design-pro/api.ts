@@ -20,20 +20,15 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login/account */
+/** 登录接口 POST /api/auth/login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>(`${yuUrlAuth('/oauth/token')}?tenantId=${body.tenantId}`, {
+  return request<API.LoginResult>(`${yuUrlAuth('/auth/login')}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    data: QS.stringify({
-      grant_type: "password",
+    data:{
       username: body.username,
       password: body.password,
-      client_secret: "123456",
-      client_id: "yu"
-    }),
+      tenantId: body.tenantId,
+    },
     ...(options || {}),
   });
 }

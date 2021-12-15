@@ -1,13 +1,13 @@
-const TOKEN_KEY = 'oauth_token'
+const TOKEN_KEY = 'auth_token'
 
-export function getOauthToken() {
-    const oauthToken = JSON.parse(localStorage.getItem(TOKEN_KEY) as string);
-    return oauthToken;
+export function getAuthToken() {
+    const authToken = JSON.parse(localStorage.getItem(TOKEN_KEY) as string);
+    return authToken;
 }
 
 export function isTokenEfective() {
-    const oauthToken = getOauthToken();
-    if (oauthToken && oauthToken.expiration > new Date().getTime()) {
+    const authToken = getAuthToken();
+    if (authToken && authToken.expiration * 1000 > new Date().getTime()) {
         return true
     } else {
         return false

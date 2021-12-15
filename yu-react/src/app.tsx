@@ -11,7 +11,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import fixMenuItemIcon from './utils/fixMenuItemIcon';
 import * as YuApi from '@/utils/yuApi';
 import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
-import { getOauthToken, isTokenEfective } from './utils/AuthUtil';
+import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -39,7 +39,7 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   // 如果是登录页面 或者 token为空，不执行
-  if (history.location.pathname.indexOf(loginPath) < 0 && getOauthToken()) {
+  if (history.location.pathname.indexOf(loginPath) < 0 && getAuthToken()) {
     if (isTokenEfective()) {
       const currentUser = await fetchUserInfo();
       return {
@@ -59,7 +59,7 @@ export async function getInitialState(): Promise<{
 
 // 不需要 auth 认证的接口地址
 const noAuthUrlArr = [
-  `${yuServePrefix(YuServe.Auth)}/oauth/token`   // 登录接口
+  `${yuServePrefix(YuServe.Auth)}/auth/login`   // 登录接口
   // `/oauth/token`
 ]
 
@@ -70,11 +70,11 @@ function isUrlNeedAuthentication(url: string) {
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   // 需要 token 认证
   if (isUrlNeedAuthentication(url)) {
-    const oauthToken = getOauthToken()
+    const authToken = getAuthToken()
     if(isTokenEfective()) {
       let authHeader = {};
-      if (oauthToken.token) {
-        authHeader = { Authorization: `${oauthToken.tokenHead}${oauthToken.token}` };
+      if (authToken.token) {
+        authHeader = { Authorization: `${authToken.tokenHead}${authToken.token}` };
       }
       return {
         url: `${url}`,

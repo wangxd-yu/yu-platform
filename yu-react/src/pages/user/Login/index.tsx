@@ -53,7 +53,7 @@ const Login: React.FC = () => {
       console.log(msg)
 
       if (msg.token) {
-        localStorage.setItem('oauth_token', JSON.stringify(msg));
+        localStorage.setItem('auth_token', JSON.stringify(msg));
         const defaultloginSuccessMessage = '登录成功！';
         message.success(defaultloginSuccessMessage);
         await fetchUserInfo();
