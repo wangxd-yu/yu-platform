@@ -10,8 +10,9 @@ import type { DataNode } from 'rc-tree/lib/interface';
 type UserFromProps = YuFormProps & { deptTree: DataNode[] | undefined }
 
 const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) => {
+  const {deptTree, ...rest} = props
   return (
-    <YuForm {...props}>
+    <YuForm {...rest}>
       <ProFormSwitch name="enabled" label="状态" />
       <ProFormText
         rules={[
@@ -43,7 +44,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
           style={{ width: '100%' }}
           listHeight={300}
           dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          treeData={props.deptTree}
+          treeData={deptTree}
           placeholder="请选择"
           treeDefaultExpandAll
         />
