@@ -12,6 +12,7 @@ import fixMenuItemIcon from './utils/fixMenuItemIcon';
 import * as YuApi from '@/utils/yuApi';
 import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
 import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
+import { InterceptorError } from './error';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -80,6 +81,8 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
         url: `${url}`,
         options: { ...options, interceptors: true, headers: authHeader },
       };
+    } else {
+      throw new InterceptorError('token已过期，请重新登录！')   // throw 是抛出错误的语法
     }
   }
   // 不需要token认证
@@ -131,22 +134,29 @@ export const request: RequestConfig = {
   // 新增自动添加AccessToken的请求前拦截器
   requestInterceptors: [authHeaderInterceptor],
   errorHandler: (error: any) => {
-    const { response } = error;
-
-    if (!response) {
+    if(error instanceof InterceptorError) {
       notification.error({
-        description: '您的网络发生异常，无法连接服务器',
-        message: '网络异常',
+        description: error.message,
+        message: "",
       });
+      return;
     } else {
-      notification.error({
-        description: error.data.data,
-        message: error.data.message,
-      });
+      const { response } = error;
+      if (!response) {
+        notification.error({
+          description: '您的网络发生异常，无法连接服务器',
+          message: '网络异常',
+        });
+      } else {
+        notification.error({
+          description: error.data.data,
+          message: error.data.message,
+        });
+      }
+      console.log(error)
+      throw error;
     }
-    console.log(error)
-    throw error;
-  },
+  }
 };
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout

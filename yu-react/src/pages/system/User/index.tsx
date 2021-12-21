@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Switch } from 'antd';
+import { Button, Popconfirm, Switch, TreeSelect } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -18,8 +18,9 @@ const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
   const item: DataNode[] = [];
   if (Array.isArray(data)) {
     data?.forEach((deptData: DeptData) => {
-      const newData: DataNode = {} as DataNode;
+      const newData: DataNode & {value: string} = {} as DataNode & {value: string};
       newData.key = deptData.no as string;
+      newData.value = deptData.no as string;
       newData.title = deptData.name;
       newData.children = deptData.children ? handleTreeDataRecursion(deptData.children) : []; // 如果还有子集，就再次调用自己
       item.push(newData);
@@ -43,6 +44,23 @@ const UserTable: React.FC<UserData> = () => {
   }, []);
 
   const columns: ProColumns<UserData>[] = [
+    {
+      title: '所属部门',
+      dataIndex: 'deptNo',
+      hideInTable: true,
+      renderFormItem: () => {
+        return (
+          <TreeSelect
+            style={{ width: '100%' }}
+            listHeight={300}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={deptTree}
+            placeholder="请选择"
+            treeDefaultExpandAll
+          />
+        );
+      },
+    },
     {
       title: '用户账号',
       tip: '用户账号是唯一的 key',

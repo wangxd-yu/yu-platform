@@ -31,4 +31,7 @@ public class UserTableQuery extends AbstractQuery {
 
     @YuQueryColumn
     private Boolean enabled;
+
+    @YuQueryColumn(operator = YuOperatorEnum.START_WITH)
+    private String deptNo;
 }
