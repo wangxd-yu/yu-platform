@@ -34,6 +34,8 @@ spring:
     username: root
     password: 123456
 yu:
+  jwt:
+
   multidb:
     enabled: true
     type: prop  #type：多数据源配置信息获取类型， db: 数据库中获取；feign: 微服务 feign获取；prop：配置文件获取

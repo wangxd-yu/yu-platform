@@ -85,11 +85,13 @@ public class EndpointServiceImpl extends DslBaseServiceImpl<EndpointRepository, 
             RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
             //获取url与类和方法的对应信息
             endpointLessDTOS = new HashSet<>();
-            mapping.getHandlerMethods().forEach((key, value) -> key.getPatternsCondition().getPatterns().forEach(pattern ->
-                    key.getMethodsCondition().getMethods().forEach(method ->
-                            endpointLessDTOS.add(new EndpointLessDTO(pattern, method))
+            mapping.getHandlerMethods().forEach((key, value) ->
+                    key.getPathPatternsCondition().getPatterns().forEach(pattern ->
+                            key.getMethodsCondition().getMethods().forEach(method ->
+                                    endpointLessDTOS.add(new EndpointLessDTO(pattern.getPatternString(), method))
+                            )
                     )
-            ));
+            );
         }
         return endpointLessDTOS;
     }
