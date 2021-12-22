@@ -3,6 +3,8 @@ server:
     context-path: /api
   port: 1128
 spring:
+  profiles:
+    active: alone
   main:
     allow-bean-definition-overriding: true
   data:
@@ -29,35 +31,10 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     show-sql: true
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
-yu:
-  jwt:
 
-  multidb:
-    enabled: true
-    type: prop  #type：多数据源配置信息获取类型， db: 数据库中获取；feign: 微服务 feign获取；prop：配置文件获取
-    tenants:
-      1001:
-        admins: admin,superadmin
-        datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-          username: root
-          password: 123456
-      1002:
-        admins: admin,superadmin
-        datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-          username: root
-          password: 123456
-      1003:
-        admins: admin,superadmin
-        datasource:
-          url: jdbc:mysql://127.0.0.1:3306/yu_tenant_3?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-          username: root
-          password: 123456
+yu:
+  admins: admin,superadmin
+  jwt:
 logging:
   level:
     org:

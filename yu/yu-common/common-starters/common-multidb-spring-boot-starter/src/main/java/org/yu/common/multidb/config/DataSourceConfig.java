@@ -1,6 +1,5 @@
 package org.yu.common.multidb.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,7 +16,6 @@ import javax.sql.DataSource;
  * @date 2021-03-18 22:19
  */
 @Configuration
-@ConditionalOnProperty(prefix = "yu.multidb", name = "enabled", havingValue = "true")
 @Import({DynamicDataSourceServiceDbConfig.class, DynamicDataSourceServicePropConfig.class})
 public class DataSourceConfig {
 

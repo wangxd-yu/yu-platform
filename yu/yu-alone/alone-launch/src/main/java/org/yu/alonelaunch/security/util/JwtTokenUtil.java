@@ -70,7 +70,7 @@ public class JwtTokenUtil {
                 .id(jwt.getPayload("id").toString())
                 .username(jwt.getPayload("username").toString())
                 .deptNo(jwt.getPayload("deptNo").toString())
-                .tenantId(jwt.getPayload("tenantId").toString())
+                .tenantId(jwt.getPayload("tenantId") == null ? null : jwt.getPayload("tenantId").toString())
                 .build();
         return securityUser;
     }
