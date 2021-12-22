@@ -6,6 +6,7 @@ declare namespace API {
     username?: string;
     name?: string;
     avatar?: string;
+    deptNo: string;
     userid?: string;
     email?: string;
     signature?: string;

@@ -23,4 +23,8 @@ declare let ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: 'site' | undefine
 
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 
+// 根路径地址
 declare const YU_PUBLIC_PATH: string;
+
+// 是否开启多租户模式
+declare const IS_TENANT: boolean;

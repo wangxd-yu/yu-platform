@@ -1,16 +1,18 @@
 import React, { useState, useRef } from 'react';
 import type { FormInstance } from 'antd';
-import { Switch, Button, Popconfirm } from 'antd';
+import { Switch, Popconfirm } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { DeptData } from './data';
-import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
 import { queryDept, addDept, updateDept, deleteDept, disableDept, enableDept } from './service'
 import DeptForm from './components/DeptForm'
+import { useModel } from 'umi';
 
 const DeptPage: React.FC = () => {
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const [deptFormVisible, setDeptFormVisible] = useState<boolean>(false);
   const [deptCurrentRow, setDeptCurrentRow] = useState<DeptData>();
   const [deptDataList, setDeptDataList] = useState<DeptData[]>();
@@ -25,7 +27,7 @@ const DeptPage: React.FC = () => {
     {
       title: '类型',
       align: 'center',
-      dataIndex: 'typeCode'
+      dataIndex: 'typeName'
     },
     {
       title: '排序',
@@ -109,15 +111,16 @@ const DeptPage: React.FC = () => {
           setDeptDataList(dataList)
           return dataList;
         }}
-        rowKey="id"
+        rowKey="no"
         pagination={false}
         expandable={{
-          expandRowByClick: false
+          expandRowByClick: false,
+          defaultExpandedRowKeys: [currentUser?.deptNo as string]
         }}
         search={false}
         dateFormatter="string"
         headerTitle="部门管理"
-        toolBarRender={() => [
+        /* toolBarRender={() => [
           <Button
             type="primary"
             key="primary"
@@ -129,7 +132,7 @@ const DeptPage: React.FC = () => {
           >
             <PlusOutlined /> 新建
           </Button>,
-        ]}
+        ]} */
       />
       {deptDataList &&
         <DeptForm

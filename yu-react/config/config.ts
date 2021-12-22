@@ -67,6 +67,7 @@ export default defineConfig({
   base: PUBLIC_PATH,
   publicPath: PUBLIC_PATH,
   define: {
-    YU_PUBLIC_PATH: PUBLIC_PATH
+    YU_PUBLIC_PATH: PUBLIC_PATH,
+    IS_TENANT: false
   }
 });

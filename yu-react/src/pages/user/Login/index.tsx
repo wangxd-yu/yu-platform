@@ -124,7 +124,7 @@ const Login: React.FC = () => {
             )}
             {type === 'account' && (
               <>
-                <ProFormText
+                {IS_TENANT && <ProFormText
                   name="tenantId"
                   fieldProps={{
                     size: 'large',
@@ -137,7 +137,7 @@ const Login: React.FC = () => {
                       message: '租户编号是必填项！',
                     },
                   ]}
-                />
+                />}
                 <ProFormText
                   name="username"
                   fieldProps={{

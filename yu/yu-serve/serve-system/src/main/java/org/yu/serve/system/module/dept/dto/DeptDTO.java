@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.yu.common.querydsl.query.annotation.YuDTO;
+import org.yu.common.querydsl.query.annotation.YuDTOField;
 import org.yu.common.querydsl.query.annotation.YuDTOTransient;
 import org.yu.serve.system.module.dept.domain.DeptDO;
+import org.yu.serve.system.module.dept.domain.DeptTypeDO;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -44,6 +46,12 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
      * 类型编码
      */
     private String typeCode;
+
+    /**
+     * 类型名称
+     */
+    @YuDTOField(domain = DeptTypeDO.class, propName = "name")
+    private String typeName;
 
     private String pno;
 
