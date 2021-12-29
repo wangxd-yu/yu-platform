@@ -7,11 +7,20 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerMapping;
+import org.yu.common.core.annotation.YuDataPermission;
+import org.yu.common.core.exception.ServiceException;
+import org.yu.common.core.util.SecurityUtil;
 import org.yu.common.querydsl.exception.YuQueryException;
+import org.yu.common.querydsl.query.AbstractQuery;
 import org.yu.common.querydsl.query.annotation.*;
 import org.yu.common.querydsl.query.enums.YuDateTimeEnum;
 import org.yu.common.querydsl.query.enums.YuOperatorEnum;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -102,6 +111,15 @@ public class YuQueryHelp {
             e.printStackTrace();
         }
         return jpaQuery;
+    }
+
+    private static YuDataPermission getDataPermission() {
+        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        if(req != null) {
+            HandlerMethod handlerMethod = (HandlerMethod) req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE);
+            return handlerMethod.getMethodAnnotation(YuDataPermission.class);
+        }
+        return null;
     }
 
     public static <C> void fromAndJoin(JPAQuery<?> jpaQuery, C criteria) {
@@ -240,6 +258,15 @@ public class YuQueryHelp {
      * 根据 查询条件对象 返回DSL查询条件
      */
     public static <C> Predicate getPredicateAll(C criteria) throws IllegalAccessException {
+        // 数据权限 控制 TODO 现在只处理了 本级及下级控制，后续根据角色扩充：全部、本级及下级、本级、指定部门、指定人员
+        YuDataPermission yuDataPermission = getDataPermission();
+        if(yuDataPermission != null) {
+            if(criteria instanceof AbstractQuery) {
+                ((AbstractQuery) criteria).setDeptNo(SecurityUtil.getDeptNo());
+            } else {
+                throw new ServiceException("【系统异常】：方法使用数据权限限制，查询条件必须继承AbstractQuery");
+            }
+        }
         YuQuery yuQuery = criteria.getClass().getAnnotation(YuQuery.class);
         //主实体类名称（主表）
         EntityPath<?> masterDO = getEntityPath(yuQuery.domain());
