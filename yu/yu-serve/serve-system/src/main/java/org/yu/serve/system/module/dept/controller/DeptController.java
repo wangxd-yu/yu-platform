@@ -31,7 +31,7 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
     @GetMapping
     public ResponseEntity<Object> getPages(DeptQuery query) {
         if (query.getNo() == null) {
-            query.setNo(YuContextHolder.getYuContext().getClientUser().getDeptNo());
+            query.setNo(YuContextHolder.getYuContext().getSecurityUser().getDeptNo());
         }
         List<DeptDTO> deptDTOList = dslBaseService.queryAll(query, DeptDTO.class);
         return new ResponseEntity<>(deptTreeService.buildTree(deptDTOList), HttpStatus.OK);
@@ -39,7 +39,7 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
 
     @GetMapping(value = "/tree")
     public ResponseEntity<Object> getDeptTree() {
-        return new ResponseEntity<>(deptTreeService.getShowTreeByDeptNo(YuContextHolder.getYuContext().getClientUser().getDeptNo()), HttpStatus.OK);
+        return new ResponseEntity<>(deptTreeService.getShowTreeByDeptNo(YuContextHolder.getYuContext().getSecurityUser().getDeptNo()), HttpStatus.OK);
     }
 
     @PutMapping("{id}/enable")

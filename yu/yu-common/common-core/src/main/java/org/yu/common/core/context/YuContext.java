@@ -1,7 +1,7 @@
 package org.yu.common.core.context;
 
 import lombok.Data;
-import org.yu.common.core.dto.LoginUser;
+import org.yu.common.core.dto.SecurityUser;
 
 /**
  * @author wangxd
@@ -17,19 +17,19 @@ public class YuContext {
 
     private String clientId;
 
-    private LoginUser clientUser;
+    private SecurityUser securityUser;
 
     private Object jpaQueryFactory;
 
     public String getTenantId() {
-        if(clientUser != null) {
-            return clientUser.getTenantId();
+        if(securityUser != null) {
+            return securityUser.getTenantId();
         }
         return tenantId;
     }
 
     public String getClientId() {
-        return clientUser.getClientId();
+        return securityUser.getClientId();
     }
 
     public void setClientId(String clientId) {

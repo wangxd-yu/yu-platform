@@ -37,7 +37,7 @@ public class MenuController extends DslBaseApiController<MenuService, MenuDO, St
 
     @GetMapping("build")
     public ResponseEntity<Object> buildMenus() {
-        Set<String> roleCodes = YuContextHolder.getYuContext().getClientUser().getRoles();
+        Set<String> roleCodes = YuContextHolder.getYuContext().getSecurityUser().getRoles();
         if (CollectionUtil.isEmpty(roleCodes)) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }

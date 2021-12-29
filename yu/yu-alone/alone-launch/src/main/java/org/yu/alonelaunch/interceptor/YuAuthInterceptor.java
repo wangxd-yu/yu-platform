@@ -5,10 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
-import org.yu.alonelaunch.security.pojo.SecurityUser;
 import org.yu.alonelaunch.util.TenantUtil;
 import org.yu.common.core.context.YuContext;
-import org.yu.common.core.dto.LoginUser;
+import org.yu.common.core.dto.SecurityUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
@@ -33,9 +32,9 @@ public interface YuAuthInterceptor extends HandlerInterceptor {
         YuContext yuContext = new YuContext();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
-        if (principal instanceof SecurityUser) {
-            SecurityUser securityUser = (SecurityUser) principal;
-            LoginUser loginUser = new LoginUser();
+        if (principal instanceof org.yu.alonelaunch.security.pojo.SecurityUser) {
+            org.yu.alonelaunch.security.pojo.SecurityUser securityUser = (org.yu.alonelaunch.security.pojo.SecurityUser) principal;
+            SecurityUser loginUser = new SecurityUser();
             loginUser.setId(securityUser.getId());
             loginUser.setClientId(securityUser.getClientId());
             loginUser.setTenantId(securityUser.getTenantId());
@@ -43,7 +42,7 @@ public interface YuAuthInterceptor extends HandlerInterceptor {
             loginUser.setDeptNo(securityUser.getDeptNo());
             loginUser.setRoles(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
 
-            yuContext.setClientUser(loginUser);
+            yuContext.setSecurityUser(loginUser);
         } else {
             yuContext.setTenantId(TenantUtil.getTenantId());
         }

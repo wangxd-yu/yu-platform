@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yu.common.core.annotation.YuDataPermission;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.user.domain.UserDO;
@@ -26,10 +27,11 @@ public class UserController extends DslBaseApiController<UserService, UserDO, St
 
     @GetMapping("info")
     public ResponseEntity<UserFullDTO> getUserInfo() {
-        return new ResponseEntity<>(dslBaseService.getUserInfo(YuContextHolder.getYuContext().getClientUser().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(dslBaseService.getUserInfo(YuContextHolder.getYuContext().getSecurityUser().getId()), HttpStatus.OK);
     }
 
     @GetMapping
+    @YuDataPermission
     public ResponseEntity<Object> getUsers(UserTableQuery query, Pageable pageable) {
         return super.queryDTO(query, pageable, UserTableDTO.class);
     }

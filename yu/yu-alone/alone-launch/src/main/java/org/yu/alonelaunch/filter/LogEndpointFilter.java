@@ -61,8 +61,8 @@ public abstract class LogEndpointFilter extends OncePerRequestFilter {
                     String responseStr = new String(responseWrapper.getContentAsByteArray());
                     LogEndpointDO logEndpointDO = LogEndpointDO.builder()
                             .endpointId(endpointId)
-                            .username(YuContextHolder.getYuContext().getClientUser().getUsername())
-                            .userId(YuContextHolder.getYuContext().getClientUser().getId())
+                            .username(YuContextHolder.getYuContext().getSecurityUser().getUsername())
+                            .userId(YuContextHolder.getYuContext().getSecurityUser().getId())
                             .ip(ServletUtil.getClientIP(requestWrapper))
                             .method(requestWrapper.getMethod())
                             .handler(requestWrapper.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE).toString())

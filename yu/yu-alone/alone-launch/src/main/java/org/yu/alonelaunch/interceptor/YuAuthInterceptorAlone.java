@@ -57,7 +57,7 @@ public class YuAuthInterceptorAlone implements YuAuthInterceptor {
     private void checkPathPermission(String path) {
         Set<String> roles = pathRolesMap == null ? null : pathRolesMap.get(path);
         if (roles != null
-                && !CollectionUtil.containsAny(YuContextHolder.getYuContext().getClientUser().getRoles(), pathRolesMap.get(path))) {
+                && !CollectionUtil.containsAny(YuContextHolder.getYuContext().getSecurityUser().getRoles(), pathRolesMap.get(path))) {
             throw new AccessDeniedException(MessageConstant.PERMISSION_DENIED);
         }
     }
@@ -71,8 +71,8 @@ public class YuAuthInterceptorAlone implements YuAuthInterceptor {
         new YuContextHolder(populateYuContext());
         if (YuContextHolder.getYuContext() != null) {
             // 不是超级管理员（超级管理员不走 权限校验）
-            if (YuContextHolder.getYuContext().getClientUser() != null
-                    && !admins.contains(YuContextHolder.getYuContext().getClientUser().getUsername())) {
+            if (YuContextHolder.getYuContext().getSecurityUser() != null
+                    && !admins.contains(YuContextHolder.getYuContext().getSecurityUser().getUsername())) {
                 checkPathPermission(path);
             }
         }

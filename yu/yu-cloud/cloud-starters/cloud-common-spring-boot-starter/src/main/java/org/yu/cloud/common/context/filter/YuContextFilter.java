@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.yu.common.core.context.YuContext;
 import org.yu.common.core.context.YuContextHolder;
-import org.yu.common.core.dto.LoginUser;
+import org.yu.common.core.dto.SecurityUser;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -30,17 +30,17 @@ public class YuContextFilter extends OncePerRequestFilter {
         String userStr = httpServletRequest.getHeader("user");
         if (StrUtil.isNotBlank(userStr)) {
             JSONObject userJsonObject = new JSONObject(userStr);
-            LoginUser loginUser = new LoginUser();
-            loginUser.setId(userJsonObject.getStr("id"));
-            loginUser.setDeptNo(userJsonObject.getStr("deptNo"));
-            loginUser.setTenantId(userJsonObject.getStr("tenantId"));
-            loginUser.setClientId(userJsonObject.getStr("client_id"));
-            loginUser.setUsername(userJsonObject.getStr("user_name"));
-            loginUser.setRoles(new HashSet<>(Convert.toList(String.class, userJsonObject.get("authorities"))));
+            SecurityUser securityUser = new SecurityUser();
+            securityUser.setId(userJsonObject.getStr("id"));
+            securityUser.setDeptNo(userJsonObject.getStr("deptNo"));
+            securityUser.setTenantId(userJsonObject.getStr("tenantId"));
+            securityUser.setClientId(userJsonObject.getStr("client_id"));
+            securityUser.setUsername(userJsonObject.getStr("user_name"));
+            securityUser.setRoles(new HashSet<>(Convert.toList(String.class, userJsonObject.get("authorities"))));
 
-            yuContext.setTenantId(loginUser.getTenantId());
-            yuContext.setClientId(loginUser.getClientId());
-            yuContext.setClientUser(loginUser);
+            yuContext.setTenantId(securityUser.getTenantId());
+            yuContext.setClientId(securityUser.getClientId());
+            yuContext.setSecurityUser(securityUser);
         } else {
             String tenantId = httpServletRequest.getHeader("tenantId");
             if (StrUtil.isNotBlank(tenantId)) {

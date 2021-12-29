@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class LoginUser {
+public class SecurityUser {
 
     private String id;
     /**
