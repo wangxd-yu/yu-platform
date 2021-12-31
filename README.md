@@ -13,6 +13,55 @@
 
 ### 安装教程
 
+#### 前端
+
+* 程序目录：	`yu-react`
+
+* 安装
+
+  ```shell
+  yarn安装
+  	yarn
+  npm安装
+  	npm install
+  ```
+
+* 运行
+
+  ```shell
+  yarn运行:
+  	yarn run start
+  npm运行:
+  	npm run start
+  ```
+#### 后端
+
+* 程序目录：`yu-api`
+
+* maven安装
+
+  ```shell
+  mvn install
+  ```
+
+* 数据库
+
+  ```
+  配置文件：
+  	yu-api/yu-alone/alone-launch/src/main/resources/application-alone.yml
+  新建数据库名称：
+  	yu_alone
+  修改账号、密码
+  	系统运行使用
+          spring.datasource.username
+          spring.datasource.password
+      系统初始化使用
+          spring.sql.init.username
+          spring.sql.init.password
+  ```
+
+  > 注：初始化建立完数据库后，将`spring.sql.init.mode` 修改为`never`
+
 ### 特性
 
 ### 演示图
