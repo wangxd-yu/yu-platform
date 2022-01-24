@@ -19,6 +19,8 @@ public class UserDTO {
 
     private String name;
 
+    private String portraitUrl;
+
     @YuDTOTransient
     private List<String> roles;
 }

@@ -3,16 +3,20 @@ package org.yu.serve.system.module.user.service;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.yu.common.core.exception.ServiceException;
 import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.common.web.exception.EntityExistException;
+import org.yu.serve.file.util.FileUtil;
 import org.yu.serve.system.module.dept.domain.QDeptDO;
+import org.yu.serve.system.module.enums.SystemFileEnum;
 import org.yu.serve.system.module.role.domain.QRoleDO;
 import org.yu.serve.system.module.user.domain.QUserDO;
 import org.yu.serve.system.module.user.domain.QUserRoleDO;
 import org.yu.serve.system.module.user.domain.UserDO;
 import org.yu.serve.system.module.user.domain.UserRoleDO;
+import org.yu.serve.system.module.user.dto.UserBaseInfo;
 import org.yu.serve.system.module.user.dto.UserDTO;
 import org.yu.serve.system.module.user.dto.UserFullDTO;
 import org.yu.serve.system.module.user.repository.UserRepository;
@@ -62,6 +66,11 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
         if (userRepository.findByUsername(domain.getUsername()) != null) {
             throw new EntityExistException(UserDO.class, "username", domain.getUsername());
         }
+
+        if (StringUtils.hasText(domain.getPortraitBase64())) {
+            domain.setPortraitUrl(FileUtil.base64ToFileSave(domain.getPortraitBase64(), SystemFileEnum.USER_FILE));
+        }
+
         domain.setPassword(PasswordUtil.encodedPassword(DEFAULT_PASS));
         userRepository.save(domain);
         saveUserRole(domain);
@@ -71,7 +80,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(UserDO domain) {
-        if(domain.getId() == null) {
+        if (domain.getId() == null) {
             throw new ServiceException("参数错误：id不存在！");
         }
         UserDO dbUser = baseRepository.findByUsername(domain.getUsername());
@@ -79,10 +88,14 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
             throw new EntityExistException(UserDO.class, "username", domain.getUsername());
         }
         //修改用户名
-        if(dbUser == null) {
+        if (dbUser == null) {
             dbUser = baseRepository.findById(domain.getId()).get();
         }
         assert dbUser != null;
+        if (StringUtils.hasText(domain.getPortraitBase64())) {
+            String fileName = domain.getUsername() + "_" + System.currentTimeMillis() + ".jpeg";
+            domain.setPortraitUrl(FileUtil.base64ToFileSave(domain.getPortraitBase64(), SystemFileEnum.USER_FILE, fileName));
+        }
         domain.setPassword(dbUser.getPassword());
         baseRepository.save(domain);
         saveUserRole(domain);
@@ -150,5 +163,20 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
                 .set(qUserDO.enabled, enabled)
                 .where(qUserDO.id.eq(id))
                 .execute();
+    }
+
+    @Override
+    public void updateBaseInfo(UserBaseInfo userBaseInfo) {
+        UserDO userDO = userRepository.findByUsername(userBaseInfo.getUsername());
+        if (userDO == null) {
+            throw new ServiceException("数据异常！");
+        }
+        if (StringUtils.hasText(userBaseInfo.getPortraitBase64())) {
+            String fileName = userBaseInfo.getUsername() + "_" + System.currentTimeMillis() + ".jpeg";
+            userDO.setPortraitUrl(FileUtil.base64ToFileSave(userBaseInfo.getPortraitBase64(), SystemFileEnum.USER_FILE, fileName));
+        }
+        userDO.setName(userBaseInfo.getName());
+        userDO.setEmail(userBaseInfo.getEmail());
+        userRepository.save(userDO);
     }
 }

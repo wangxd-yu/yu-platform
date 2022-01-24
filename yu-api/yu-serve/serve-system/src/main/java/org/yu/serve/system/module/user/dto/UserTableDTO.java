@@ -27,6 +27,8 @@ public class UserTableDTO {
 
     private Boolean enabled;
 
+    private String portraitUrl;
+
     @YuDTOField(domain = DeptDO.class, propName = "name")
     private String deptName;
 

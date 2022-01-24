@@ -18,6 +18,11 @@
         </dependency>
         <dependency>
             <groupId>org.yu</groupId>
+            <artifactId>serve-file-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yu</groupId>
             <artifactId>cloud-multidb-spring-boot-starter</artifactId>
         </dependency>
         <dependency>

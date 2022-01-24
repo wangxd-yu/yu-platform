@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -28,12 +29,23 @@ public class UserDO extends DslBaseDeptDO<String> implements Serializable {
 
     private String name;
 
+    @Email(message = "邮箱格式错误")
+    private String email;
+
     @NotNull
     @Column(name = "is_enabled")
     private Boolean enabled;
 
     @JsonIgnore
     private String password;
+
+    /**
+     * 头像地址
+     */
+    private String portraitUrl;
+
+    @Transient
+    private String portraitBase64;
 
     @Transient
     private Set<String> roleIds;

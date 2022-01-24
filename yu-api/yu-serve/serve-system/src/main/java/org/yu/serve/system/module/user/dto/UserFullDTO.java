@@ -23,6 +23,10 @@ public class UserFullDTO {
 
     private String deptNo;
 
+    private String email;
+
+    private String portraitUrl;
+
     @YuDTOField(domain = DeptDO.class, propName = "code")
     private String deptCode;
 
