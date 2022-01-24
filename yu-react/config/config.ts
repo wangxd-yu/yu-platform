@@ -68,6 +68,7 @@ export default defineConfig({
   publicPath: PUBLIC_PATH,
   define: {
     YU_PUBLIC_PATH: PUBLIC_PATH,
-    IS_TENANT: false
+    BASE_URL_PREFIX: 'api',
+    IS_TENANT: true    //是否开启多租户模式， false：不开启；true：开启
   }
 });

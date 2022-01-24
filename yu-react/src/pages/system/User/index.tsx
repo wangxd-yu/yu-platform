@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Switch, TreeSelect } from 'antd';
+import { PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Popconfirm, Space, Switch, TreeSelect } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -60,6 +60,21 @@ const UserTable: React.FC<UserData> = () => {
           />
         );
       },
+    },
+    {
+      dataIndex: 'avatar',
+      title: '头像',
+      align: 'center',
+      valueType: 'avatar',
+      width: 150,
+      render: (dom, record) => (
+        <Space>
+          { record.portraitUrl ? 
+            <Avatar src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
+            <Avatar icon={<UserOutlined />} />
+          } 
+        </Space>
+      ),
     },
     {
       title: '用户账号',
@@ -164,9 +179,9 @@ const UserTable: React.FC<UserData> = () => {
         request={queryUser}
         columns={columns}
       />
-      <UserForm
+      { userFormVisible && <UserForm
         deptTree={deptTree}
-        width="500px"
+        width="700px"
         title={userCurrentRow?.id ? '更新用户' : '新建用户'}
         visible={userFormVisible}
         onVisibleChange={(visible) => {
@@ -181,6 +196,7 @@ const UserTable: React.FC<UserData> = () => {
         initialValues={userCurrentRow || { enabled: true }}
         onFinish={async (value) => {
           const data = { ...userCurrentRow, ...value };
+          
           let success;
           if (!data.id) {
             success = await YuCrud.handleAdd(data as UserData, addUser);
@@ -196,6 +212,7 @@ const UserTable: React.FC<UserData> = () => {
           }
         }}
       />
+    }
     </PageContainer >
   );
 };

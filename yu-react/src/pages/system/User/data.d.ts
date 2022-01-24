@@ -3,7 +3,8 @@ export type UserData = {
   deptNo: string;
   disabled?: boolean;
   href: string;
-  avatar: string;
+  portraitBase64: string;
+  portraitUrl: string;
   name: string;
   owner: string;
   desc: string;
