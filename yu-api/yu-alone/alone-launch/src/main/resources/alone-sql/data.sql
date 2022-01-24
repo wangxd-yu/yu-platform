@@ -78,8 +78,8 @@ VALUES (1, 1),
        (1, 10);
 
 INSERT INTO `sys_user`
-VALUES (1, 'admin', '$2a$10$gHRTStCK9r8FRv4yl4tRZOBzDrSCK1.Q5pNI.SbA4UsA1Uw5KtR4m', 1, '管理员', '2020-11-06 14:06:42','2020-11-06 14:06:44', '2020-11-06 14:06:47', '000', 1),
-       (2, 'visitor', '$2a$10$WBb/ADOZxsw08/VP1O1bbeHiQbIrQd4KnylekWiPoOnZblVYekLia', 1, '访客','2021-08-12 04:04:21', '2021-11-17 08:23:50', NULL, '000007001', NULL);
+VALUES (1, 'admin', '$2a$10$gHRTStCK9r8FRv4yl4tRZOBzDrSCK1.Q5pNI.SbA4UsA1Uw5KtR4m', 1, null,'管理员',null, '2020-11-06 14:06:42','2020-11-06 14:06:44', '2020-11-06 14:06:47', '000', 1),
+       (2, 'visitor', '$2a$10$WBb/ADOZxsw08/VP1O1bbeHiQbIrQd4KnylekWiPoOnZblVYekLia', 1, null,'访客',null, '2021-08-12 04:04:21', '2021-11-17 08:23:50', NULL, '000007001', NULL);
 
 INSERT INTO `sys_user_role`
 VALUES (1, 1),

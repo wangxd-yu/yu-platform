@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.yu.serve.file.config.MultipartConfig,\
+org.yu.serve.file.util.FileUtil,\
+org.yu.serve.file.util.FilePathUtil

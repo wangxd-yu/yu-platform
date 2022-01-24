@@ -12,5 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>serve-system</module>
+        <module>serve-file-api</module>
     </modules>
 </project>

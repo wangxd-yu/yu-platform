@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
+                        .antMatchers("/upload/**").anonymous()
                         // 所有请求都需要认证
                         .anyRequest().authenticated()
                 )
