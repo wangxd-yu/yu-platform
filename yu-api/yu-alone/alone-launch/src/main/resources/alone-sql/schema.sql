@@ -190,7 +190,7 @@ CREATE TABLE `sys_user`
     `password`             varchar(68) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '密码',
     `is_enabled`           tinyint unsigned DEFAULT NULL COMMENT '状态：1启用、0禁用',
     `email`                varchar(32) DEFAULT NULL COMMENT '邮箱',
-    `name`                 varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '状态：1启用、0禁用',
+    `name`                 varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
     `portrait_url`         varchar(256)                                          DEFAULT NULL COMMENT '头像地址',
     `create_time`          datetime                                              DEFAULT NULL COMMENT '创建时间',
     `update_time`          datetime                                              DEFAULT NULL COMMENT '创建时间',
