@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yu.alonelaunch.log.domain.LogEndpointDO;
-import org.yu.alonelaunch.log.dto.LogEndpointDTO;
+import org.yu.alonelaunch.log.dto.LogEndpointLessDTO;
 import org.yu.alonelaunch.log.query.LogEndpointQuery;
 import org.yu.alonelaunch.log.service.LogEndpointService;
 import org.yu.common.querydsl.controller.DslBaseController;
@@ -25,7 +25,7 @@ public class LogEndpointController extends DslBaseController<LogEndpointService,
 
     @GetMapping
     public ResponseEntity<Object> getPage(LogEndpointQuery query, Pageable pageable) {
-        return super.queryDTO(query, pageable, LogEndpointDTO.class);
+        return super.queryDTO(query, pageable, LogEndpointLessDTO.class);
     }
 
     @Override
