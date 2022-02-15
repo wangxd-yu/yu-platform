@@ -21,8 +21,9 @@ public class FilePathConfig {
     private String staticAccessPath = String.format("/%s/**", root);
     /**
      * /opt/sdsesFiles/
+     * 根目录时，卡头会多余一个 反斜杠，需要去除，否则生成的 uploadFolder 会是这种：file://upload/ （两个反斜杠报错：java.net.UnknownHostException: upload）
      */
-    private String uploadPath = System.getProperty("user.dir") + "/" + root + "/";
+    private String uploadPath = (System.getProperty("user.dir").equals("/") ? "" : System.getProperty("user.dir")) + "/" + root + "/";
     /**
      * file:/opt/sdsesFiles/
      */
