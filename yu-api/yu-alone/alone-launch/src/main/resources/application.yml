@@ -2,6 +2,23 @@ server:
   servlet:
     context-path: /api
   port: 1128
+
+logging:
+  config: classpath:logback.xml
+  level:
+    root: info
+    org:
+      springframework:
+        #security: DEBUG
+        web: ERROR
+    jdbc:
+      sqlonly: info
+      resultset: debug
+      resultsettable: info
+      connection: off
+      sqltiming: off
+      audit: off
+
 spring:
   profiles:
     active: multidb
@@ -35,9 +52,3 @@ spring:
 yu:
   admins: admin,superadmin
   jwt:
-logging:
-  level:
-    org:
-      springframework:
-        #security: DEBUG
-        web: ERROR

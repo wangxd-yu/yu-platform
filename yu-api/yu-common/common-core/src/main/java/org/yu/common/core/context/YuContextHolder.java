@@ -1,6 +1,7 @@
 package org.yu.common.core.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import org.slf4j.MDC;
 
 /**
  * @author wangxd
@@ -24,10 +25,12 @@ public class YuContextHolder implements AutoCloseable {
 
     @Override
     public void close() {
+        MDC.clear();
         CTX.remove();
     }
 
     public static void clearContext() {
+        MDC.clear();
         CTX.remove();
     }
 }

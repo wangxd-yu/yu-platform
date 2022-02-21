@@ -1,6 +1,7 @@
 package org.yu.common.core.context;
 
 import lombok.Data;
+import org.slf4j.MDC;
 import org.yu.common.core.dto.SecurityUser;
 
 /**
@@ -20,6 +21,11 @@ public class YuContext {
     private SecurityUser securityUser;
 
     private Object jpaQueryFactory;
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        MDC.put("tenantId", tenantId);
+    }
 
     public String getTenantId() {
         if(securityUser != null) {

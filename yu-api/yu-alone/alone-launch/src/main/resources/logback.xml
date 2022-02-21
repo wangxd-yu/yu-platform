@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %level %logger{35} - %msg%n</pattern>-->
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="siftInfo" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <!--discriminator鉴别器，设置运行时动态属性,siftingAppender根据这个属性来输出日志到不同文件 -->
+        <discriminator>
+            <key>tenantId</key>
+            <defaultValue>platform</defaultValue>
+        </discriminator>
+        <sift>
+            <!--具体的写日志appender，每一个tenantId创建一个文件-->
+            <appender name="FILE-${tenantId}-info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <append>true</append>
+                <encoder charset="UTF-8">
+                    <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %logger{35} - %msg%n</pattern>
+                </encoder>
+
+                <file>./logs/tenant-${tenantId}-info.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <!--定义文件滚动时的文件名的格式-->
+                    <fileNamePattern>./logs/%d{yyyyMMdd}/tenant-${tenantId}-info-%i.log</fileNamePattern>
+                    <maxFileSize>500MB</maxFileSize>
+                    <maxHistory>60</maxHistory>
+                    <totalSizeCap>20GB</totalSizeCap>
+                </rollingPolicy>
+
+                <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                    <level>INFO</level>
+                </filter>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="siftError" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <!--discriminator鉴别器，设置运行时动态属性,siftingAppender根据这个属性来输出日志到不同文件 -->
+        <discriminator>
+            <key>tenantId</key>
+            <defaultValue>platform</defaultValue>
+        </discriminator>
+        <sift>
+            <!--具体的写日志appender，每一个tenantId创建一个文件-->
+            <appender name="FILE-${tenantId}-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <append>true</append>
+                <encoder charset="UTF-8">
+                    <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level %logger{35} - %msg%n</pattern>
+                </encoder>
+
+                <file>./logs/tenant-${tenantId}-error.log</file>
+                <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    <!--定义文件滚动时的文件名的格式-->
+                    <fileNamePattern>./logs/%d{yyyyMMdd}/tenant-${tenantId}-error-%i.log</fileNamePattern>
+                    <maxFileSize>500MB</maxFileSize>
+                    <maxHistory>60</maxHistory>
+                    <totalSizeCap>20GB</totalSizeCap>
+                </rollingPolicy>
+
+                <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                    <level>ERROR</level>
+                </filter>
+            </appender>
+        </sift>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="siftInfo"/>
+    </root>
+
+    <root level="error">
+        <appender-ref ref="siftError"/>
+    </root>
+</configuration>
