@@ -3,6 +3,7 @@ FROM openjdk:8-jdk-alpine
 ADD target/alone-launch-0.0.1-SNAPSHOT.jar /alone-launch.jar
 
 VOLUME /yu/api/alone-launch/config
+VOLUME /yu/api/alone-launch/logs
 
 EXPOSE 1128
 
