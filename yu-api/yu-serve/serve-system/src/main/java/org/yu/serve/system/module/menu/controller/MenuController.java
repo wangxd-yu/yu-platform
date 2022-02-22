@@ -14,6 +14,7 @@ import org.yu.serve.system.module.menu.dto.MenuBuildDTO;
 import org.yu.serve.system.module.menu.dto.MenuDTO;
 import org.yu.serve.system.module.menu.query.MenuQuery;
 import org.yu.serve.system.module.menu.service.MenuService;
+import org.yu.serve.system.module.user.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,15 +30,17 @@ import java.util.Set;
 public class MenuController extends DslBaseApiController<MenuService, MenuDO, String> {
 
     private final MenuService menuService;
+    private final UserService userService;
 
-    public MenuController(MenuService menuService) {
+    public MenuController(MenuService menuService, UserService userService) {
         super(menuService);
         this.menuService = menuService;
+        this.userService = userService;
     }
 
     @GetMapping("build")
     public ResponseEntity<Object> buildMenus() {
-        Set<String> roleCodes = YuContextHolder.getYuContext().getSecurityUser().getRoles();
+        Set<String> roleCodes = userService.getRoleCodesByUserId(YuContextHolder.getYuContext().getSecurityUser().getId());
         if (CollectionUtil.isEmpty(roleCodes)) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
