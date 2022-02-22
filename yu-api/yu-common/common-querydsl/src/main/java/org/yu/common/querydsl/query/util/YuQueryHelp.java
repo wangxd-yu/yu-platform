@@ -12,7 +12,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 import org.yu.common.core.annotation.YuDataPermission;
-import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.exception.ServiceException;
 import org.yu.common.core.util.SecurityUtil;
 import org.yu.common.querydsl.exception.YuQueryException;
@@ -115,12 +114,9 @@ public class YuQueryHelp {
     }
 
     private static YuDataPermission getDataPermission() {
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        if(req != null) {
-            HandlerMethod handlerMethod = (HandlerMethod) req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE);
-            return handlerMethod.getMethodAnnotation(YuDataPermission.class);
-        }
-        return null;
+        HttpServletRequest req = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        HandlerMethod handlerMethod = (HandlerMethod) req.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE);
+        return handlerMethod.getMethodAnnotation(YuDataPermission.class);
     }
 
     public static <C> void fromAndJoin(JPAQuery<?> jpaQuery, C criteria) {
@@ -233,8 +229,8 @@ public class YuQueryHelp {
                 String propName = SSDTOField.propName();
                 String template = SSDTOField.template();
                 // 包含模板
-                if (!StringUtils.isEmpty(template)) {
-                    propName = StringUtils.isEmpty(propName) ? field.getName() : propName;
+                if (StringUtils.hasLength(template)) {
+                    propName = StringUtils.hasLength(propName) ? propName : field.getName();
                     if (field.getType().equals(String.class)) {
                         expressions.add(ReflectUtils.invoke(Expressions.stringTemplate(template, getFieldValue(domain, propName)), "as", field.getName()));
                     } else if (Arrays.asList(Integer.class, Long.class).contains(field.getType())) {
@@ -244,7 +240,7 @@ public class YuQueryHelp {
                     }
                     // TODO 暂不支持 String之外的类型
                 } else {
-                    if (StringUtils.isEmpty(propName)) {
+                    if (!StringUtils.hasLength(propName)) {
                         expressions.add(getFieldValue(domain, field.getName()));
                     } else {
                         expressions.add(ReflectUtils.invoke(getFieldValue(domain, propName), "as", field.getName()));
@@ -261,8 +257,8 @@ public class YuQueryHelp {
     public static <C> Predicate getPredicateAll(C criteria) throws IllegalAccessException {
         // 数据权限 控制 TODO 现在只处理了 本级及下级控制，后续根据角色扩充：全部、本级及下级、本级、指定部门、指定人员
         YuDataPermission yuDataPermission = getDataPermission();
-        if(yuDataPermission != null) {
-            if(criteria instanceof AbstractQuery) {
+        if (yuDataPermission != null) {
+            if (criteria instanceof AbstractQuery) {
                 ((AbstractQuery) criteria).setDeptNo(SecurityUtil.getDeptNo());
             } else {
                 throw new ServiceException("【系统异常】：方法使用数据权限限制，查询条件必须继承AbstractQuery");
@@ -302,7 +298,7 @@ public class YuQueryHelp {
         YuQueryColumn query = field.getAnnotation(YuQueryColumn.class);
         if (query != null) {
             String propName = query.propName();
-            String attributeName = StringUtils.isEmpty(propName) ? field.getName() : propName;
+            String attributeName = StringUtils.hasLength(propName) ? propName : field.getName();
             boolean accessFlag = true;
             if (!field.isAccessible()) {
                 accessFlag = false;
@@ -312,7 +308,7 @@ public class YuQueryHelp {
             Object val = field.get(criteria);
             if (Objects.isNull(val)) {
                 return null;
-            } else if (val instanceof String && StringUtils.isEmpty(val)) {
+            } else if (val instanceof String && !StringUtils.hasLength(val.toString())) {
                 return null;
             }
             if (!accessFlag) {
