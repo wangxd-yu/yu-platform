@@ -1,7 +1,7 @@
 import { message } from 'antd';
 
 /**
- * 新增
+ * 通用处理
  * @param fields 
  * @param addHandler 
  * @returns 
@@ -10,12 +10,11 @@ import { message } from 'antd';
   const hide = message.loading(`正在${title}`);
 
   try {
-    await handler({ ...fields });
     hide();
+    await handler({ ...fields });
     message.success(`${title}成功`);
     return true;
   } catch (error) {
-    hide();
     message.error(`${title}失败请重试！`);
     return false;
   }
@@ -31,12 +30,11 @@ export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promis
   const hide = message.loading('正在添加');
 
   try {
-    await addHandler({ ...fields });
     hide();
+    await addHandler({ ...fields });
     message.success('添加成功');
     return true;
   } catch (error) {
-    hide();
     message.error('添加失败请重试！');
     return false;
   }
@@ -49,12 +47,11 @@ export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promis
   const hide = message.loading('正在更新');
 
   try {
-    await updateHandler({ ...fields });
     hide();
+    await updateHandler({ ...fields });
     message.success('更新成功');
     return true;
   } catch (error) {
-    hide();
     message.error('更新失败请重试！');
     return false;
   }
@@ -64,17 +61,16 @@ export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promis
  * 删除
  */
 
-export const handleDelete = async (deleteHandler: (...fields: (string | number)[]) => Promise<any>, ...fields: string[] | number[]) => {
+export const handleDelete = async <T> (deleteHandler: (record: T) => Promise<any>, fields: T) => {
   const hide = message.loading('正在删除');
   if (!fields) return true;
 
   try {
-    await deleteHandler(...fields);
     hide();
+    await deleteHandler(fields);
     message.success('删除成功，即将刷新');
     return true;
   } catch (error) {
-    hide();
     message.error('删除失败，请重试');
     return false;
   }

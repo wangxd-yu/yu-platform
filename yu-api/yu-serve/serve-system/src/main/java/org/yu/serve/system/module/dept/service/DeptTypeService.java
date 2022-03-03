@@ -12,5 +12,7 @@ import java.util.List;
 public interface DeptTypeService extends DslBaseService<DeptTypeDO, String> {
     List<DeptTypeDO> findSubTypesByTypeId(String typeId);
 
-    List<DeptTypeDO> findSubTypesByDeptNo(String deptNo);
+    List<DeptTypeDO> findSubTypesByDeptId(String deptId);
+
+    List<DeptTypeDO> findTypesByDeptId(String deptId);
 }

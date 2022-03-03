@@ -5,7 +5,7 @@ import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { queryUser, getUser, addUser, updateUser, deleteUser, disableUser, enableUser } from './service';
+import { queryUser, getUser, deleteUser, disableUser, enableUser } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { UserData, TableListPagination } from './data';
 import UserForm from './components/UserForm'
@@ -19,8 +19,8 @@ const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
   if (Array.isArray(data)) {
     data?.forEach((deptData: DeptData) => {
       const newData: DataNode & {value: string} = {} as DataNode & {value: string};
-      newData.key = deptData.no as string;
-      newData.value = deptData.no as string;
+      newData.key = deptData.id as string;
+      newData.value = deptData.id as string;
       newData.title = deptData.name;
       newData.children = deptData.children ? handleTreeDataRecursion(deptData.children) : []; // 如果还有子集，就再次调用自己
       item.push(newData);
@@ -194,21 +194,11 @@ const UserTable: React.FC<UserData> = () => {
         }}
         formRef={userFormRef}
         initialValues={userCurrentRow || { enabled: true }}
-        onFinish={async (value) => {
-          const data = { ...userCurrentRow, ...value };
-          
-          let success;
-          if (!data.id) {
-            success = await YuCrud.handleAdd(data as UserData, addUser);
-          } else {
-            success = await YuCrud.handleUpdate(data as UserData, updateUser);
-          }
-          if (success) {
-            setUserFormVisible(false);
-            userFormRef?.current?.resetFields();
-            if (userActionRef.current) {
-              userActionRef.current.reload();
-            }
+        onFinish={async () => {
+          setUserFormVisible(false);
+          userFormRef?.current?.resetFields();
+          if (userActionRef.current) {
+            userActionRef.current.reload();
           }
         }}
       />

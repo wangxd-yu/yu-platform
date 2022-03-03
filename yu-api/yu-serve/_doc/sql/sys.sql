@@ -101,7 +101,7 @@ CREATE TABLE `sys_dept`
 (
     `id`          bigint      NOT NULL,
     `no`          varchar(32) NOT NULL COMMENT '上下级关系编码',
-    `pno`         varchar(32) NOT NULL COMMENT '上级部门no',
+    `pid`         varchar(32) NOT NULL COMMENT '上级部门no',
     `code`        varchar(32)      DEFAULT NULL COMMENT '用户自定义编码',
     `sort`        tinyint          DEFAULT NULL COMMENT '排序',
     `type_id`     bigint           DEFAULT NULL COMMENT '类型id',
@@ -139,6 +139,16 @@ CREATE TABLE `sys_dept_type_role`
     `update_time` datetime DEFAULT NULL COMMENT '更新时间',
     `tenant_id`   int      DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB;
+
+-- 【关系表】部门-角色
+DROP TABLE IF EXISTS `sys_dept_role`;
+CREATE TABLE `sys_dept_role`
+(
+    `dept_id` bigint(20) UNSIGNED NOT NULL COMMENT '部门ID',
+    `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色ID',
+    `bind_time` datetime DEFAULT NULL COMMENT '绑定时间',
+    PRIMARY KEY (`dept_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB;
 
 -- 端点表

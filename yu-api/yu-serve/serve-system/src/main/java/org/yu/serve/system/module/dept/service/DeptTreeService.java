@@ -23,5 +23,5 @@ public interface DeptTreeService {
     /**
      * 查询前端页面显示的机构树
      */
-    List<DeptTreeDTO> getShowTreeByDeptNo(String deptNo);
+    List<DeptTreeDTO> getShowTreeByDeptId(String deptId);
 }

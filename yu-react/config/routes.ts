@@ -55,6 +55,22 @@ export default [
         icon: 'smile',
         path: '/system/dept',
         component: './system/Dept',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
+      },
+      {
+        name: '部门管理-A',
+        icon: 'smile',
+        path: '/system/deptComplete',
+        component: './system/DeptComplete',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
       },
       {
         name: '角色管理',

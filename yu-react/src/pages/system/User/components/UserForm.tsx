@@ -4,6 +4,7 @@ import type { YuFormProps } from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
 import { yuUrlSystem } from '@/utils/yuUrl';
 import { Col, Row, TreeSelect } from 'antd';
+import * as YuCrud from '@/utils/yuCrud';
 import * as YuApi from '@/utils/yuApi';
 import type { DataNode } from 'rc-tree/lib/interface';
 import ImgCrop from 'antd-img-crop';
@@ -11,6 +12,8 @@ import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import './UserForm.less';
 import Field from '@ant-design/pro-form/lib/components/Field';
+import type { UserData } from '../data';
+import { addUser, updateUser } from '../service';
 
 type UserFromProps = YuFormProps & { deptTree: DataNode[] | undefined }
 
@@ -32,17 +35,18 @@ function beforeUpload(file: { type: string; size: number; }) {
   return isJpgOrPng && isLt2M;
 }
 
-
 const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) => {
-  const { deptTree, ...rest } = props
+  const { deptTree, onFinish, ...rest } = props
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<any>(props.initialValues?.portraitUrl? `/${BASE_URL_PREFIX}/` + props.initialValues?.portraitUrl : null);
+  const [imageUrl, setImageUrl] = useState<any>(props.initialValues?.portraitUrl ? `/${BASE_URL_PREFIX}/` + props.initialValues?.portraitUrl : null);
+
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>点击上传头像</div>
     </div>
   );
+
 
   const handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
@@ -62,7 +66,21 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
     }
   };
   return (
-    <YuForm {...rest}>
+    <YuForm onFinish={
+      async (value) => {
+        const data = { ...props.initialValues ,...value };
+          let success;
+          if (!data.id) {
+            success = await YuCrud.handleAdd(data as UserData, addUser);
+          } else {
+            success = await YuCrud.handleUpdate(data as UserData, updateUser);
+          }
+        if(success && onFinish) {
+          onFinish(value);
+        }
+      }
+    }
+      {...rest}>
       <Row>
         <Col span={16}>
           <ProFormSwitch name="enabled" label="状态" />
@@ -86,7 +104,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
             label="昵称"
             name="name"
           />
-          <ProForm.Item label="部门" name="deptNo" rules={[
+          <ProForm.Item label="部门" name="deptId" rules={[
             {
               required: true,
               message: '部门为必选项',

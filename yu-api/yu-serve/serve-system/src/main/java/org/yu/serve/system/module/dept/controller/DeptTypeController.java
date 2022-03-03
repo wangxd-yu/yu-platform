@@ -28,9 +28,14 @@ public class DeptTypeController extends DslBaseApiController<DeptTypeService, De
         return new ResponseEntity<>(dslBaseService.findSubTypesByTypeId(typeId), HttpStatus.OK);
     }
 
-    @GetMapping("subTypes/deptNo/{deptNo}")
-    public ResponseEntity<Object> findSubTypesByDeptNo(@PathVariable String deptNo) {
-        return new ResponseEntity<>(dslBaseService.findSubTypesByDeptNo(deptNo), HttpStatus.OK);
+    @GetMapping("subTypes/deptId/{deptId}")
+    public ResponseEntity<Object> findSubTypesByDeptId(@PathVariable String deptId) {
+        return new ResponseEntity<>(dslBaseService.findSubTypesByDeptId(deptId), HttpStatus.OK);
+    }
+
+    @GetMapping("deptId:{deptId}")
+    public ResponseEntity<Object> findTypesByDeptId(@PathVariable String deptId) {
+        return new ResponseEntity<>(dslBaseService.findTypesByDeptId(deptId), HttpStatus.OK);
     }
 
     @GetMapping

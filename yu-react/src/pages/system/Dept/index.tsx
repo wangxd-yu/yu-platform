@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import type { FormInstance } from 'antd';
+import type { FormInstance} from 'antd';
+import { Col, Row } from 'antd';
 import { Switch, Popconfirm } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { DeptData } from './data';
@@ -10,6 +11,15 @@ import { queryDept, addDept, updateDept, deleteDept, disableDept, enableDept } f
 import DeptForm from './components/DeptForm'
 import { useModel } from 'umi';
 
+import { Tree } from 'antd';
+import {
+  DownOutlined,
+  FrownOutlined,
+  SmileOutlined,
+  MehOutlined,
+  FrownFilled,
+} from '@ant-design/icons';
+
 const DeptPage: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
@@ -18,6 +28,26 @@ const DeptPage: React.FC = () => {
   const [deptDataList, setDeptDataList] = useState<DeptData[]>();
   const deptFormRef = useRef<FormInstance>();
   const deptActionRef = useRef<ActionType>();
+
+  const treeData = [
+    {
+      title: 'parent 1',
+      key: '0-0',
+      icon: <SmileOutlined />,
+      children: [
+        {
+          title: 'leaf',
+          key: '0-0-0',
+          icon: <MehOutlined />,
+        },
+        {
+          title: 'leaf',
+          key: '0-0-1',
+          icon: ({ selected }) => (selected ? <FrownFilled /> : <FrownOutlined />),
+        },
+      ],
+    },
+  ];
 
   const columns: ProColumns<DeptData>[] = [
     {
@@ -102,6 +132,17 @@ const DeptPage: React.FC = () => {
 
   return (
     <PageContainer>
+      <Row>
+      <Col span={6}><Tree
+    showIcon
+    defaultExpandAll
+    defaultSelectedKeys={['0-0-0']}
+    switcherIcon={<DownOutlined />}
+    treeData={treeData}
+    height={800}
+  /></Col>
+      <Col span={18}>
+        
       <ProTable<DeptData>
         columns={columns}
         actionRef={deptActionRef}
@@ -167,6 +208,9 @@ const DeptPage: React.FC = () => {
           }}
         />
       }
+      </Col>
+    </Row>
+      
     </PageContainer>
   );
 };

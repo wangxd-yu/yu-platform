@@ -140,3 +140,11 @@ export async function deleteById(id: string | number, url: string) {
     method: 'DELETE'
   });
 }
+
+/** 批量删除请求 */
+export async function batchDelete<T>(record: T, url: string) {
+  return request<Record<string, any>>(`${url}`, {
+    method: 'POST',
+    data: record,
+  });
+}

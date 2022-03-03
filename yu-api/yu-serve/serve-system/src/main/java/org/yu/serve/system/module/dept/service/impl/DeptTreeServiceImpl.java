@@ -10,6 +10,7 @@ import org.yu.serve.system.module.dept.service.DeptTreeService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author wangxd
@@ -56,46 +57,58 @@ public class DeptTreeServiceImpl implements DeptTreeService {
     }
 
     @Override
-    public List<DeptTreeDTO> getShowTreeByDeptNo(String deptNo) {
-        DeptTreeDTO deptTreeDTO = deptMapCache.get(deptNo);
+    public List<DeptTreeDTO> getShowTreeByDeptId(String deptId) {
+        DeptTreeDTO deptTreeDTO = deptMapCache.get(deptId);
         if (deptTreeDTO == null) {
             return Collections.emptyList();
         } else {
-            return Collections.singletonList(deptMapCache.get(deptNo));
+            return Collections.singletonList(deptMapCache.get(deptId));
         }
+    }
+
+    private <T extends DeptTreeDTO> List<T> buildTree(List<T> deptDTOS, boolean cacheFlag) {
+        Map<String, List<T>> zoneByParentIdMap = deptDTOS.stream().collect(Collectors.groupingBy(DeptTreeDTO::getPid));
+        deptDTOS.forEach(zone-> {
+            List<T> children = zoneByParentIdMap.get(zone.getId());
+            zone.setChildren(zoneByParentIdMap.get(zone.getId()));
+            if(children != null) {
+                children.forEach(item -> item.setHasParent(true));
+            }
+        });
+        return deptDTOS.stream().filter(v -> !v.isHasParent()).collect(Collectors.toList());
     }
 
     /**
      * 树结构泛型类
      */
-    private <T extends DeptTreeDTO> List<T> buildTree(List<T> deptDTOS, boolean cacheFlag) {
+    private <T extends DeptTreeDTO> List<T> buildTree_bak(List<T> deptDTOS, boolean cacheFlag) {
         // TODO 多租户处理
         deptMapCache = new HashMap<>();
         //加缓存
         Map<String, T> parentDeptMap = new HashMap<>();
         deptDTOS.forEach(dept -> {
             //根节点 直接放入缓存
-            if (dept.getNo().length() == PER_LEVEL_DEPT_DIGIT) {
+            if (dept.getId().equals("0")) {
                 if (cacheFlag) {
-                    parentDeptMap.put(dept.getNo(), dept);
+                    parentDeptMap.put(dept.getId(), dept);
                 }
             } else {
                 //查找父节点,先从 map中找，再从列表中查询
-                T pDeptDto = parentDeptMap.get(dept.getNo());
+                T pDeptDto = parentDeptMap.get(dept.getId());
                 if (pDeptDto != null) {
                     pDeptDto.getChildren().add(dept);
                     dept.setHasParent(true);
                 } else {
                     //查找 dept 的上级部门
-                    pDeptDto = deptDTOS.parallelStream().filter(deptDTO ->
-                            dept.getNo().substring(0, dept.getNo().length() - PER_LEVEL_DEPT_DIGIT).equals(deptDTO.getNo())
-                    ).findAny().orElse(null);
+                    pDeptDto = deptDTOS.parallelStream()
+                            .filter(deptDTO -> dept.getPid().equals(deptDTO.getId()))
+                            .findAny().orElse(null);
                     if (pDeptDto != null) {
                         if (pDeptDto.getChildren() == null) {
                             pDeptDto.setChildren(new ArrayList<>());
-                            parentDeptMap.put(pDeptDto.getNo(), pDeptDto);
+                            parentDeptMap.put(pDeptDto.getId(), pDeptDto);
                             if (cacheFlag) {
-                                deptMapCache.put(pDeptDto.getNo(), pDeptDto);
+                                deptMapCache.put(pDeptDto.getId(), pDeptDto);
                             }
                         }
                         pDeptDto.getChildren().add(dept);

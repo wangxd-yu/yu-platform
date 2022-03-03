@@ -1,8 +1,10 @@
 import React from 'react'
-import { ModalForm, ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
+import { ModalForm, ProFormDigit, ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-form'
 import type { DeptData } from '../data';
 import type { YuFormProps } from '@/components/Yu/YuForm';
+import { addDept, updateDept } from '../service'
 import { getSubDeptTypes } from '../service'
+import * as YuCrud from '@/utils/yuCrud';
 
 export type DeptFormProps = YuFormProps & {
     deptDataList: DeptData[];
@@ -13,8 +15,8 @@ const formItemLayout = {
     wrapperCol: { span: 19 },
 };
 
-const DeptForm: React.FC<DeptFormProps> = (props: DeptFormProps) => {
-
+const DeptForm: React.FC<YuFormProps & {pDept: DeptData}> = (props: YuFormProps & {pDept: DeptData}) => {
+    console.log(props.initialValues)
     return (
         <ModalForm
             title={!props.isAdd ? '更新部门' : '新建部门'}
@@ -26,7 +28,20 @@ const DeptForm: React.FC<DeptFormProps> = (props: DeptFormProps) => {
             onVisibleChange={(visible) => {
                 if (props.onVisibleChange) props.onVisibleChange(visible);
             }}
-            onFinish={props.onFinish}
+            onFinish={
+                async (value) => {
+                    const data = { ...props.initialValues, ...value };
+                    let success;
+                    if (!data.id) {
+                        success = await YuCrud.handleAdd(data as DeptData, addDept);
+                    } else {
+                        success = await YuCrud.handleUpdate(data as DeptData, updateDept);
+                    }
+                    if (success && props.onFinish) {
+                        props.onFinish(value);
+                    }
+                }
+            }
             initialValues={props.initialValues}
         >
             <ProFormText
@@ -39,13 +54,19 @@ const DeptForm: React.FC<DeptFormProps> = (props: DeptFormProps) => {
                 label="部门名称"
                 name="name"
             />
-            {props.initialValues?.pno &&
-                <ProFormText name="pName" disabled label="上级部门" />
+            {props.initialValues?.pid &&
+                <ProFormText disabled label="上级部门">{props?.pDept.name}</ProFormText>
             }
             <ProFormRadio.Group
+                rules = {[
+                    {
+                        required: true,
+                        message: '部门类型为必填项',
+                    },
+                ]}
                 name="typeId"
                 label="部门类型"
-                params={{typeId: props.initialValues?.typeId}}
+                params={{ typeId: props.pDept?.typeId }}
                 request={getSubDeptTypes}
             />
             <ProFormDigit rules={[

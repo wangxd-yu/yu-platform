@@ -6,15 +6,24 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.core.exception.ServiceException;
+import org.yu.common.querydsl.api.MultiDataResult;
+import org.yu.common.querydsl.query.util.WrapDataUtil;
+import org.yu.common.querydsl.query.util.YuQueryHelp;
 import org.yu.common.querydsl.service.DslBaseServiceImpl;
 import org.yu.serve.system.module.dept.domain.DeptDO;
+import org.yu.serve.system.module.dept.domain.DeptRoleDO;
 import org.yu.serve.system.module.dept.domain.QDeptDO;
+import org.yu.serve.system.module.dept.domain.QDeptRoleDO;
+import org.yu.serve.system.module.dept.dto.DeptRoleDTO;
 import org.yu.serve.system.module.dept.dto.DeptTreeDTO;
 import org.yu.serve.system.module.dept.query.DeptQuery;
 import org.yu.serve.system.module.dept.repository.DeptRepository;
+import org.yu.serve.system.module.dept.repository.DeptRoleRepository;
 import org.yu.serve.system.module.dept.service.DeptService;
 import org.yu.serve.system.module.dept.service.DeptTreeService;
+import org.yu.serve.system.module.role.domain.QRoleDO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,32 +34,37 @@ import java.util.List;
 public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, String> implements DeptService {
     private final DeptTreeService deptTreeService;
     private final QDeptDO qDeptDO = QDeptDO.deptDO;
+    private final QRoleDO qRoleDO = QRoleDO.roleDO;
+    private final QDeptRoleDO qDeptRoleDO = QDeptRoleDO.deptRoleDO;
     /**
-     * 顶级部门 pno 默认值
+     * 顶级部门 pid 默认值
      */
     private final String ROOT_PNO = "0";
 
-    public DeptServiceImpl(DeptTreeService deptTreeService) {
+    private final DeptRoleRepository deptRoleRepository;
+
+    public DeptServiceImpl(DeptTreeService deptTreeService, DeptRoleRepository deptRoleRepository) {
         this.deptTreeService = deptTreeService;
+        this.deptRoleRepository = deptRoleRepository;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DeptDO save(DeptDO deptDO) {
         //TODO 合法校验
-        if (StringUtils.isEmpty(deptDO.getPno())) {
-            deptDO.setPno(ROOT_PNO);
+        if (StringUtils.isEmpty(deptDO.getPid())) {
+            deptDO.setPid(ROOT_PNO);
         } else {
-            if (this.getByNo(deptDO.getPno()) == null) {
+            if (this.getById(deptDO.getPid()) == null) {
                 throw new ServiceException("上级部门编号错误！");
             }
         }
-        deptDO.setNo(this.genNo(deptDO.getPno()));
+        // deptDO.setId(this.genNo(deptDO.getPid()));
         deptDO.setEnabled(true);
         deptDO.setSubCount(0);
         deptDO.setTenantId(YuContextHolder.getYuContext().getTenantId());
         baseRepository.save(deptDO);
-        this.updateSubCnt(deptDO.getPno());
+        this.updateSubCnt(deptDO.getPid());
         deptTreeService.initTree();
         return deptDO;
     }
@@ -58,40 +72,35 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
     /**
      * 生成 上下级关系编码 NO
      */
-    private String genNo(String pno) {
-        //1、查询pno = pno的子部门的最大值
+    private String genNo(String pid) {
+        //1、查询pid = pid的子部门的最大值
         String maxSubNo;
         JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
-        maxSubNo = jpaQueryFactory.select(qDeptDO.no.max())
+        maxSubNo = jpaQueryFactory.select(qDeptDO.id.max())
                 .from(qDeptDO)
-                .where(qDeptDO.pno.eq(pno))
+                .where(qDeptDO.pid.eq(pid))
                 .fetchOne();
         if (maxSubNo == null) {
-            maxSubNo = pno + "000";
+            maxSubNo = pid + "000";
         }
 
         int deptNum = Integer.parseInt(maxSubNo.substring(maxSubNo.length() - 3));
         if (deptNum >= 999) {
             throw new ServiceException("不能在当前父机构下创建子机构，机构编号已用完，请联系管理员！");
         }
-        maxSubNo = pno + String.format("%03d", deptNum + 1);
+        maxSubNo = pid + String.format("%03d", deptNum + 1);
         return maxSubNo;
     }
 
-    private void updateSubCnt(String deptNo) {
-        if (deptNo != null) {
+    private void updateSubCnt(String deptId) {
+        if (deptId != null) {
             JPAQueryFactory jpaQueryFactory = getJPAQueryFactory();
-            int count = baseRepository.countByPno(deptNo);
+            int count = baseRepository.countByPid(deptId);
             jpaQueryFactory.update(qDeptDO)
                     .set(qDeptDO.subCount, count)
-                    .where(qDeptDO.no.eq(deptNo))
+                    .where(qDeptDO.id.eq(deptId))
                     .execute();
         }
-    }
-
-    @Override
-    public DeptDO getByNo(String deptNo) {
-        return getJPAQueryFactory().selectFrom(qDeptDO).where(qDeptDO.no.eq(deptNo)).fetchOne();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -106,6 +115,51 @@ public class DeptServiceImpl extends DslBaseServiceImpl<DeptRepository, DeptDO, 
         getJPAQueryFactory().update(qDeptDO)
                 .set(qDeptDO.enabled, enabled)
                 .where(qDeptDO.id.eq(id))
+                .execute();
+    }
+
+    @Override
+    public MultiDataResult<DeptRoleDTO> getDeptRoles(String deptId) {
+        return WrapDataUtil.toList(getJPAQueryFactory()
+                .select(YuQueryHelp.getJpaDTOSelect(DeptRoleDTO.class))
+                .from(qDeptRoleDO, qRoleDO)
+                .where(
+                        qDeptRoleDO.deptId.eq(deptId),
+                        qDeptRoleDO.roleId.eq(qRoleDO.id)
+                ));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveDeptRoles(String deptId, String[] roleIds) {
+        List<DeptRoleDO> deptRoleDOS = new ArrayList<>(roleIds.length);
+        for (String roleId : roleIds) {
+            deptRoleDOS.add(DeptRoleDO.builder()
+                    .roleId(roleId)
+                    .deptId(deptId)
+                    .build());
+
+        }
+        deptRoleRepository.saveAll(deptRoleDOS);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteDeptRoles(String deptId, String[] roleIds) {
+        getJPAQueryFactory().delete(qDeptRoleDO)
+                .where(
+                        qDeptRoleDO.deptId.eq(deptId),
+                        qDeptRoleDO.roleId.in(roleIds)
+                ).execute();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void moveIn(String deptId, String[] sourceIds) {
+        // TODO deptType 类型检查
+        getJPAQueryFactory().update(qDeptDO)
+                .set(qDeptDO.pid, deptId)
+                .where(qDeptDO.id.in(sourceIds))
                 .execute();
     }
 }

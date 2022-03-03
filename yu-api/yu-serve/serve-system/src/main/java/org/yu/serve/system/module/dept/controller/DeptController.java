@@ -1,9 +1,9 @@
 package org.yu.serve.system.module.dept.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.dept.dto.DeptDTO;
@@ -29,17 +29,24 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
     }
 
     @GetMapping
-    public ResponseEntity<Object> getPages(DeptQuery query) {
-        if (query.getNo() == null) {
-            query.setNo(YuContextHolder.getYuContext().getSecurityUser().getDeptNo());
-        }
-        List<DeptDTO> deptDTOList = dslBaseService.queryAll(query, DeptDTO.class);
-        return new ResponseEntity<>(deptTreeService.buildTree(deptDTOList), HttpStatus.OK);
+    public ResponseEntity<Object> getPages(DeptQuery query, Pageable pageable) {
+        /*if (query.getNo() == null) {
+            query.setNo(YuContextHolder.getYuContext().getSecurityUser().getDeptId());
+        }*/
+        return new ResponseEntity<>(dslBaseService.queryDTO(query, pageable, DeptDTO.class), HttpStatus.OK);
     }
 
     @GetMapping(value = "/tree")
-    public ResponseEntity<Object> getDeptTree() {
-        return new ResponseEntity<>(deptTreeService.getShowTreeByDeptNo(YuContextHolder.getYuContext().getSecurityUser().getDeptNo()), HttpStatus.OK);
+    public ResponseEntity<Object> getDeptTree(DeptQuery query) {
+        List<DeptDTO> deptDTOList = dslBaseService.queryAll(query, DeptDTO.class);
+        return new ResponseEntity<>(deptTreeService.buildTree(deptDTOList), HttpStatus.OK);
+        //return new ResponseEntity<>(deptTreeService.getShowTreeByDeptId(YuContextHolder.getYuContext().getSecurityUser().getDeptId()), HttpStatus.OK);
+    }
+
+    @PutMapping("{id}:moveIn")
+    public ResponseEntity<Object> moveIn(@PathVariable String id, @RequestBody String[] sourceIds) {
+        this.dslBaseService.moveIn(id, sourceIds);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("{id}/enable")
@@ -51,6 +58,23 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
     @PutMapping("{id}/disable")
     public ResponseEntity<Object> disable(@PathVariable String id) {
         this.dslBaseService.changeEnabled(id, false);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "{id}/roles")
+    public ResponseEntity<Object> getDeptRoles(@PathVariable String id) {
+        return new ResponseEntity<>(dslBaseService.getDeptRoles(id), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "{id}/roles")
+    public ResponseEntity<Object> saveDeptRoles(@PathVariable("id") String deptId, @RequestBody String[] roleIds) {
+        dslBaseService.saveDeptRoles(deptId, roleIds);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(value = "{id}/roles:batchDelete")
+    public ResponseEntity<Object> deleteDeptRoles(@PathVariable("id") String deptId, @RequestBody String[] roleIds) {
+        dslBaseService.deleteDeptRoles(deptId, roleIds);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
