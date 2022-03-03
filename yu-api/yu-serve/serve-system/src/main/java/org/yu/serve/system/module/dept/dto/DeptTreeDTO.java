@@ -21,10 +21,9 @@ import java.util.List;
 @YuDTO(domain = DeptDO.class)
 public class DeptTreeDTO<DTO> implements Serializable {
 
-    /**
-     * NO
-     */
-    private String no;
+    private String id;
+
+    private String pid;
 
     /**
      * 名称

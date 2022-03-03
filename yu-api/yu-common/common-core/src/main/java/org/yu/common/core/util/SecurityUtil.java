@@ -39,9 +39,9 @@ public class SecurityUtil {
     /**
      * 获取部门编码
      */
-    public static String getDeptNo() {
+    public static String getDeptId() {
         return Optional.ofNullable(getSecurityUser())
-                .map(SecurityUser::getDeptNo)
+                .map(SecurityUser::getDeptId)
                 .orElse(null);
     }
 

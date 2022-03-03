@@ -15,7 +15,7 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class DslBaseDeptDO<ID extends Serializable> extends DslBaseTenantDO<ID> {
     /**
-     * 部门no
+     * 部门id
      */
-    private String deptNo;
+    private String deptId;
 }

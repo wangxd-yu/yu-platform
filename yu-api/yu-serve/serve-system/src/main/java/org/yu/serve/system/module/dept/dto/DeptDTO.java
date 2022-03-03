@@ -53,7 +53,7 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     @YuDTOField(domain = DeptTypeDO.class, propName = "name")
     private String typeName;
 
-    private String pno;
+    private String pid;
 
     private Boolean enabled;
 

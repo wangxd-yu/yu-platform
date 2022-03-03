@@ -19,7 +19,7 @@ import org.yu.serve.system.module.user.domain.UserDO;
 @Setter
 @YuQuery(domain = UserDO.class, joins = {
         @YuJoin(domain = DeptDO.class, type = YuJoin.Type.LEFT_JOIN, columns = {
-                @YuJoinColumn(column = "no", relationColumn = "deptNo")
+                @YuJoinColumn(column = "id", relationColumn = "deptId")
         })
 })
 public class UserTableQuery extends AbstractQuery {
@@ -31,7 +31,4 @@ public class UserTableQuery extends AbstractQuery {
 
     @YuQueryColumn
     private Boolean enabled;
-
-    @YuQueryColumn(operator = YuOperatorEnum.START_WITH)
-    private String deptNo;
 }

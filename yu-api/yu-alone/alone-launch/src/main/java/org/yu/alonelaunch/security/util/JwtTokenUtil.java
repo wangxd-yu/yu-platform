@@ -52,7 +52,7 @@ public class JwtTokenUtil {
         //把用户ID设置到JWT中
         info.put("id", securityUser.getId());
         info.put("username", securityUser.getUsername());
-        info.put("deptNo", securityUser.getDeptNo());
+        info.put("deptId", securityUser.getDeptId());
         info.put("tenantId", securityUser.getTenantId());
         String token = generateToken(info);
         AuthenticationInfo authenticationInfo = AuthenticationInfo.builder()
@@ -69,7 +69,7 @@ public class JwtTokenUtil {
         SecurityUser securityUser = SecurityUser.builder()
                 .id(jwt.getPayload("id").toString())
                 .username(jwt.getPayload("username").toString())
-                .deptNo(jwt.getPayload("deptNo").toString())
+                .deptId(jwt.getPayload("deptId").toString())
                 .tenantId(jwt.getPayload("tenantId") == null ? null : jwt.getPayload("tenantId").toString())
                 .build();
         return securityUser;

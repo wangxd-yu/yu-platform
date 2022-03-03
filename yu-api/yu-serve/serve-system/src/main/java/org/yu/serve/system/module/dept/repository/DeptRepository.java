@@ -11,5 +11,5 @@ public interface DeptRepository extends DslBaseRepository<DeptDO, String> {
     /**
      * 判断是否存在子节点
      */
-    int countByPno(String pno);
+    int countByPid(String pid);
 }

@@ -13,8 +13,8 @@ import java.util.Set;
 @Data
 public abstract class AbstractQuery {
 
-    @YuQueryColumn(operator = YuOperatorEnum.START_WITH)
-    private String deptNo;
+    @YuQueryColumn
+    private String deptId;
 
     @YuQueryColumn(operator = YuOperatorEnum.IN, propName = "deptId")
     private Set<String> deptIds;

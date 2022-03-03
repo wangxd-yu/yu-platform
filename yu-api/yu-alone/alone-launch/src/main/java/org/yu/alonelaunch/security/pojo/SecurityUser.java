@@ -33,7 +33,7 @@ public class SecurityUser implements UserDetails {
     /**
      * 部门编号
      */
-    private String deptNo;
+    private String deptId;
     /**
      * 租户编号
      */
@@ -57,7 +57,7 @@ public class SecurityUser implements UserDetails {
 
     public SecurityUser(UserDO userDO) {
         this.setId(userDO.getId());
-        this.setDeptNo(userDO.getDeptNo());
+        this.setDeptId(userDO.getDeptId());
         this.setTenantId(TenantUtil.getTenantId());
         this.setUsername(userDO.getUsername());
         this.setPassword(userDO.getPassword());

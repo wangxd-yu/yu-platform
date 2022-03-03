@@ -140,7 +140,7 @@ public class UserServiceImpl extends DslBaseServiceImpl<UserRepository, UserDO, 
                 .from(qUserDO, qDeptDO)
                 .where(
                         qUserDO.id.eq(userId),
-                        qUserDO.deptNo.eq(qDeptDO.no)
+                        qUserDO.deptId.eq(qDeptDO.id)
                 ).fetchOne();
         assert userFullDTO != null;
         userFullDTO.setRoles(getRoleCodesByUserId(userId));

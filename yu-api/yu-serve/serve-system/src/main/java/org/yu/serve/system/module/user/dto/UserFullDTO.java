@@ -21,7 +21,7 @@ public class UserFullDTO {
 
     private String name;
 
-    private String deptNo;
+    private String deptId;
 
     private String email;
 
@@ -32,6 +32,9 @@ public class UserFullDTO {
 
     @YuDTOField(domain = DeptDO.class, propName = "name")
     private String deptName;
+
+    @YuDTOField(domain = DeptDO.class, propName = "typeId")
+    private String deptTypeId;
 
     @YuDTOTransient
     private Set<String> roles;

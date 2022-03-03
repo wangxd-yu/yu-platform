@@ -259,7 +259,9 @@ public class YuQueryHelp {
         YuDataPermission yuDataPermission = getDataPermission();
         if (yuDataPermission != null) {
             if (criteria instanceof AbstractQuery) {
-                ((AbstractQuery) criteria).setDeptNo(SecurityUtil.getDeptNo());
+                if(((AbstractQuery) criteria).getDeptId() == null) {
+                    ((AbstractQuery) criteria).setDeptId(SecurityUtil.getDeptId());
+                }
             } else {
                 throw new ServiceException("【系统异常】：方法使用数据权限限制，查询条件必须继承AbstractQuery");
             }

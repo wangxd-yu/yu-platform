@@ -44,7 +44,7 @@ CREATE TABLE `sys_dept`
 (
     `id`          bigint                                                NOT NULL,
     `no`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '上下级关系编码',
-    `pno`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '上级部门no',
+    `pid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '上级部门no',
     `code`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '用户自定义编码',
     `sort`        tinyint                                               DEFAULT NULL COMMENT '排序',
     `type_id`     bigint                                                DEFAULT NULL COMMENT '类型id',

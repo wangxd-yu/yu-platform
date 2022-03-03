@@ -47,7 +47,7 @@ public class DeptAllDTO extends DeptTreeDTO<DeptAllDTO> implements Serializable 
     /**
      * 上级部门
      */
-    private String pno;
+    private String pid;
 
     private Integer subCount;
 
@@ -69,9 +69,9 @@ public class DeptAllDTO extends DeptTreeDTO<DeptAllDTO> implements Serializable 
     @JsonIgnore
     private boolean hasPid;
 
-    public DeptAllDTO(String id, String name, String pno) {
+    public DeptAllDTO(String id, String name, String pid) {
         this.id = id;
         this.name = name;
-        this.pno = pno;
+        this.pid = pid;
     }
 }

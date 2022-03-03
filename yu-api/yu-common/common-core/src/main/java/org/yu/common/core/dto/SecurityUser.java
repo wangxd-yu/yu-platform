@@ -15,9 +15,9 @@ public class SecurityUser {
 
     private String id;
     /**
-     * 部门NO
+     * 部门id
      */
-    private String deptNo;
+    private String deptId;
     /**
      * 租户ID
      */

@@ -32,7 +32,7 @@ public class YuContextFilter extends OncePerRequestFilter {
             JSONObject userJsonObject = new JSONObject(userStr);
             SecurityUser securityUser = new SecurityUser();
             securityUser.setId(userJsonObject.getStr("id"));
-            securityUser.setDeptNo(userJsonObject.getStr("deptNo"));
+            securityUser.setDeptId(userJsonObject.getStr("deptId"));
             securityUser.setTenantId(userJsonObject.getStr("tenantId"));
             securityUser.setClientId(userJsonObject.getStr("client_id"));
             securityUser.setUsername(userJsonObject.getStr("user_name"));

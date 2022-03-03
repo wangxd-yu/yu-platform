@@ -39,7 +39,7 @@ public interface YuAuthInterceptor extends HandlerInterceptor {
             loginUser.setClientId(securityUser.getClientId());
             loginUser.setTenantId(securityUser.getTenantId());
             loginUser.setUsername(securityUser.getUsername());
-            loginUser.setDeptNo(securityUser.getDeptNo());
+            loginUser.setDeptId(securityUser.getDeptId());
             loginUser.setRoles(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
 
             yuContext.setSecurityUser(loginUser);

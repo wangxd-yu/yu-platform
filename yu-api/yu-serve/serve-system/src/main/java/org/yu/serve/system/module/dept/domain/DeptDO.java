@@ -20,12 +20,7 @@ public class DeptDO extends DslBaseTenantDO<String> {
     /**
      * 上级部门no
      */
-    private String pno;
-
-    /**
-     * 上下级关系编码
-     */
-    private String no;
+    private String pid;
 
     /**
      * 用户自定义编码

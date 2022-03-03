@@ -39,7 +39,7 @@ public abstract class JpaBaseDO {
     /**
      * 部门no
      */
-    private String deptNo;
+    private String deptId;
     /**
      * 租户id
      */
