@@ -9,6 +9,8 @@ import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.role.domain.RoleDO;
 import org.yu.serve.system.module.role.query.RoleQuery;
 import org.yu.serve.system.module.role.service.RoleService;
+import org.yu.serve.system.module.user.dto.UserTableDTO;
+import org.yu.serve.system.module.user.query.UserRoleQuery;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import java.util.Map;
 @RequestMapping("role")
 public class RoleController extends DslBaseApiController<RoleService, RoleDO, String> {
     private final RoleService roleService;
+
     protected RoleController(RoleService roleService, RoleService roleService1) {
         super(roleService);
         this.roleService = roleService1;
@@ -40,5 +43,12 @@ public class RoleController extends DslBaseApiController<RoleService, RoleDO, St
     @GetMapping("{id}/menus")
     public ResponseEntity<Object> getRoleMenus(@PathVariable String id) {
         return new ResponseEntity<>(roleService.getRoleMenus(id), HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/users")
+    public ResponseEntity<Object> getRoleUserPage(@PathVariable("id") String roleId, Pageable pageable) {
+        UserRoleQuery query = new UserRoleQuery();
+        query.setRoleId(roleId);
+        return super.queryDTO(query, pageable, UserTableDTO.class);
     }
 }
