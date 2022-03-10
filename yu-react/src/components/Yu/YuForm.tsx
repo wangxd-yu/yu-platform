@@ -1,5 +1,5 @@
 import React from 'react'
-import { ModalForm, DrawerForm } from '@ant-design/pro-form'
+import ProForm, { ModalForm, DrawerForm } from '@ant-design/pro-form'
 import type { ModalFormProps } from '@ant-design/pro-form';
 
 export type YuFormProps = ModalFormProps & {
@@ -16,18 +16,21 @@ const formItemLayout = {
 // declare function ModalForm<T = Record<string, any>>({ children, trigger, onVisibleChange, modalProps, onFinish, title, width, ...rest }: ModalFormProps<T>): JSX.Element;
 const YuForm: React.FC<YuFormProps> = ((props: YuFormProps) => {
     const Components = {
+        ProForm,
         ModalForm,
         DrawerForm
     };
     const FormComponents = props?.formType ? Components[props?.formType] : Components.ModalForm;
+
+    const {formType, isAdd, children, ...proFormProps} = props
     
     return (
         <FormComponents
             layout='horizontal'
             {...formItemLayout}
-            {...props}
+            {...proFormProps}
         >
-            {props.children}
+            {children}
         </FormComponents >
     )
 })
