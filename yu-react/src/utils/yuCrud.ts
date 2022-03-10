@@ -2,9 +2,9 @@ import { message } from 'antd';
 
 /**
  * 通用处理
- * @param fields 
- * @param addHandler 
- * @returns 
+ * @param fields
+ * @param addHandler
+ * @returns
  */
  export const handle = async <T> (fields: T, handler: (record: T) => Promise<any>, title: string = '处理')  => {
   const hide = message.loading(`正在${title}`);
@@ -22,9 +22,9 @@ import { message } from 'antd';
 
 /**
  * 新增
- * @param fields 
- * @param addHandler 
- * @returns 
+ * @param fields
+ * @param addHandler
+ * @returns
  */
 export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promise<any>)  => {
   const hide = message.loading('正在添加');

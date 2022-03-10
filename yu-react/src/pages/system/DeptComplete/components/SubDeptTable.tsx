@@ -153,7 +153,7 @@ const DeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () 
                     setSelectedDeptIds(selectedRowKeys as string[])
                     return (
                         <Space size={16}>
-                            <a >合并</a>
+                            {/* <a >合并</a> */}
                             <a onClick={() => { setMergeDeptModelVisble(true); }}>移动</a>
                         </Space>
                     );

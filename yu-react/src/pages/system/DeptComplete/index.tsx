@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { DeptData } from './data';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useModel } from 'umi';
 
+import type { FormInstance} from 'antd';
 import { Tree } from 'antd';
 import {
   ClusterOutlined,
@@ -61,8 +62,8 @@ const DeptPage: React.FC = () => {
   }, []);
 
   return (
-    <PageContainer>
-      <ProCard split="vertical">
+    <PageContainer >
+      <ProCard split="vertical" style={{height: 'calc(100vh - 180px)'}}>
         <ProCard colSpan="30%">
           {deptTree &&
             <Tree

@@ -3,6 +3,7 @@ import * as YuApi from '@/utils/yuApi';
 import { request } from 'umi';
 
 import { yuUrlSystem } from '@/utils/yuUrl';
+import type { UserData } from '../User/data';
 
 const roleUrl = yuUrlSystem('/role');
 
@@ -43,4 +44,11 @@ export async function getRoleMenus(roleId: string) {
   return request<string[]>(`${roleUrl}/${roleId}/menus`, {
     method: 'GET'
   });
+}
+
+
+/** 获取对应角色的用户列表 */
+export async function queryRoleUserPage(params: any) {
+  console.log("roleId", params.roleId)
+  return YuApi.queryPage<UserData>(`${roleUrl}/${params.roleId}/users`, params);
 }

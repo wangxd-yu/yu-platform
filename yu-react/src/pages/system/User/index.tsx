@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Popconfirm, Space, Switch, TreeSelect } from 'antd';
+import { Avatar, Button, Popconfirm, Popover, Space, Switch, TreeSelect } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -18,7 +18,7 @@ const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
   const item: DataNode[] = [];
   if (Array.isArray(data)) {
     data?.forEach((deptData: DeptData) => {
-      const newData: DataNode & {value: string} = {} as DataNode & {value: string};
+      const newData: DataNode & { value: string } = {} as DataNode & { value: string };
       newData.key = deptData.id as string;
       newData.value = deptData.id as string;
       newData.title = deptData.name;
@@ -38,7 +38,7 @@ const UserTable: React.FC<UserData> = () => {
   const userActionRef = useRef<ActionType>();
 
   useEffect(() => {
-    YuApi.queryList<DeptData>(yuUrlSystem('/dept')).then(res => {
+    YuApi.queryList<DeptData>(yuUrlSystem('/dept/tree')).then(res => {
       setDeptTree(handleTreeDataRecursion(res.data));
     });
   }, []);
@@ -46,7 +46,7 @@ const UserTable: React.FC<UserData> = () => {
   const columns: ProColumns<UserData>[] = [
     {
       title: '所属部门',
-      dataIndex: 'deptNo',
+      dataIndex: 'deptId',
       hideInTable: true,
       renderFormItem: () => {
         return (
@@ -68,12 +68,21 @@ const UserTable: React.FC<UserData> = () => {
       valueType: 'avatar',
       width: 150,
       render: (dom, record) => (
-        <Space>
-          { record.portraitUrl ? 
-            <Avatar src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
-            <Avatar icon={<UserOutlined />} />
-          } 
-        </Space>
+        <Popover content={
+          <Space>
+            {record.portraitUrl ?
+              <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
+              <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} icon={<UserOutlined />} />
+            }
+          </Space>
+        } trigger="hover">
+          <Space>
+            {record.portraitUrl ?
+              <Avatar src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
+              <Avatar icon={<UserOutlined />} />
+            }
+          </Space>
+        </Popover>
       ),
     },
     {
@@ -179,7 +188,7 @@ const UserTable: React.FC<UserData> = () => {
         request={queryUser}
         columns={columns}
       />
-      { userFormVisible && <UserForm
+      {userFormVisible && <UserForm
         deptTree={deptTree}
         width="700px"
         title={userCurrentRow?.id ? '更新用户' : '新建用户'}
@@ -202,7 +211,7 @@ const UserTable: React.FC<UserData> = () => {
           }
         }}
       />
-    }
+      }
     </PageContainer >
   );
 };

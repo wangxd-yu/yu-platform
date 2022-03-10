@@ -1,5 +1,6 @@
 import React, { Fragment, useRef, useState } from 'react';
-import type { FormInstance} from 'antd';
+import type { FormInstance } from 'antd';
+import { Popover } from 'antd';
 import { Popconfirm } from 'antd';
 import { Button } from 'antd';
 import { Avatar, Space } from 'antd';
@@ -20,6 +21,7 @@ const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { de
   const [userFormVisible, setUserFormVisible] = useState<boolean>(false);
   const [userCurrentRow, setUserCurrentRow] = useState<UserData>();
   const [deptTree] = useState<DataNode[]>(prop.deptTree);
+  const [isCurrent, setIsCurrent] = useState<boolean>(true);
   const userFormRef = useRef<FormInstance>();
   const userActionRef = useRef<ActionType>();
   const columns: ProColumns<UserData>[] = [{
@@ -29,12 +31,21 @@ const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { de
     valueType: 'avatar',
     width: 150,
     render: (dom, record) => (
-      <Space>
-        {record.portraitUrl ?
-          <Avatar src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
-          <Avatar icon={<UserOutlined />} />
-        }
-      </Space>
+      <Popover content={
+        <Space>
+          {record.portraitUrl ?
+            <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
+            <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} icon={<UserOutlined />} />
+          }
+        </Space>
+      } trigger="hover">
+        <Space>
+          {record.portraitUrl ?
+            <Avatar src={`/${BASE_URL_PREFIX}/${record.portraitUrl}`} /> :
+            <Avatar icon={<UserOutlined />} />
+          }
+        </Space>
+      </Popover>
     ),
   },
   {
@@ -48,7 +59,7 @@ const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { de
   },
   {
     title: '所属部门',
-    dataIndex: 'deptName',
+    dataIndex: 'deptFullName',
     search: false,
   },
   {
@@ -111,20 +122,29 @@ const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { de
       <ProTable<UserData>
         columns={columns}
         actionRef={userActionRef}
+        toolbar={{
+          title: (
+            <Switch 
+              checkedChildren="只看本级" 
+              unCheckedChildren="本级及下级" 
+              defaultChecked = {isCurrent}
+              onChange={()=> setIsCurrent(!isCurrent)}/>
+          )
+        }}
         toolBarRender={() => [
           <Button
             type="primary"
             key="primary"
             onClick={() => {
               userFormRef?.current?.resetFields();
-              setUserCurrentRow(undefined)
+              setUserCurrentRow(undefined);
               setUserFormVisible(true);
             }}
           >
             <PlusOutlined /> 新建
-          </Button>,
+          </Button>
         ]}
-        params={{ deptId: prop.deptId }}
+        params={{ deptId: prop.deptId, isCurrent }}
         request={(params) => YuApi.queryPage<UserData>(yuUrlSystem('/user'), params)}
         postData={(dataList) => {
           return dataList;
