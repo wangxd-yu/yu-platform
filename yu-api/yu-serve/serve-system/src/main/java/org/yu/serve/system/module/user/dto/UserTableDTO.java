@@ -32,6 +32,9 @@ public class UserTableDTO {
     @YuDTOField(domain = DeptDO.class, propName = "name")
     private String deptName;
 
+    @YuDTOField(domain = DeptDO.class, propName = "fullName")
+    private String deptFullName;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
 }

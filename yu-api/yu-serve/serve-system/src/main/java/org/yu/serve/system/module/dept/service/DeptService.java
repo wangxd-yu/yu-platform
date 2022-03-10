@@ -31,4 +31,5 @@ public interface DeptService extends DslBaseService<DeptDO, String> {
      * @param sourceIds 移入部门ids
      */
     void moveIn(String deptId, String[] sourceIds);
+
 }

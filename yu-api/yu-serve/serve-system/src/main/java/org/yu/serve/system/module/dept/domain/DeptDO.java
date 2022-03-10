@@ -47,6 +47,11 @@ public class DeptDO extends DslBaseTenantDO<String> {
      */
     private String name;
 
+    /**
+     * 部门全名
+     */
+    private String fullName;
+
     @Column(name = "is_enabled")
     private Boolean enabled;
 
