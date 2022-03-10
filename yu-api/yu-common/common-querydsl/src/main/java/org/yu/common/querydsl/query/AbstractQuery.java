@@ -1,6 +1,8 @@
 package org.yu.common.querydsl.query;
 
 import lombok.Data;
+import org.yu.common.core.util.DataScopeUtil;
+import org.yu.common.core.util.SecurityUtil;
 import org.yu.common.querydsl.query.annotation.YuQueryColumn;
 import org.yu.common.querydsl.query.enums.YuOperatorEnum;
 
@@ -18,6 +20,25 @@ public abstract class AbstractQuery {
 
     @YuQueryColumn(operator = YuOperatorEnum.IN, propName = "deptId")
     private Set<String> deptIds;
+
+    /**
+     * 只查看本级，默认false，按用户数据权限查看
+     */
+    private Boolean isCurrent = false;
+
+    public void handlerDataScope() {
+        if(deptId == null) {
+            deptId = SecurityUtil.getDeptId();
+        }
+        if(isCurrent) {
+            deptIds = null;
+        } else {
+            if (deptIds == null) {
+                deptIds = DataScopeUtil.listCurrentAndSonDeptIds(deptId);
+            }
+            deptId = null;
+        }
+    }
 
 /*    public String getDeptId() {
         if (YuUtil.isDeptLevelDataScope()) {

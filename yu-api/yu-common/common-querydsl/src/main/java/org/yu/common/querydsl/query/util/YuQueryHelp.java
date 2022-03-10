@@ -13,7 +13,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 import org.yu.common.core.annotation.YuDataPermission;
 import org.yu.common.core.exception.ServiceException;
-import org.yu.common.core.util.SecurityUtil;
 import org.yu.common.querydsl.exception.YuQueryException;
 import org.yu.common.querydsl.query.AbstractQuery;
 import org.yu.common.querydsl.query.annotation.*;
@@ -259,9 +258,12 @@ public class YuQueryHelp {
         YuDataPermission yuDataPermission = getDataPermission();
         if (yuDataPermission != null) {
             if (criteria instanceof AbstractQuery) {
-                if(((AbstractQuery) criteria).getDeptId() == null) {
-                    ((AbstractQuery) criteria).setDeptId(SecurityUtil.getDeptId());
-                }
+                ((AbstractQuery) criteria).handlerDataScope();
+                /*if (((AbstractQuery) criteria).getDeptId() == null) {
+                    ((AbstractQuery) criteria).setDeptIds(DataScopeUtil.listCurrentAndSonDeptIds(SecurityUtil.getDeptId()));
+                } else {
+                    ((AbstractQuery) criteria).setDeptIds(DataScopeUtil.listCurrentAndSonDeptIds(((AbstractQuery) criteria).getDeptId()));
+                }*/
             } else {
                 throw new ServiceException("【系统异常】：方法使用数据权限限制，查询条件必须继承AbstractQuery");
             }
