@@ -21,6 +21,7 @@ import org.yu.alonelaunch.security.util.JwtTokenUtil;
 import org.yu.common.core.context.YuContext;
 import org.yu.common.core.context.YuContextHolder;
 import org.yu.common.web.util.AddressUtil;
+import org.yu.serve.system.module.user.service.UserService;
 import org.yu.serve.system.util.PasswordUtil;
 
 import javax.annotation.Resource;
@@ -36,6 +37,9 @@ public class AuthenticationController {
 
     @Resource
     private UserDetailsService userDetailsService;
+
+    @Resource
+    private UserService userService;
 
     @Resource
     private LogLoginService logLoginService;
@@ -62,6 +66,7 @@ public class AuthenticationController {
             throw new AccountExpiredException("所属部门已停用，请联系管理员");
         }*/
         logLoginService.asyncSave(this.map2LogLoginDO(loginUser.getUsername()));
+        securityUser.setRoles(userService.getRoleCodesByUserId(securityUser.getId()));
         // 返回 认证信息
         return ResponseEntity.ok(JwtTokenUtil.generateAuthenticationInfo(securityUser));
     }

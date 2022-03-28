@@ -8,7 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form';
 import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
 import * as YuCrud from '@/utils/yuCrud';
-import type { Dict, TableListPagination, DictItem } from './data';
+import type { Dict, DictItem } from './data';
 import DictForm1 from './components/DictForm1'
 
 const TableList: React.FC = () => {
@@ -147,7 +147,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<Dict, TableListPagination>
+      <ProTable<Dict, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"

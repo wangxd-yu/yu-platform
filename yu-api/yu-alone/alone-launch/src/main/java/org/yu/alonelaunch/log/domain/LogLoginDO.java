@@ -2,7 +2,7 @@ package org.yu.alonelaunch.log.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.yu.common.querydsl.domain.DslBaseDO;
+import org.yu.common.querydsl.domain.DslBaseDeptDO;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "log_login")
-public class LogLoginDO extends DslBaseDO<String> {
+public class LogLoginDO extends DslBaseDeptDO<String> {
     /**
      * 登录用户名
      */

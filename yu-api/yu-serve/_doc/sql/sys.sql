@@ -4,15 +4,15 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
     `id`                   bigint(20) NOT NULL COMMENT 'ID',
-    `username`             varchar(32)      DEFAULT NULL COMMENT '用户名',
-    `password`             varchar(68)      DEFAULT NULL COMMENT '密码',
+    `username`             varchar(32) DEFAULT NULL COMMENT '用户名',
+    `password`             varchar(68) DEFAULT NULL COMMENT '密码',
     `is_enabled`           tinyint unsigned DEFAULT NULL COMMENT '状态：1启用、0禁用',
-    `name`                 varchar(32)      DEFAULT NULL COMMENT '名称',
-    `password_update_time` datetime         DEFAULT NULL COMMENT '密码修改时间',
-    `dept_no`              varchar(32)      DEFAULT NULL COMMENT '部门no',
-    `tenant_id`            int              DEFAULT NULL COMMENT '租户ID',
-    `create_time`          datetime         DEFAULT NULL COMMENT '创建时间',
-    `update_time`          datetime         DEFAULT NULL COMMENT '更新时间',
+    `name`                 varchar(32) DEFAULT NULL COMMENT '名称',
+    `password_update_time` datetime    DEFAULT NULL COMMENT '密码修改时间',
+    `dept_no`              varchar(32) DEFAULT NULL COMMENT '部门no',
+    `tenant_id`            int         DEFAULT NULL COMMENT '租户ID',
+    `create_time`          datetime    DEFAULT NULL COMMENT '创建时间',
+    `update_time`          datetime    DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB;
 
@@ -102,16 +102,32 @@ CREATE TABLE `sys_dept`
     `id`          bigint      NOT NULL,
     `no`          varchar(32) NOT NULL COMMENT '上下级关系编码',
     `pid`         varchar(32) NOT NULL COMMENT '上级部门no',
-    `code`        varchar(32)      DEFAULT NULL COMMENT '用户自定义编码',
-    `sort`        tinyint          DEFAULT NULL COMMENT '排序',
-    `type_id`     bigint           DEFAULT NULL COMMENT '类型id',
-    `type_code`   varchar(16)      DEFAULT NULL COMMENT '类型编号',
-    `name`        varchar(32)      DEFAULT NULL COMMENT '名称',
+    `code`        varchar(32) DEFAULT NULL COMMENT '用户自定义编码',
+    `sort`        tinyint     DEFAULT NULL COMMENT '排序',
+    `type_id`     bigint      DEFAULT NULL COMMENT '类型id',
+    `type_code`   varchar(16) DEFAULT NULL COMMENT '类型编号',
+    `name`        varchar(32) DEFAULT NULL COMMENT '名称',
     `is_enabled`  tinyint unsigned DEFAULT NULL COMMENT '状态：1启用、0禁用',
-    `sub_count`   int              DEFAULT '0' COMMENT '子部门数目',
-    `create_time` datetime         DEFAULT NULL COMMENT '创建时间',
-    `update_time` datetime         DEFAULT NULL COMMENT '更新时间',
-    `tenant_id`   int              DEFAULT NULL COMMENT '租户ID',
+    `sub_count`   int         DEFAULT '0' COMMENT '子部门数目',
+    `create_time` datetime    DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime    DEFAULT NULL COMMENT '更新时间',
+    `tenant_id`   int         DEFAULT NULL COMMENT '租户ID',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB;
+
+-- 虚拟部门表
+drop table if exists `sys_virtual_dept`;
+CREATE TABLE `sys_virtual_dept`
+(
+    `id`          bigint NOT NULL,
+    `pid`         bigint NOT NULL COMMENT '上级部门id',
+    `sort`        tinyint     DEFAULT NULL COMMENT '排序',
+    `name`        varchar(32) DEFAULT NULL COMMENT '名称',
+    `is_enabled`  tinyint unsigned DEFAULT NULL COMMENT '状态：1启用、0禁用',
+    `sub_count`   int         DEFAULT '0' COMMENT '子部门数目',
+    `create_time` datetime    DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime    DEFAULT NULL COMMENT '更新时间',
+    `tenant_id`   int         DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB;
 
@@ -145,8 +161,8 @@ CREATE TABLE `sys_dept_type_role`
 DROP TABLE IF EXISTS `sys_dept_role`;
 CREATE TABLE `sys_dept_role`
 (
-    `dept_id` bigint(20) UNSIGNED NOT NULL COMMENT '部门ID',
-    `role_id` bigint(20) UNSIGNED NOT NULL COMMENT '角色ID',
+    `dept_id`   bigint(20) UNSIGNED NOT NULL COMMENT '部门ID',
+    `role_id`   bigint(20) UNSIGNED NOT NULL COMMENT '角色ID',
     `bind_time` datetime DEFAULT NULL COMMENT '绑定时间',
     PRIMARY KEY (`dept_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB;
@@ -162,23 +178,26 @@ CREATE TABLE `sys_user_role`
 
 -- 【关系表】菜单-端点
 DROP TABLE IF EXISTS `sys_endpoint`;
-CREATE TABLE `sys_endpoint` (
-    `id` BIGINT NOT NULL,
-    `label` VARCHAR ( 32 ) DEFAULT NULL COMMENT '标签',
-    `pattern` VARCHAR ( 64 ) NOT NULL COMMENT 'url匹配模式',
-    `method` enum ( 'GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE' ) DEFAULT NULL COMMENT '类型',
+CREATE TABLE `sys_endpoint`
+(
+    `id`                BIGINT      NOT NULL,
+    `label`             VARCHAR(32) DEFAULT NULL COMMENT '标签',
+    `pattern`           VARCHAR(64) NOT NULL COMMENT 'url匹配模式',
+    `method`            enum ( 'GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE' ) DEFAULT NULL COMMENT '类型',
     `is_access_enabled` TINYINT UNSIGNED DEFAULT NULL COMMENT '权限状态：1启用、0禁用',
-    `is_log_enabled` TINYINT UNSIGNED DEFAULT NULL COMMENT '日志状态：1启用、0禁用',
-    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-    `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-    `tenant_id` INT DEFAULT NULL COMMENT '租户ID',
-    PRIMARY KEY ( `id` ) USING BTREE
-) ENGINE = INNODB;-- 【关系表】菜单-端点
+    `is_log_enabled`    TINYINT UNSIGNED DEFAULT NULL COMMENT '日志状态：1启用、0禁用',
+    `create_time`       datetime    DEFAULT NULL COMMENT '创建时间',
+    `update_time`       datetime    DEFAULT NULL COMMENT '更新时间',
+    `tenant_id`         INT         DEFAULT NULL COMMENT '租户ID',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = INNODB;
+-- 【关系表】菜单-端点
 
 -- 【关系表】菜单-端点
 DROP TABLE IF EXISTS `sys_menu_endpoint`;
-CREATE TABLE `sys_menu_endpoint` (
-     `menu_id` BIGINT ( 20 ) NOT NULL COMMENT '菜单ID',
-     `endpoint_id` BIGINT ( 20 ) NOT NULL COMMENT '端点ID',
-     PRIMARY KEY ( `menu_id`, `endpoint_id` ) USING BTREE
+CREATE TABLE `sys_menu_endpoint`
+(
+    `menu_id`     BIGINT ( 20 ) NOT NULL COMMENT '菜单ID',
+    `endpoint_id` BIGINT ( 20 ) NOT NULL COMMENT '端点ID',
+    PRIMARY KEY (`menu_id`, `endpoint_id`) USING BTREE
 ) ENGINE = INNODB;

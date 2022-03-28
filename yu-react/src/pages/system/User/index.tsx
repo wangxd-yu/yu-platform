@@ -7,7 +7,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { queryUser, getUser, deleteUser, disableUser, enableUser } from './service';
 import * as YuCrud from '@/utils/yuCrud';
-import type { UserData, TableListPagination } from './data';
+import type { UserData } from './data';
 import UserForm from './components/UserForm'
 import type { DataNode } from 'rc-tree/lib/interface';
 import * as YuApi from '@/utils/yuApi';
@@ -96,7 +96,7 @@ const UserTable: React.FC<UserData> = () => {
     },
     {
       title: '所属部门',
-      dataIndex: 'deptName',
+      dataIndex: 'deptFullName',
       search: false,
     },
     {
@@ -165,7 +165,7 @@ const UserTable: React.FC<UserData> = () => {
 
   return (
     <PageContainer>
-      <ProTable<UserData, TableListPagination>
+      <ProTable<UserData, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={userActionRef}
         rowKey="id"

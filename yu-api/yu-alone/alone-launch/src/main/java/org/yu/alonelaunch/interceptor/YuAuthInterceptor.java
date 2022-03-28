@@ -1,7 +1,6 @@
 package org.yu.alonelaunch.interceptor;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -10,7 +9,6 @@ import org.yu.common.core.context.YuContext;
 import org.yu.common.core.dto.SecurityUser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
 
 /**
  * YU 请求拦截器，用于处理 YuContextHolder填充、端点权限控制
@@ -40,7 +38,8 @@ public interface YuAuthInterceptor extends HandlerInterceptor {
             loginUser.setTenantId(securityUser.getTenantId());
             loginUser.setUsername(securityUser.getUsername());
             loginUser.setDeptId(securityUser.getDeptId());
-            loginUser.setRoles(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
+            // loginUser.setRoles(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
+            loginUser.setRoles(securityUser.getRoles());
 
             yuContext.setSecurityUser(loginUser);
         } else {

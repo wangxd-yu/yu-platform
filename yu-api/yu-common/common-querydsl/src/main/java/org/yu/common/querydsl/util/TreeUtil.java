@@ -4,7 +4,10 @@ import org.yu.common.querydsl.api.TreeDTO;
 import org.yu.common.querydsl.api.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author wangxd
@@ -30,7 +33,7 @@ public class TreeUtil {
     }
 
     public static <T extends TreeNode<T>> List<T> buildTree(List<T> treeList) {
-        List<T> trees = new ArrayList<>();
+        /*List<T> trees = new ArrayList<>();
         for (T treeNode : treeList) {
             if (treeNode.isRoot()) {
                 trees.add(treeNode);
@@ -43,7 +46,11 @@ public class TreeUtil {
                     treeNode.getChildren().add(it);
                 }
             }
-        }
-        return trees;
+        }*/
+        Map<String, List<T>> zoneByParentIdMap = treeList.stream().sorted(Comparator.comparing(TreeNode::getSort)).collect(Collectors.groupingBy(TreeNode::getPid));
+        treeList.forEach(zone -> {
+            zone.setChildren(zoneByParentIdMap.get(zone.getId()));
+        });
+        return treeList.stream().filter(TreeNode::isRoot).collect(Collectors.toList());
     }
 }

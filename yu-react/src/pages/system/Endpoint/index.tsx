@@ -7,7 +7,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, accessEnable, accessDisable, logEnable, logDisable } from './service';
 import * as YuCrud from '@/utils/yuCrud';
-import type { EndpointData, TableListPagination } from './data';
+import type { EndpointData } from './data';
 import EndpointForm from './components/EndpointForm'
 
 export const methodMap = {
@@ -165,7 +165,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
 
   return (
     <PageContainer>
-      <ProTable<EndpointData, TableListPagination>
+      <ProTable<EndpointData, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={endpointActionRef}
         rowKey="id"

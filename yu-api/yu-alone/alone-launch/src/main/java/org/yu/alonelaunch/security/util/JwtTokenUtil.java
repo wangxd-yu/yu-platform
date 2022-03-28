@@ -1,6 +1,7 @@
 package org.yu.alonelaunch.security.util;
 
 import cn.hutool.core.exceptions.ValidateException;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
@@ -11,6 +12,7 @@ import org.yu.alonelaunch.security.pojo.SecurityUser;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -54,6 +56,7 @@ public class JwtTokenUtil {
         info.put("username", securityUser.getUsername());
         info.put("deptId", securityUser.getDeptId());
         info.put("tenantId", securityUser.getTenantId());
+        info.put("roles", securityUser.getRoles());
         String token = generateToken(info);
         AuthenticationInfo authenticationInfo = AuthenticationInfo.builder()
                 .token(token)
@@ -71,6 +74,7 @@ public class JwtTokenUtil {
                 .username(jwt.getPayload("username").toString())
                 .deptId(jwt.getPayload("deptId").toString())
                 .tenantId(jwt.getPayload("tenantId") == null ? null : jwt.getPayload("tenantId").toString())
+                .roles(new HashSet<>(JSONUtil.toList(jwt.getPayload("roles").toString(), String.class)))
                 .build();
         return securityUser;
     }

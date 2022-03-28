@@ -4,6 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.yu.common.core.util.DataScopeUtil;
+import org.yu.common.core.util.SecurityUtil;
 import org.yu.common.querydsl.controller.DslBaseApiController;
 import org.yu.serve.system.module.dept.domain.DeptDO;
 import org.yu.serve.system.module.dept.dto.DeptDTO;
@@ -38,6 +40,7 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
 
     @GetMapping(value = "/tree")
     public ResponseEntity<Object> getDeptTree(DeptQuery query) {
+        query.setIds(DataScopeUtil.listCurrentAndSonDeptIds(SecurityUtil.getDeptId()));
         List<DeptDTO> deptDTOList = dslBaseService.queryAll(query, DeptDTO.class);
         return new ResponseEntity<>(deptTreeService.buildTree(deptDTOList), HttpStatus.OK);
         //return new ResponseEntity<>(deptTreeService.getShowTreeByDeptId(YuContextHolder.getYuContext().getSecurityUser().getDeptId()), HttpStatus.OK);

@@ -56,12 +56,13 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
                 .where(
                         qRoleDO.code.in(roleCodes),
                         qMenuDO.type.ne(MenuTypeEnum.PERMISSION)
-                ).distinct().fetch();
+                ).orderBy(qMenuDO.sort.asc())
+                .distinct().fetch();
     }
 
     @Override
     public Map<String, Object> buildTree(List<MenuDTO> menuDTOS) {
-        List<MenuDTO> trees = new ArrayList<>();
+        /*List<MenuDTO> trees = new ArrayList<>();
         for (MenuDTO menuDTO : menuDTOS) {
             if ("0".equals(menuDTO.getPid())) {
                 trees.add(menuDTO);
@@ -74,7 +75,13 @@ public class MenuServiceImpl extends DslBaseServiceImpl<MenuRepository, MenuDO, 
                     menuDTO.getChildren().add(it);
                 }
             }
-        }
+        }*/
+        Map<String, List<MenuDTO>> zoneByParentIdMap = menuDTOS.stream().collect(Collectors.groupingBy(MenuDTO::getPid));
+        menuDTOS.forEach(zone-> {
+            // List<MenuDTO> children = zoneByParentIdMap.get(zone.getId());
+            zone.setChildren(zoneByParentIdMap.get(zone.getId()));
+        });
+        List<MenuDTO> trees = menuDTOS.stream().filter(v -> Objects.equals("0", v.getPid())).collect(Collectors.toList());
         Map<String, Object> map = new HashMap<>();
         map.put("data", trees.size() == 0 ? menuDTOS : trees);
         map.put("total", menuDTOS.size());

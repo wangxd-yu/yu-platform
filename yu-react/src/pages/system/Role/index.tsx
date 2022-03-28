@@ -8,7 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import ProForm, { DrawerForm, } from '@ant-design/pro-form';
 import { queryRole, addRole, updateRole, deleteRole, saveRoleMenus, getRoleMenus, queryRoleUserPage } from './service';
 import * as YuCrud from '@/utils/yuCrud';
-import type { RoleData, TableListPagination } from './data';
+import type { RoleData } from './data';
 import RoleForm from './components/RoleForm'
 import type { MenuData } from '../Menu/data';
 import { queryMenu } from '../Menu/service';
@@ -185,7 +185,7 @@ const RoleTable: React.FC = () => {
     <PageContainer>
       <ProCard split="vertical">
         <ProCard>
-          <ProTable<RoleData, TableListPagination>
+          <ProTable<RoleData>
             headerTitle="角色列表"
             actionRef={actionRef}
             options={false}

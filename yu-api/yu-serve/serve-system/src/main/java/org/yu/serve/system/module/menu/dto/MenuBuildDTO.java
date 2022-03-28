@@ -38,6 +38,11 @@ public class MenuBuildDTO implements TreeNode<MenuBuildDTO> {
     private String path;
 
     /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
      * 组件
      */
     private String component;

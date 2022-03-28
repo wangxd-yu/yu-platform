@@ -1,10 +1,11 @@
 import React from 'react'
-import { ModalForm, ProFormDigit, ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-form'
+import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
 import type { DeptData } from '../data';
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import { addDept, updateDept } from '../service'
 import { getSubDeptTypes } from '../service'
 import * as YuCrud from '@/utils/yuCrud';
+import YuForm from '@/components/Yu/YuForm';
 
 export type DeptFormProps = YuFormProps & {
     deptDataList: DeptData[];
@@ -18,7 +19,7 @@ const formItemLayout = {
 const DeptForm: React.FC<YuFormProps & {pDept: DeptData}> = (props: YuFormProps & {pDept: DeptData}) => {
     console.log(props.initialValues)
     return (
-        <ModalForm
+        <YuForm
             title={!props.isAdd ? '更新部门' : '新建部门'}
             width="600px"
             formRef={props.formRef}
@@ -75,7 +76,7 @@ const DeptForm: React.FC<YuFormProps & {pDept: DeptData}> = (props: YuFormProps 
                     message: '排序为必填项',
                 },
             ]} label="排序" name="sort" min={1} max={99} />
-        </ModalForm >
+        </YuForm>
     )
 }
 

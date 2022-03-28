@@ -37,6 +37,7 @@ export default [
     name: '系统管理',
     icon: 'crown',
     // access: 'canAdmin',
+    // redirect: '/system/menu',
     routes: [
       {
         name: '字典管理',
@@ -55,6 +56,17 @@ export default [
         icon: 'smile',
         path: '/system/dept',
         component: './system/Dept',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
+      },
+      {
+        name: '虚拟部门',
+        icon: 'smile',
+        path: '/system/virtualDept',
+        component: './system/virtualDept',
         layout: {
           hideMenu: false,
           hideNav: false,

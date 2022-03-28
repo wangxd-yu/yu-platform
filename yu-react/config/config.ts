@@ -11,7 +11,10 @@ const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu/` : '/';
 
 export default defineConfig({
   hash: true,
-  antd: {},
+  antd: {
+    //dark: true, // 开启暗色主题
+    //compact: true, // 开启紧凑主题
+  },
   dva: {
     hmr: true,
   },

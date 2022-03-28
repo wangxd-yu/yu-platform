@@ -58,7 +58,7 @@ export const handleAdd = async <T> (fields: T, addHandler: (record: T) => Promis
 };
 
 /**
- * 删除
+ * 删除 根据对象
  */
 
 export const handleDelete = async <T> (deleteHandler: (record: T) => Promise<any>, fields: T) => {
@@ -68,6 +68,44 @@ export const handleDelete = async <T> (deleteHandler: (record: T) => Promise<any
   try {
     hide();
     await deleteHandler(fields);
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
+
+/**
+ * 删除-根据 id 列表
+ */
+
+ export const handleDeleteByIds = async (batchDeleteHandler: (...ids: (string | number)[]) => Promise<any>, ...ids: string[] | number[]) => {
+  const hide = message.loading('正在删除');
+  if (!ids) return true;
+
+  try {
+    hide();
+    await batchDeleteHandler(...ids);
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
+
+/**
+ * 删除-根据 id 
+ */
+
+ export const handleDeleteById = async (deleteHandler: (id: (string | number)) => Promise<any>, id: string | number) => {
+  const hide = message.loading('正在删除');
+  if (!id) return true;
+
+  try {
+    hide();
+    await deleteHandler(id);
     message.success('删除成功，即将刷新');
     return true;
   } catch (error) {

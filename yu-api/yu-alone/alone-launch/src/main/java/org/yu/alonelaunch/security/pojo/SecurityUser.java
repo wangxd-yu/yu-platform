@@ -11,6 +11,7 @@ import org.yu.alonelaunch.util.TenantUtil;
 import org.yu.serve.system.module.user.domain.UserDO;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * 登录用户信息
@@ -50,6 +51,8 @@ public class SecurityUser implements UserDetails {
      * 用户状态
      */
     private Boolean enabled;
+
+    private Set<String> roles;
     /**
      * 权限数据
      */

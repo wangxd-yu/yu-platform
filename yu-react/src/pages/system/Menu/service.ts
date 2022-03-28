@@ -41,8 +41,8 @@ export async function queryMenuEndponits(
   return YuApi.queryList<EndpointData>(`${menuUrl}/${params.menuId}/endpoints`, params);
 }
 
-export async function deleteMenuEndpoint(menuId: string | number, endpointId: string | number) {
-  return request<any>(`${menuUrl}/${menuId}/endpoints/${endpointId}`, {
+export async function deleteMenuEndpoint(params: {menuId: string | number, endpointId: string | number}) {
+  return request<any>(`${menuUrl}/${params.menuId}/endpoints/${params.endpointId}`, {
     method: 'delete'
   });
 }

@@ -63,8 +63,8 @@ const DeptPage: React.FC = () => {
 
   return (
     <PageContainer >
-      <ProCard split="vertical" style={{height: 'calc(100vh - 180px)'}}>
-        <ProCard colSpan="30%">
+      <ProCard split="vertical" style={{height: 'calc(100vh - 200px)'}}>
+        <ProCard colSpan={{ xs: 20, sm: 16, md: 12, lg: 8, xl: 6 }}>
           {deptTree &&
             <Tree
               showIcon

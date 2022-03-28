@@ -13,6 +13,7 @@ import * as YuApi from '@/utils/yuApi';
 import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
 import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
 import { InterceptorError } from './error';
+import type { RequestOptionsInit } from 'umi-request';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -167,6 +168,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    defaultOpenAll: true,
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -207,7 +209,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         if (params.username) {
           return YuApi.queryList(yuUrlSystem(`/menu/build`));
         }
-      }
+      },
+      defaultOpenAll: true,
     }
   };
 }

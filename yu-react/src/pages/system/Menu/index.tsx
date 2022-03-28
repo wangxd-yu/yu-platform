@@ -190,7 +190,7 @@ const MenuPage: React.FC = () => {
     render: (__: any, record: any) => [
       <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
         onConfirm={async () => {
-          await YuCrud.handleDelete(deleteMenuEndpoint, menuCurrentRow?.id, record.id);
+          await YuCrud.handleDelete(deleteMenuEndpoint, {menuId: menuCurrentRow!?.id, endpointId: record.id});
           if (menuEndpointsActionRef.current) {
             menuEndpointsActionRef.current.reload();
           }
