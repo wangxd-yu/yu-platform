@@ -1,4 +1,4 @@
-package org.yu.serve.system.module.enums;
+package org.yu.serve.system.enums;
 
 import org.yu.serve.file.enums.FilePathEnum;
 import org.yu.serve.file.enums.FilePathType;
