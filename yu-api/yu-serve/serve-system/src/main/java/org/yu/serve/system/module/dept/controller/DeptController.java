@@ -46,6 +46,9 @@ public class DeptController extends DslBaseApiController<DeptService, DeptDO, St
         //return new ResponseEntity<>(deptTreeService.getShowTreeByDeptId(YuContextHolder.getYuContext().getSecurityUser().getDeptId()), HttpStatus.OK);
     }
 
+    /**
+     * 部门移入
+     **/
     @PutMapping("{id}:moveIn")
     public ResponseEntity<Object> moveIn(@PathVariable String id, @RequestBody String[] sourceIds) {
         this.dslBaseService.moveIn(id, sourceIds);

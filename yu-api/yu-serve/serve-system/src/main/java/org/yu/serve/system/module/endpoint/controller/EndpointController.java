@@ -16,7 +16,7 @@ import org.yu.serve.system.module.endpoint.service.EndpointService;
  * @date 2021-09-09
  */
 @RestController
-@RequestMapping("endpoints")
+@RequestMapping("endpoint")
 public class EndpointController extends DslBaseApiController<EndpointService, EndpointDO, String> {
 
     protected EndpointController(EndpointService endpointService) {
@@ -28,7 +28,7 @@ public class EndpointController extends DslBaseApiController<EndpointService, En
         return new ResponseEntity<>(this.dslBaseService.getRequestMappingInfos(), HttpStatus.OK);
     }
 
-    @GetMapping(":search")
+    @GetMapping
     public ResponseEntity<Object> getPage(EndpointQuery query, Pageable pageable) {
         return super.query(query, pageable);
     }

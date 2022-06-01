@@ -70,6 +70,7 @@ export default [
         layout: {
           hideMenu: false,
           hideNav: false,
+          hideHeader: true,
           hideFooter: true,
         },
       },

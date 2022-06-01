@@ -63,7 +63,7 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
     private List<DeptDTO> children;
 
     @YuDTOTransient
-    private boolean hasChildren;
+    private Boolean hasChildren;
 
     public boolean isHasChildren() {
         return subCount > 0;
@@ -77,6 +77,6 @@ public class DeptDTO extends DeptTreeDTO<DeptDTO> implements Serializable {
      */
     @YuDTOTransient
     @JsonIgnore
-    private boolean hasPid;
+    private Boolean hasPid;
 
 }

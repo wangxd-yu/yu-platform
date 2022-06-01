@@ -104,7 +104,7 @@ public abstract class DslBaseServiceImpl<R extends DslBaseRepository<DO, ID>, DO
             assert servletRequestAttributes != null;
             HttpServletRequest request = servletRequestAttributes.getRequest();
             String typeStr = request.getParameter("yuRtn");
-            if (!StringUtils.isEmpty(typeStr)) {
+            if (StringUtils.hasText(typeStr)) {
                 typeEnum = MultiDataTypeEnum.getByName(request.getParameter("yuRtn"));
             }
 

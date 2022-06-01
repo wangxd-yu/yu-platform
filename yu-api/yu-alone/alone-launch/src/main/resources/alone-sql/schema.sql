@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept`
 (
     `id`          bigint      NOT NULL,
+    `pid`         bigint      NOT NULL COMMENT '上级部门id',
     `no`          varchar(32) NOT NULL COMMENT '上下级关系编码',
-    `pid`         varchar(32) NOT NULL COMMENT '上级部门id',
     `code`        varchar(32)  DEFAULT NULL COMMENT '用户自定义编码',
     `sort`        tinyint      DEFAULT NULL COMMENT '排序',
     `type_id`     bigint       DEFAULT NULL COMMENT '类型id',
@@ -63,8 +63,8 @@ CREATE TABLE `sys_dept`
 drop table if exists `sys_virtual_dept`;
 CREATE TABLE `sys_virtual_dept`
 (
-    `id`          bigint      NOT NULL,
-    `pid`         varchar(32) NOT NULL COMMENT '上级部门id',
+    `id`          bigint NOT NULL,
+    `pid`         bigint NOT NULL COMMENT '上级部门id',
     `type`        tinyint unsigned DEFAULT NULL COMMENT '类型：0：部门；1：人员',
     `sort`        tinyint      DEFAULT NULL COMMENT '排序',
     `name`        varchar(32)  DEFAULT NULL COMMENT '名称',
@@ -75,7 +75,25 @@ CREATE TABLE `sys_virtual_dept`
     `update_time` datetime     DEFAULT NULL COMMENT '更新时间',
     `tenant_id`   int          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='虚拟部门表';
+) ENGINE = InnoDB COMMENT='虚拟部门表';
+
+-- 【关系表】虚拟部门-部门
+drop table if exists `sys_virtual_dept_dept`;
+CREATE TABLE `sys_virtual_dept_dept`
+(
+    `virtual_dept_id` bigint NOT NULL COMMENT '虚拟部门id',
+    `dept_id` bigint NOT NULL COMMENT '部门id',
+    PRIMARY KEY (`virtual_dept_id`, `dept_id`) USING BTREE
+) ENGINE = InnoDB COMMENT='【关系表】虚拟部门-部门';
+
+-- 【关系表】虚拟部门-部门
+drop table if exists `sys_virtual_dept_user`;
+CREATE TABLE `sys_virtual_dept_user`
+(
+    `virtual_dept_id` bigint NOT NULL COMMENT '虚拟部门id',
+    `user_id` bigint NOT NULL COMMENT '用户id',
+    PRIMARY KEY (`virtual_dept_id`, `user_id`) USING BTREE
+) ENGINE = InnoDB COMMENT='【关系表】虚拟部门-用户';
 
 -- 部门类型表
 DROP TABLE IF EXISTS `sys_dept_type`;

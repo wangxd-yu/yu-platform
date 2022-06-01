@@ -6,6 +6,8 @@ import org.yu.common.querydsl.api.MultiDataResult;
 import org.yu.common.querydsl.api.MultiDataTypeEnum;
 import org.yu.common.querydsl.domain.DslBaseDO;
 
+import java.util.List;
+
 /**
  * @author wangxd
  * @date 2020-11-30
@@ -23,6 +25,10 @@ public interface DslBaseService<DO extends DslBaseDO, ID> {
     <Q> MultiDataResult<DO> query(Q query, Pageable pageable);
 
     <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz, MultiDataTypeEnum typeEnum);
+
+    default <Q, DTO> List<DTO> queryList(Q query, Class<DTO> clazz) {
+        return queryDTO(query, null, clazz, MultiDataTypeEnum.LIST).getData();
+    }
 
     default <Q, DTO> MultiDataResult<DTO> queryDTO(Q query, Pageable pageable, Class<DTO> clazz) {
         return queryDTO(query, pageable, clazz, null);

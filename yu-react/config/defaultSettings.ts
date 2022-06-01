@@ -17,6 +17,7 @@ const Settings: LayoutSettings & {
   title: '小禹',
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+ //logo: 'logo.png',
   iconfontUrl: '',
 };
 

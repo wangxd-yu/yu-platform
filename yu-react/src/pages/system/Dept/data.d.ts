@@ -1,8 +1,7 @@
 export type DeptData = {
   id?: string;
   name?: string;
-  no?: string;
-  pno?: string;
+  pid?: string;
   pName?: string;
   typeId?: string;
   sort?: number;
