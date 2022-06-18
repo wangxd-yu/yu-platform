@@ -86,7 +86,7 @@ CREATE TABLE `sys_virtual_dept_dept`
     PRIMARY KEY (`virtual_dept_id`, `dept_id`) USING BTREE
 ) ENGINE = InnoDB COMMENT='【关系表】虚拟部门-部门';
 
--- 【关系表】虚拟部门-部门
+-- 【关系表】虚拟部门-用户
 drop table if exists `sys_virtual_dept_user`;
 CREATE TABLE `sys_virtual_dept_user`
 (

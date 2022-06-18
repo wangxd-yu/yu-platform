@@ -23,7 +23,7 @@ public class EndpointController extends DslBaseApiController<EndpointService, En
         super(endpointService);
     }
 
-    @GetMapping()
+    @GetMapping("all")
     public ResponseEntity<Object> all() {
         return new ResponseEntity<>(this.dslBaseService.getRequestMappingInfos(), HttpStatus.OK);
     }

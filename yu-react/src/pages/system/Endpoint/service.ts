@@ -3,14 +3,14 @@ import * as YuApi from '@/utils/yuApi';
 import { yuUrlSystem } from '@/utils/yuUrl';
 import type { SortOrder } from 'antd/lib/table/interface';
 
-const endpointUrl = yuUrlSystem('/endpoints');
+const endpointUrl = yuUrlSystem('/endpoint');
 
 /** 获取规则列表 GET */
 export async function queryEndpoint(
   params?: any,
   sort?: Record<string, SortOrder>
 ) {
-  return YuApi.queryPage<EndpointData>(`${endpointUrl}/:search`, params, sort);
+  return YuApi.queryPage<EndpointData>(`${endpointUrl}`, params, sort);
 }
 
 export async function getEndpoint(id: number, cb: any) {

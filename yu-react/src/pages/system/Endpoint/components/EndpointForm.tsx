@@ -15,7 +15,7 @@ const EndpointForm: React.FC<YuFormProps> = (props: YuFormProps) => {
   const [endpointList, setEndpointList] = useState<Map<string,EndpointLessDTO[]>>(new Map());
 
   useEffect(() => {
-    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoints')).then(res => {
+    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoint/all')).then(res => {
       setEndpointList(new Map(Object.entries<EndpointLessDTO[]>(_.groupBy(res, 'pattern') as unknown as {pattern: EndpointLessDTO[]})))
     });
   }, []);
