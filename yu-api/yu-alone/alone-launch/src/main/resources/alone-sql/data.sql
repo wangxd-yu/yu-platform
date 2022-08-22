@@ -61,7 +61,7 @@ VALUES (1, 0, '系统管理', 'FOLDER', '/system', NULL, NULL, 1, 'crown', 0, '2
        (2, 1, '用户管理', 'MENU', '/system/user', './system/User', NULL, 2, NULL, 0, '2018-12-18 15:14:44', NULL, NULL),
        (3, 1, '角色管理', 'MENU', '/system/role', './system/Role', NULL, 3, NULL, 0, '2018-12-18 15:16:07', NULL, NULL),
        (4, 1, '菜单管理', 'MENU', '/system/menu', './system/Menu', NULL, 5, NULL, 0, '2018-12-18 15:17:28', NULL, NULL),
-       (5, 1, '部门管理', 'MENU', '/system/dept', './system/Dept', NULL, 6, NULL, 0, '2019-03-25 09:46:00', NULL, NULL),
+       (5, 1, '部门管理', 'MENU', '/system/deptComplete', './system/DeptComplete', NULL, 6, NULL, 0, '2019-03-25 09:46:00', NULL, NULL),
        (6, 1, '字典管理', 'MENU', '/system/dict', './system/Dict', NULL, 8, NULL, 0, '2019-04-10 11:49:04',
         '2021-09-14 21:41:43', NULL),
        (7, 1, '端点管理', 'MENU', '/system/endpoint', './system/Dict', NULL, 9, NULL, 0, '2021-09-14 12:49:09',
@@ -93,9 +93,9 @@ VALUES (1, 1),
 
 INSERT INTO `sys_user`
 VALUES (1, 'admin', '$2a$10$gHRTStCK9r8FRv4yl4tRZOBzDrSCK1.Q5pNI.SbA4UsA1Uw5KtR4m', 1, null, '管理员', null,
-        '2020-11-06 14:06:42', '2020-11-06 14:06:44', '2020-11-06 14:06:47', '000', 1),
+        '2020-11-06 14:06:42', '2020-11-06 14:06:44', '2020-11-06 14:06:47', '1', 1),
        (2, 'visitor', '$2a$10$WBb/ADOZxsw08/VP1O1bbeHiQbIrQd4KnylekWiPoOnZblVYekLia', 1, null, '访客', null,
-        '2021-08-12 04:04:21', '2021-11-17 08:23:50', NULL, '000007001', NULL);
+        '2021-08-12 04:04:21', '2021-11-17 08:23:50', NULL, '1', NULL);
 
 INSERT INTO `sys_user_role`
 VALUES (1, 1),

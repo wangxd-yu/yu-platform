@@ -21,7 +21,7 @@ logging:
 
 spring:
   profiles:
-    active: multidb
+    active: alone
   main:
     allow-bean-definition-overriding: true
   data:

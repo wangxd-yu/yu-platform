@@ -7,13 +7,12 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.yu.alonelaunch.config.EnableServeSystem;
-import org.yu.common.multidb.config.EnableMultiDatabase;
 
 /**
  * @author 王晓冬
  */
 @EnableAsync
-@EnableMultiDatabase
+//@EnableMultiDatabase
 @EnableServeSystem
 @EnableJpaRepositories("org.yu.alonelaunch")
 @EntityScan("org.yu.alonelaunch")
