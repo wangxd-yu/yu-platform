@@ -15,14 +15,15 @@ export type YuFormProps = ModalFormProps & {
 
 // declare function ModalForm<T = Record<string, any>>({ children, trigger, onVisibleChange, modalProps, onFinish, title, width, ...rest }: ModalFormProps<T>): JSX.Element;
 const YuForm: React.FC<YuFormProps> = ((props: YuFormProps) => {
-    console.log('props.formType', props.formType)
     const Components = {
         ProForm,
         YuDraggleModal,
         ModalForm,
         DrawerForm,
     };
-    const formItemLayout = props.layout === 'horizontal' ? {
+    let laylout = props?.layout
+    laylout = laylout ? laylout : 'horizontal'
+    const formItemLayout = laylout === 'horizontal' ? {
         labelCol: { span: 5 },
         wrapperCol: { span: 19 },
     } : {};
@@ -33,7 +34,7 @@ const YuForm: React.FC<YuFormProps> = ((props: YuFormProps) => {
     return (
         <FormComponents
             title={title}
-            layout='horizontal'
+            layout={laylout}
             {...formItemLayout}
             {...proFormProps}
         >

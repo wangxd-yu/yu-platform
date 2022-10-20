@@ -15,10 +15,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>yu-common</module>
-        <module>yu-cloud</module>
         <module>yu-serve</module>
-        <module>yu-tenant</module>
-        <module>yu-alone</module>
+        <module>yu-admin</module>
     </modules>
 
     <properties>

@@ -48,7 +48,7 @@
 
   ```
   配置文件：
-  	yu-api/yu-alone/alone-launch/src/main/resources/application-alone.yml
+  	yu-api/yu-alone/admin-base/src/main/resources/application-alone.yml
   新建数据库名称：
   	yu_alone
   修改账号、密码

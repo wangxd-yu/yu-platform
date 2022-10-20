@@ -1,0 +1,54 @@
+server:
+  servlet:
+    context-path: /api
+  port: 1128
+
+logging:
+  config: classpath:logback.xml
+  level:
+    root: info
+    org:
+      springframework:
+        #security: DEBUG
+        web: ERROR
+    jdbc:
+      sqlonly: info
+      resultset: debug
+      resultsettable: info
+      connection: off
+      sqltiming: off
+      audit: off
+
+spring:
+  profiles:
+    active: multidb
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    redis:
+      repositories:
+        enabled: false
+    jdbc:
+      repositories:
+        enabled: false
+  jpa:
+    open-in-view: false
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        enable_lazy_load_no_trans: true
+        hbm2ddl:
+          auto: none
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    show-sql: true
+
+yu:
+  admins: admin,superadmin
+  jwt:

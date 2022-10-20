@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>yu</artifactId>
+        <groupId>org.yu</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>yu-alone</artifactId>
+    <description>管理系统</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>admin-base</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <yu-serve.version>0.0.1-SNAPSHOT</yu-serve.version>
+        <junit-jupiter-engine.version>5.6.3</junit-jupiter-engine.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>serve-system</artifactId>
+                <version>${yu-serve.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.yu</groupId>
+            <artifactId>common-core</artifactId>
+        </dependency>
+    </dependencies>
+</project>
