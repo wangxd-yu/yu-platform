@@ -5,17 +5,6 @@ spring:
     active: dev
   application:
     name: serve-system
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 192.168.103.184:8848
-        namespace: 9f4d06c2-b936-4c25-a877-b3c42121a366
-  # RabbitMQ 相关配置项
-  rabbitmq:
-    host: 192.168.103.184
-    port: 5672
-    username: wangxd
-    password: wangxd
   jpa:
     open-in-view: false
     properties:
@@ -29,9 +18,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mysql://192.168.103.184:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      url: jdbc:log4jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
       username: root
-      password: Sdses@2020
+      password: 123456
       # 初始化配置
       initial-size: 3
       # 最小连接数

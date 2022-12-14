@@ -18,20 +18,6 @@
         <dependency>
             <groupId>org.yu</groupId>
             <artifactId>serve-system</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yu</groupId>
-                    <artifactId>cloud-multidb-spring-boot-starter</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.yu</groupId>
-                    <artifactId>cloud-common-spring-boot-starter</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.alibaba.cloud</groupId>
-                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
