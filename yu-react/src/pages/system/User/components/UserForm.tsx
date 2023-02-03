@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import ProForm, { ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
-import type { YuFormProps } from '@/components/Yu/YuForm';
+import React, {useEffect, useState} from 'react'
+import ProForm, {ProFormSwitch, ProFormText} from '@ant-design/pro-form'
+import type {YuFormProps} from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
-import { yuUrlSystem } from '@/utils/yuUrl';
-import { Transfer, TreeSelect } from 'antd';
+import {yuUrlSystem} from '@/utils/yuUrl';
+import {message, Transfer, TreeSelect, Upload} from 'antd';
 import * as YuCrud from '@/utils/yuCrud';
 import * as YuApi from '@/utils/yuApi';
-import type { DataNode } from 'rc-tree/lib/interface';
+import type {DataNode} from 'rc-tree/lib/interface';
 import ImgCrop from 'antd-img-crop';
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import './UserForm.less';
 import Field from '@ant-design/pro-form/lib/components/Field';
-import type { UserData } from '../data';
-import { addUser, updateUser } from '../service';
-import type { RoleData } from '../../Role/data';
+import type {UserData} from '../data';
+import {addUser, updateUser} from '../service';
+import type {RoleData} from '../../Role/data';
 
 type UserFromProps = YuFormProps & { deptTree: DataNode[] | undefined }
 
@@ -80,18 +79,24 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
   };
 
   /**
-    * 角色绑定 穿梭框 选项在两栏之间转移时的回调函数
-    * @param nextTargetKeys 结果 
-    */
+   * 角色绑定 穿梭框 选项在两栏之间转移时的回调函数
+   * @param nextTargetKeys 结果
+   */
   const handleRoleChange = (nextTargetKeys: string[]) => {
     setRoleTargetKeys(nextTargetKeys);
   };
+  const formItemLayout = {
+    labelCol: {span: 2},
+    wrapperCol: {span: 22},
+  }
+
   return (
     <YuForm
       formType={'DrawerForm'}
+      {...formItemLayout}
       onFinish={
         async (value) => {
-          const data = { ...props.initialValues, ...value };
+          const data = {...props.initialValues, ...value};
           let success;
           if (!data.id) {
             success = await YuCrud.handleAdd(data as UserData, addUser);
@@ -104,7 +109,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
         }
       }
       {...rest}>
-      <Field name="portraitBase64" >
+      <Field name="portraitBase64" wrapperCol= {{span: 24}}>
         <ImgCrop rotate shape="round">
           <Upload
             name="avatar"
@@ -118,7 +123,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
           </Upload>
         </ImgCrop>
       </Field>
-      <ProFormSwitch name="enabled" label="状态" />
+     {/*  <ProFormSwitch name="enabled" label="状态" /> */}
       <ProFormText
         rules={[
           {
