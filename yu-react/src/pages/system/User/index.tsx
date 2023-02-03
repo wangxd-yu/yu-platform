@@ -67,6 +67,7 @@ const UserTable: React.FC<UserData> = () => {
       align: 'center',
       valueType: 'avatar',
       width: 150,
+      search: false,
       render: (dom, record) => (
         <Popover content={
           <Space>
