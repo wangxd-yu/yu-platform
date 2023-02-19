@@ -66,7 +66,7 @@ export default [
         name: '虚拟部门',
         icon: 'smile',
         path: '/system/virtualDept',
-        component: './system/virtualDept',
+        component: './system/VirtualDept',
         layout: {
           hideMenu: false,
           hideNav: false,
