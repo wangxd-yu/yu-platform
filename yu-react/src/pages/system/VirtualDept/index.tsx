@@ -12,7 +12,7 @@ import * as YuApi from '@/utils/yuApi';
 import * as YuCrud from '@/utils/yuCrud';
 import VirtualDeptForm from './components/VirtualDeptForm';
 import ProForm from '@ant-design/pro-form';
-import { FooterToolbar } from '@ant-design/pro-layout';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 const { Search } = Input;
 
 const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
@@ -85,7 +85,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
     /**
      * 初始化右侧树
      */
-    const initRightTree = (nodeData: EventDataNode) => {
+    const initRightTree = (nodeData: EventDataNode<string>) => {
         setShowFooterBtn(false)
         setDeptCheckKeys([])
         YuApi.queryList<DeptData>(yuUrlSystem(`/virtualDept/${nodeData.key}/deptIds`)).then(res => setDeptCheckKeys(res as unknown as string[]))
@@ -122,12 +122,15 @@ const VirtualDeptPage: React.FC<{}> = () => {
         )
     };
     return (
-        <>
-            <ProCard split="vertical" style={{ height: 'calc(100vh - 48px)' }}>
+        <PageContainer
+            header={{
+                breadcrumb: {},
+            }}>
+            <ProCard split="vertical" style={{ height: 'calc(100vh - 170px)' }}>
                 <SplitPane split="vertical" defaultSize={300} minSize={300} maxSize={400}>
                     <div style={{ width: '100%' }}>
                         <div style={{ padding: '5px' }}>
-                            <Search placeholder="Search" onChange={() => { }} />
+                            <Search placeholder="查询" onChange={() => { }} />
                         </div>
 
                         <div style={{ height: 'calc(100% - 45px)', overflow: 'auto' }}>
@@ -255,7 +258,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
                     initialValues={{ pid: currentRightClickDataNode.pid }}
                     pDept={virtualDeptList.find(item => item.id === currentRightClickDataNode.pid)} />
             }
-        </>
+        </PageContainer>
     );
 }
 

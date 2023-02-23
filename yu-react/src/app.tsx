@@ -164,7 +164,7 @@ export const request: RequestConfig = {
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <RightContent />,
-    disableContentMargin: true,   // 内容区域是否禁用 margin
+    disableContentMargin: false,   // 内容区域是否禁用 margin
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },

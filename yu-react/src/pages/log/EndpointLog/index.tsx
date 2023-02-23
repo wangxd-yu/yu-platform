@@ -79,7 +79,9 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProTable<LogEndpointData, API.TableListPagination>
         headerTitle="查询表格"
         rowKey="id"

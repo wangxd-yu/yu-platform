@@ -146,7 +146,9 @@ const TableList: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProTable<Dict, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}

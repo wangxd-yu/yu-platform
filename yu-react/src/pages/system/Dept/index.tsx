@@ -131,7 +131,6 @@ const DeptPage: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
       <Row>
       <Col span={6}><Tree
     showIcon
@@ -210,8 +209,6 @@ const DeptPage: React.FC = () => {
       }
       </Col>
     </Row>
-      
-    </PageContainer>
   );
 };
 

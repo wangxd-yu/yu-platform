@@ -133,7 +133,9 @@ const RoleTable: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProTable<RoleData, TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}

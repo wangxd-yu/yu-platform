@@ -61,12 +61,16 @@ const DeptPage: React.FC = () => {
   }, []);
 
   return (
-    <PageContainer >
-      <ProCard split="vertical" style={{ height: 'calc(100vh - 200px)' }}>
+    <PageContainer
+      header={{
+        breadcrumb: {},
+      }}>
+      <ProCard split="vertical" style={{ height: 'calc(100vh - 170px)' }}>
         <ProCard colSpan={{ xs: 20, sm: 16, md: 12, lg: 8, xl: 6 }}>
           {deptTree &&
             <Tree
               showIcon
+              style={{ fontSize: '16px' }}
               defaultExpandedKeys={[currentUser?.deptId as string]}
               defaultSelectedKeys={[currentUser?.deptId as string]}
               switcherIcon={<DownOutlined />}
@@ -79,7 +83,7 @@ const DeptPage: React.FC = () => {
                     setDept({
                       id: e.node.key as string,
                       name: e.node.title as string,
-                      typeId: (e.node as (EventDataNode & { deptTypeId: string })).deptTypeId
+                      typeId: (e.node as (EventDataNode<string> & { deptTypeId: string })).deptTypeId
                     })
                   }
                 }

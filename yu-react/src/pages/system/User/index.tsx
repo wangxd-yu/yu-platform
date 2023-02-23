@@ -165,7 +165,9 @@ const UserTable: React.FC<UserData> = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProTable<UserData, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={userActionRef}

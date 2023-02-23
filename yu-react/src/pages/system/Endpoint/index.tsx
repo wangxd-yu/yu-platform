@@ -164,7 +164,9 @@ const EndpointTable: React.FC<EndpointData> = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProTable<EndpointData, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={endpointActionRef}

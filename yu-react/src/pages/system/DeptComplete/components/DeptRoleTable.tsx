@@ -1,28 +1,25 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import type { FormInstance } from 'antd';
-import { Transfer } from 'antd';
-import { Modal } from 'antd';
-import { Button } from 'antd';
-import { Popconfirm } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import type { DeptRoleData } from '../data';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
+import type {FormInstance} from 'antd';
+import {Button, Modal, Popconfirm, Transfer} from 'antd';
+import type {ActionType, ProColumns} from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
+import type {DeptRoleData} from '../data';
 import * as YuCrud from '@/utils/yuCrud';
-import { addDeptRoles, batchDeleteDeptRoles, queryDeptRoles } from '../service'
-import { PlusOutlined } from '@ant-design/icons';
+import {addDeptRoles, batchDeleteDeptRoles, queryDeptRoles} from '../service'
+import {PlusOutlined} from '@ant-design/icons';
 import * as YuApi from '@/utils/yuApi'
-import { yuUrlSystem } from '@/utils/yuUrl';
-import type { RoleData } from '../../Role/data';
+import {yuUrlSystem} from '@/utils/yuUrl';
+import type {RoleData} from '../../Role/data';
 
 type RoleTransferData = RoleData & { disabled: boolean }
 
 const DeptRolePage: React.FC<{ deptId: string }> = (prop: { deptId: string }) => {
-    const [deptRoleFormVisible, setDeptRoleFormVisible] = useState<boolean>(false);
-    const [deptRoleList, setDeptRoleList] = useState<DeptRoleData[]>();
-    const [roleList, setRoleList] = useState<RoleTransferData[]>([]);
-    const [roleTargetKeys, setRoleTargetKeys] = useState<string[]>();
-    const deptRoleFormRef = useRef<FormInstance>();
-    const deptRoleActionRef = useRef<ActionType>();
+  const [deptRoleFormVisible, setDeptRoleFormVisible] = useState<boolean>(false);
+  const [deptRoleList, setDeptRoleList] = useState<DeptRoleData[]>();
+  const [roleList, setRoleList] = useState<RoleTransferData[]>([]);
+  const [roleTargetKeys, setRoleTargetKeys] = useState<string[]>();
+  const deptRoleFormRef = useRef<FormInstance>();
+  const deptRoleActionRef = useRef<ActionType>();
 
     useEffect(() => {
         YuApi.queryList<RoleTransferData>(yuUrlSystem('/role')).then(res => {
@@ -80,10 +77,10 @@ const DeptRolePage: React.FC<{ deptId: string }> = (prop: { deptId: string }) =>
         setDeptRoleFormVisible(false);
     };
 
-    /**
-     * 角色绑定 穿梭框 选项在两栏之间转移时的回调函数
-     * @param nextTargetKeys 结果 
-     */
+  /**
+   * 角色绑定 穿梭框 选项在两栏之间转移时的回调函数
+   * @param nextTargetKeys 结果
+   */
     const handleChange = (nextTargetKeys: string[]) => {
         setRoleTargetKeys(nextTargetKeys);
     };
@@ -109,32 +106,41 @@ const DeptRolePage: React.FC<{ deptId: string }> = (prop: { deptId: string }) =>
                         key="primary"
                         onClick={() => {
                             deptRoleFormRef?.current?.resetFields();
-                            setDeptRoleFormVisible(true);
-                            roleList.map((item) => {
-                                if (deptRoleList && (deptRoleList?.findIndex(deptRole => deptRole.roleId === item.id) > -1)) {
-                                    item.disabled = true
-                                }
-                            })
+                          setDeptRoleFormVisible(true);
+                          setRoleTargetKeys([])
+                          roleList.map((item) => {
+                            if (deptRoleList && (deptRoleList?.findIndex(deptRole => deptRole.roleId === item.id) > -1)) {
+                              item.disabled = true
+                            }
+                          })
                         }}
                     >
-                        <PlusOutlined /> 绑定
+                      <PlusOutlined/> 绑定
                     </Button>,
                 ]}
             />
-            <Modal title="绑定角色" visible={deptRoleFormVisible} onOk={handleOk} onCancel={handleCancel}>
-                <Transfer<RoleData>
-                    dataSource={roleList}
-                    rowKey={item => item.id}
-                    titles={['可用', '已选']}
-                    render={item => item.name}
-                    targetKeys={roleTargetKeys}
-                    onChange={handleChange}
-                    listStyle={{
-                        width: 300,
-                        height: 300,
-                    }}
-                />
+          {
+            deptRoleFormVisible &&
+            <Modal title="绑定角色" visible={deptRoleFormVisible} onOk={handleOk} onCancel={handleCancel}
+                   okButtonProps={{
+                     disabled: roleTargetKeys?.length == 0,
+                   }}>
+              <Transfer<RoleData>
+                /* status="error" */
+                dataSource={roleList}
+                rowKey={item => item.id}
+                titles={['可用', '已选']}
+                render={item => item.name}
+                targetKeys={roleTargetKeys}
+                onChange={handleChange}
+                listStyle={{
+                  width: 300,
+                  height: 300,
+                }}
+              />
             </Modal>
+          }
+
         </Fragment>
     );
 };

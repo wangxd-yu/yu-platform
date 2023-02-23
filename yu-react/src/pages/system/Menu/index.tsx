@@ -85,8 +85,9 @@ const MenuPage: React.FC = () => {
     },
     {
       title: '排序',
-      width: 30,
-      dataIndex: 'sort'
+      width: 40,
+      dataIndex: 'sort',
+      align: 'right',
     },
     {
       title: '路由路径',
@@ -204,7 +205,10 @@ const MenuPage: React.FC = () => {
   });
 
   return (
-    <PageContainer>
+    <PageContainer
+      header={{
+        breadcrumb: {},
+      }}>
       <ProTable<MenuData>
         columns={columns}
         actionRef={menuActionRef}

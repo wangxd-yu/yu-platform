@@ -1,20 +1,20 @@
-import React, { Fragment, useRef, useState } from 'react'
-import type { FormInstance } from '@ant-design/pro-form';
-import ProForm, { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
-import { getDeptTypesByDeptId, updateDept } from '../service'
-import { getDept } from '../../Dept/service';
-import type { DeptData } from '../data';
-import { Col, Row, Space, Spin } from 'antd';
+import React, {Fragment, useRef, useState} from 'react'
+import type {FormInstance} from '@ant-design/pro-form';
+import ProForm, {ProFormDigit, ProFormRadio, ProFormText} from '@ant-design/pro-form'
+import {getDeptTypesByDeptId, updateDept} from '../service'
+import {getDept} from '../../Dept/service';
+import type {DeptData} from '../data';
+import {Col, Row, Space, Spin} from 'antd';
 import * as YuCrud from '@/utils/yuCrud';
 
 const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 12 },
+  labelCol: {span: 6},
+  wrapperCol: {span: 12},
 };
 
 const DeptForm: React.FC<{ id: string, dept: DeptData, deptUpdate: () => any }> = (prop: { id: string, dept: DeptData, deptUpdate: () => any }) => {
-    const [rawDept, setRawDept] = useState<DeptData>();
-    const [loading, setLoading] = useState<boolean>(true);
+  const [rawDept, setRawDept] = useState<DeptData>();
+  const [loading, setLoading] = useState<boolean>(true);
     const formRef = useRef<FormInstance>();
 
 
@@ -30,7 +30,7 @@ const DeptForm: React.FC<{ id: string, dept: DeptData, deptUpdate: () => any }> 
                     setLoading(true)
                     const value = await getDept(params.id)
                     setRawDept(value);
-                    formRef.current?.setFieldsValue(value)
+                  //formRef.current?.setFieldsValue(value)
                     setLoading(false)
                     return Promise.resolve(value)
                 }}

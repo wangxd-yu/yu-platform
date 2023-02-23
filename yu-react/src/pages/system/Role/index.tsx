@@ -182,7 +182,9 @@ const RoleTable: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer header={{
+      breadcrumb: {},
+    }}>
       <ProCard split="vertical">
         <ProCard>
           <ProTable<RoleData>

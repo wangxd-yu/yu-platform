@@ -44,12 +44,18 @@ export default [
         icon: 'smile',
         path: '/system/dict',
         component: './system/Dict',
+        layout: {
+          hideFooter: true,
+        },
       },
       {
         name: '菜单管理',
         icon: 'smile',
         path: '/system/menu',
         component: './system/Menu',
+        layout: {
+          hideFooter: true,
+        },
       },
       {
         name: '部门管理',
@@ -59,6 +65,7 @@ export default [
         layout: {
           hideMenu: false,
           hideNav: false,
+          hideHeader: true,
           hideFooter: true,
         },
       },
@@ -79,9 +86,11 @@ export default [
         icon: 'smile',
         path: '/system/deptComplete',
         component: './system/DeptComplete',
+        headerRender:false,
         layout: {
           hideMenu: false,
           hideNav: false,
+          hideHeader: true,
           hideFooter: true,
         },
       },
@@ -90,6 +99,9 @@ export default [
         icon: 'smile',
         path: '/system/role',
         component: './system/Role',
+        layout: {
+          hideFooter: true,
+        },
       },
       {
         name: '用户管理',
@@ -97,12 +109,18 @@ export default [
         path: '/system/user',
         component: './system/User',
         footerRender: false,
+        layout: {
+          hideFooter: true,
+        },
       },
       {
         name: '端点管理',
         icon: 'smile',
         path: '/system/endpoint',
         component: './system/Endpoint',
+        layout: {
+          hideFooter: true,
+        },
       },
     ],
   },
@@ -125,6 +143,9 @@ export default [
         name: '接口日志',
         path: '/log/endpoint',
         component: './log/EndpointLog',
+        layout: {
+          hideFooter: true,
+        },
       },
     ],
   },
