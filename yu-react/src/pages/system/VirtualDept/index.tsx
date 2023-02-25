@@ -140,7 +140,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
                                         <>
                                             <span>{nodeData.title}</span>
                                             <span className='right'>
-                                                <Dropdown overlay={menuPopulate(nodeData)} trigger={['click']} placement="bottomRight">
+                                                <Dropdown menu={menuPopulate(nodeData)} trigger={['click']} placement="bottomRight">
                                                     <EllipsisOutlined onClick={event => {
                                                         setCurrentRightClickDataNode(nodeData)
                                                         event.stopPropagation()

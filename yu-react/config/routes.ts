@@ -57,18 +57,7 @@ export default [
           hideFooter: true,
         },
       },
-      {
-        name: '部门管理',
-        icon: 'smile',
-        path: '/system/dept',
-        component: './system/Dept',
-        layout: {
-          hideMenu: false,
-          hideNav: false,
-          hideHeader: true,
-          hideFooter: true,
-        },
-      },
+
       {
         name: '虚拟部门',
         icon: 'smile',
@@ -82,7 +71,7 @@ export default [
         },
       },
       {
-        name: '部门管理-A',
+        name: '部门管理',
         icon: 'smile',
         path: '/system/deptComplete',
         component: './system/DeptComplete',

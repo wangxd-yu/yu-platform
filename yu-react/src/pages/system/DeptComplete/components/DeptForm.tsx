@@ -1,104 +1,82 @@
-import React, {Fragment, useRef, useState} from 'react'
-import type {FormInstance} from '@ant-design/pro-form';
-import ProForm, {ProFormDigit, ProFormRadio, ProFormText} from '@ant-design/pro-form'
-import {getDeptTypesByDeptId, updateDept} from '../service'
-import {getDept} from '../../Dept/service';
-import type {DeptData} from '../data';
-import {Col, Row, Space, Spin} from 'antd';
+import React from 'react'
+import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
+import type { DeptData } from '../data';
+import type { YuFormProps } from '@/components/Yu/YuForm';
+import { addDept, updateDept } from '../service'
+import { getSubDeptTypes } from '../service'
 import * as YuCrud from '@/utils/yuCrud';
+import YuForm from '@/components/Yu/YuForm';
+
+export type DeptFormProps = YuFormProps & {
+    deptDataList: DeptData[];
+}
 
 const formItemLayout = {
-  labelCol: {span: 6},
-  wrapperCol: {span: 12},
+    labelCol: { span: 5 },
+    wrapperCol: { span: 19 },
 };
 
-const DeptForm: React.FC<{ id: string, dept: DeptData, deptUpdate: () => any }> = (prop: { id: string, dept: DeptData, deptUpdate: () => any }) => {
-  const [rawDept, setRawDept] = useState<DeptData>();
-  const [loading, setLoading] = useState<boolean>(true);
-    const formRef = useRef<FormInstance>();
-
-
+const DeptForm: React.FC<YuFormProps & {pDept: DeptData}> = (props: YuFormProps & {pDept: DeptData}) => {
+    console.log(props.initialValues)
     return (
-        <Spin tip="Loading..." spinning={loading}>
-            <ProForm<DeptData>
-                formRef={formRef}
-                layout={'horizontal'}
-                {...formItemLayout}
-                params={{ id: prop.id }}
-                /* initialValues={{ rawDept }} */
-                request={async (params) => {
-                    setLoading(true)
-                    const value = await getDept(params.id)
-                    setRawDept(value);
-                  //formRef.current?.setFieldsValue(value)
-                    setLoading(false)
-                    return Promise.resolve(value)
-                }}
-                /*  onInit={(value) => { setRawDept(value) }} */
-                onFinish={
-                    (value) => {
-                        const data = { ...rawDept, ...value }
-                        return YuCrud.handleUpdate(data, async (_data) => {
-                            await updateDept(_data)
-                            return prop.deptUpdate()
-                        })
+        <YuForm
+            title={!props.isAdd ? '更新部门' : '新建部门'}
+            width="600px"
+            formRef={props.formRef}
+            {...formItemLayout}
+            visible={props.visible}
+            layout='horizontal'
+            onVisibleChange={(visible) => {
+                if (props.onVisibleChange) props.onVisibleChange(visible);
+            }}
+            onFinish={
+                async (value) => {
+                    const data = { ...props.initialValues, ...value };
+                    let success;
+                    if (!data.id) {
+                        success = await YuCrud.handleAdd(data as DeptData, addDept);
+                    } else {
+                        success = await YuCrud.handleUpdate(data as DeptData, updateDept);
+                    }
+                    if (success && props.onFinish) {
+                        props.onFinish(value);
                     }
                 }
-                submitter={{
-                    render: (props, doms) => {
-                        return (
-                            <Row style={{ textAlign: 'center' }}>
-                                <Col span={12} offset={6}>
-                                    <Space>{doms}</Space>
-                                </Col>
-                            </Row>
-                        );
+            }
+            initialValues={props.initialValues}
+        >
+            <ProFormText
+                rules={[
+                    {
+                        required: true,
+                        message: '部门名称为必填项',
                     },
-                }}
-            >
-                {prop.dept.id !== '0' ?
-                    <Fragment>
-                        <ProFormText
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '部门名称为必填项',
-                                },
-                            ]}
-                            label="部门名称"
-                            name="name"
-                        />
-                        {/* <ProFormText disabled label="上级部门">{props?.pDept.name}</ProFormText> */}
-
-                        <ProFormRadio.Group
-                            name="typeId"
-                            label="部门类型"
-                            params={{ deptId: prop?.dept?.id }}
-                            request={getDeptTypesByDeptId}
-                        />
-                        <ProFormDigit rules={[
-                            {
-                                required: true,
-                                message: '排序为必填项',
-                            },
-                        ]} label="排序" name="sort" min={1} max={99} />
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <ProFormText
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '单位名称为必填项',
-                                },
-                            ]}
-                            label="单位名称"
-                            name="name"
-                        />
-                    </Fragment>
-                }
-            </ProForm>
-        </Spin>
+                ]}
+                label="部门名称"
+                name="name"
+            />
+            {props.initialValues?.pid &&
+                <ProFormText disabled label="上级部门">{props?.pDept.name}</ProFormText>
+            }
+            <ProFormRadio.Group
+                rules = {[
+                    {
+                        required: true,
+                        message: '部门类型为必填项',
+                    },
+                ]}
+                name="typeId"
+                label="部门类型"
+                params={{ typeId: props.pDept?.typeId }}
+                request={getSubDeptTypes}
+            />
+            <ProFormDigit rules={[
+                {
+                    required: true,
+                    message: '排序为必填项',
+                },
+            ]} label="排序" name="sort" min={1} max={99} />
+        </YuForm>
     )
 }
 

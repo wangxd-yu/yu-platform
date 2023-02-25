@@ -1,6 +1,8 @@
 export type DeptData = {
   id?: string;
+  key?: string;
   name?: string;
+  title?: string;
   pid?: string;
   pName?: string;
   typeId?: string;

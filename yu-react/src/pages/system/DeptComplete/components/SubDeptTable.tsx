@@ -10,13 +10,13 @@ import type { DeptData } from '../data';
 import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
 import { queryDept, deleteDept, disableDept, enableDept, moveDept } from '../service'
-import DeptForm from '../../Dept/components/DeptForm';
+import DeptForm from './DeptForm';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { DataNode } from 'antd/lib/tree';
 import Tree from 'antd/lib/tree';
 import Title from 'antd/lib/typography/Title';
 
-const DeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () => any }> = (prop: { dept: DeptData, deptTree: DataNode[], deptChange: () => any }) => {
+const SubDeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () => any }> = (prop: { dept: DeptData, deptTree: DataNode[], deptChange: () => any }) => {
     const [deptFormVisible, setDeptFormVisible] = useState<boolean>(false);
     const [deptCurrentRow, setDeptCurrentRow] = useState<DeptData>();
 
@@ -188,7 +188,7 @@ const DeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () 
                     initialValues={deptCurrentRow || { pid: prop.dept.id, pName: prop.dept.name, enabled: true }}
                     isAdd={!deptCurrentRow?.id}
                     pDept={prop.dept as DeptData}
-                    onVisibleChange={(visible) => {
+                    onVisibleChange={(visible: any) => {
                         if (visible) {
                             deptFormRef?.current?.resetFields();
                         } else {
@@ -208,7 +208,7 @@ const DeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () 
             }
             {mergeDeptModelVisible &&
                 <Modal title="部门移动"
-                    visible={mergeDeptModelVisible}
+                    open={mergeDeptModelVisible}
                     onOk={async () => { 
                         const success = await YuCrud.handle({targetId: targetDeptId as string, sourceIds: selectedDeptIds}, moveDept);
                         if(success) {
@@ -249,4 +249,4 @@ const DeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () 
     );
 };
 
-export default DeptPage;
+export default SubDeptPage;
