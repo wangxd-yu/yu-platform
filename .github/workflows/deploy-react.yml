@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-18.04
     steps:
-      - run: cd yu-react
+      - run: cd yu-platform/yu-react
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
