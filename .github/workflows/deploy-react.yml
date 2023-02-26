@@ -1,4 +1,4 @@
-name: github pages
+name: deploy-react
 
 on:
   push:
@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - run: echo $PWD && find . -print
-      - run: cd yu-platform/yu-react
+      - run: cd ../ && echo $PWD && find . -print
+      - run: cd yu-react
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
