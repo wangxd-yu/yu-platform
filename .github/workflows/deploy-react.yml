@@ -10,10 +10,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: echo $PWD && find . -name 'yu-react' 
-      - run: cd ../ && echo $PWD && find . -print
+      - run: echo $PWD && find -print 
       - run: cd yu-react
-
       - run: npm install
       - run: npm run build
       - name: Deploy
