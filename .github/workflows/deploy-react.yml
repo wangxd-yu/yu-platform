@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-18.04
     steps:
-      - run: echo $PWD && find . -print
+      - run: echo $PWD && find . -name 'yu-react' 
       - run: cd ../ && echo $PWD && find . -print
       - run: cd yu-react
       - uses: actions/checkout@v2
