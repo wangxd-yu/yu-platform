@@ -41,6 +41,7 @@ export default defineConfig({
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
+  // 注意：proxy 配置仅在 dev 时生效。
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
@@ -71,7 +72,8 @@ export default defineConfig({
   publicPath: PUBLIC_PATH,
   define: {
     YU_PUBLIC_PATH: PUBLIC_PATH,
-    BASE_URL_PREFIX: 'api',
+    BASE_URL: '',
+    BASE_URL_PREFIX: '/api',
     IS_TENANT: true    //是否开启多租户模式， false：不开启；true：开启
   }
 });

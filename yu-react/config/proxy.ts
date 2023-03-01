@@ -19,7 +19,7 @@ export default {
       pathRewrite: { '^': '' },
     }, */
     '/api/': {
-      target: 'http://127.0.0.1:1128',
+      target: 'http://192.168.0.105:1128',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     }
@@ -37,5 +37,5 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-  },
+  }
 };

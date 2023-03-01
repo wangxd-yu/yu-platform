@@ -26,6 +26,9 @@ declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 // 根路径地址
 declare const YU_PUBLIC_PATH: string;
 
+//接口地址
+declare const BASE_URL: string;
+
 declare const BASE_URL_PREFIX: string;
 
 // 是否开启多租户模式

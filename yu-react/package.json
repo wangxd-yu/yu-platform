@@ -5,7 +5,7 @@
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "cross-env UMI_ENV=production umi build",
     "deploy": "npm run build && npm run gh-pages",
     "dev": "npm run start:dev",
     "gh-pages": "gh-pages -d dist",
@@ -60,9 +60,9 @@
     "lodash": "^4.17.21",
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
-    "react": "^17.0.0",
+    "react": "^18.2.0",
     "react-dev-inspector": "^1.7.1",
-    "react-dom": "^17.0.0",
+    "react-dom": "^18.2.0",
     "react-draggable": "^4.4.4",
     "react-helmet-async": "^1.2.3",
     "react-split-pane": "^0.1.92",
@@ -73,10 +73,10 @@
     "@ant-design/pro-cli": "^2.0.2",
     "@types/express": "^4.17.0",
     "@types/history": "^5.0.0",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.180",
-    "@types/react": "^17.0.41",
-    "@types/react-dom": "^17.0.14",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "@types/react-helmet": "^6.1.5",
     "@umijs/fabric": "^2.10.2",
     "@umijs/openapi": "^1.4.2",
@@ -95,7 +95,7 @@
     "enzyme": "^3.11.0",
     "eslint": "^8.11.0",
     "express": "^4.17.3",
-    "gh-pages": "^3.0.0",
+    "gh-pages": "^5.0.0",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^12.3.7",
     "mockjs": "^1.0.1-beta3",
@@ -111,7 +111,7 @@
     "commit-msg": "fabric verify-commit"
   },
   "resolutions": {
-    "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2"
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11"
   }
 }

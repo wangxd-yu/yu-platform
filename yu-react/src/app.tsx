@@ -69,17 +69,22 @@ function isUrlNeedAuthentication(url: string) {
   return noAuthUrlArr.findIndex(item => url.startsWith(item)) === -1
 }
 
+function handleURL(url: string) {
+  return BASE_URL + url;
+}
+
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
+  
   // 需要 token 认证
   if (isUrlNeedAuthentication(url)) {
     const authToken = getAuthToken()
-    if(isTokenEfective()) {
+    if (isTokenEfective()) {
       let authHeader = {};
       if (authToken.token) {
         authHeader = { Authorization: `${authToken.tokenHead}${authToken.token}` };
       }
       return {
-        url: `${url}`,
+        url: handleURL(url),
         options: { ...options, interceptors: true, headers: authHeader },
       };
     } else {
@@ -88,7 +93,7 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   }
   // 不需要token认证
   return {
-    url,
+    url: handleURL(url),
     options
   };
 };
@@ -135,7 +140,7 @@ export const request: RequestConfig = {
   // 新增自动添加AccessToken的请求前拦截器
   requestInterceptors: [authHeaderInterceptor],
   errorHandler: (error: any) => {
-    if(error instanceof InterceptorError) {
+    if (error instanceof InterceptorError) {
       notification.error({
         description: error.message,
         message: "",
@@ -175,9 +180,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       // 如果没有登录，重定向到 login
       if (!isTokenEfective() && location.pathname !== loginPath) {
         history.push(loginPath);
-      } else if (isTokenEfective() && !initialState?.currentUser){
+      } else if (isTokenEfective() && !initialState?.currentUser) {
         history.push("/")
-      } 
+      }
     },
     links: isDev
       ? [
