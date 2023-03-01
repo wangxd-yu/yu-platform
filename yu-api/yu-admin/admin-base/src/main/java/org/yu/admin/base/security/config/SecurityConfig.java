@@ -48,6 +48,7 @@ public class SecurityConfig {
                 // 不创建会话
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 允许所有路径的OPTIONS请求
                         .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
                         .antMatchers("/upload/**").anonymous()
                         // 所有请求都需要认证

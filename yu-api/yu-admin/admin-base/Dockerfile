@@ -2,8 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 ADD target/admin-base-0.0.1-SNAPSHOT.jar /admin-base.jar
 
-VOLUME /yu/api/admin-base/config
-VOLUME /yu/api/admin-base/logs
+VOLUME ['/config', '/logs', '/upload']
 
 EXPOSE 1128
 

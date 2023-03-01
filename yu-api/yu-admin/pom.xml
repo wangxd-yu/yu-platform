@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>yu-alone</artifactId>
+    <artifactId>yu-admin</artifactId>
     <description>管理系统</description>
     <packaging>pom</packaging>
 

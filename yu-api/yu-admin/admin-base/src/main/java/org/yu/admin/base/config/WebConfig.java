@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -29,15 +30,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Resource
     public LogEndpointFilter logEndpointFilter;
 
-    /*@Override
+    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE");
-
-    }*/
+                // SpringBoot2.4.0 [allowedOriginPatterns]代替[allowedOrigins]
+                .allowedOriginPatterns("*")
+                //设置预检请求的缓存时间的，单位为秒。只是建议缓存时间，而实际上，浏览器会根据自身的规则来判断是否缓存响应，因此并不能保证在指定的时间内缓存响应
+                .maxAge(3600L)
+                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
+        ;
+    }
 
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
