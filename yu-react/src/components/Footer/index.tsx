@@ -4,7 +4,7 @@ export default () => {
   const defaultMessage = '蚂蚁集团体验技术部出品';
   return (
     <DefaultFooter
-      copyright={`2020 ${defaultMessage}`}
+      copyright={`2023 ${defaultMessage}`}
       links={[
         {
           key: 'Ant Design Pro',

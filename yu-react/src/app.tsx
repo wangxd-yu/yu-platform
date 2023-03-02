@@ -147,18 +147,27 @@ export const request: RequestConfig = {
       });
       return;
     } else {
-      const { response } = error;
-      if (!response) {
+      if(!error.data.data) {
+        // Http status = 504
         notification.error({
           description: '您的网络发生异常，无法连接服务器',
           message: '网络异常',
         });
       } else {
-        notification.error({
-          description: error.data.data,
-          message: error.data.message,
-        });
+        const { response } = error;
+        if (!response) {
+          notification.error({
+            description: '您的网络发生异常，无法连接服务器',
+            message: '网络异常',
+          });
+        } else {
+          notification.error({
+            description: error.data.data,
+            message: error.data.message,
+          });
+        }
       }
+      
       console.log(error)
       throw error;
     }

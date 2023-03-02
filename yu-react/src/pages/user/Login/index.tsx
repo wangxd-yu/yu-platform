@@ -85,7 +85,7 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <Link to="/">
-              <img alt="logo" className={styles.logo} src={`${YU_PUBLIC_PATH}logo.svg`}/>
+              <img alt="logo" className={styles.logo} src={`${YU_PUBLIC_PATH}logo.svg`} />
               <span className={styles.title}>Ant Design</span>
             </Link>
           </div>
@@ -114,10 +114,17 @@ const Login: React.FC = () => {
               handleSubmit(values as API.LoginParams);
             }}
           >
-            <Tabs activeKey={type} onChange={setType}>
-              <Tabs.TabPane key="account" tab={'账户密码登录'} />
-              <Tabs.TabPane key="mobile" tab={'手机号登录'} />
-            </Tabs>
+            <Tabs activeKey={type} onChange={setType} items={[
+              {
+                label: '账户密码登录',
+                key: 'account',
+              },
+              {
+                label: '手机号登录',
+                key: 'mobile',
+                disabled: false,
+              }
+            ]}/>
 
             {status === 'error' && loginType === 'account' && (
               <LoginMessage content={'错误的用户名和密码（admin/ant.design)'} />
@@ -130,7 +137,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <ApartmentOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={'租户编号: 1000 or 1001'}
+                  placeholder={'租户编号: 1001 or 1002'}
                   rules={[
                     {
                       required: true,
@@ -214,13 +221,13 @@ const Login: React.FC = () => {
                     },
                   ]}
                   onGetCaptcha={async (phone) => {
-                    const result = await getFakeCaptcha({
+                    /* const result = await getFakeCaptcha({
                       phone,
                     });
 
                     if (result === false) {
                       return;
-                    }
+                    } */
 
                     message.success('获取验证码成功！验证码为：1234');
                   }}
