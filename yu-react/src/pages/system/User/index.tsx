@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Popconfirm, Popover, Space, Switch, TreeSelect } from 'antd';
+import { Avatar, Button, Col, Popconfirm, Popover, Row, Space, Switch } from 'antd';
 import type { FormInstance } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
@@ -9,58 +9,54 @@ import { queryUser, getUser, deleteUser, disableUser, enableUser } from './servi
 import * as YuCrud from '@/utils/yuCrud';
 import type { UserData } from './data';
 import UserForm from './components/UserForm'
-import type { DataNode } from 'rc-tree/lib/interface';
-import * as YuApi from '@/utils/yuApi';
-import type { DeptData } from '../Dept/data';
-import { yuUrlSystem } from '@/utils/yuUrl';
+import DeptTree from '@/components/Yu/DeptTree/index';
+import ProCard from '@ant-design/pro-card';
+import { DataNode } from 'antd/lib/tree';
 
-const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
-  const item: DataNode[] = [];
-  if (Array.isArray(data)) {
-    data?.forEach((deptData: DeptData) => {
-      const newData: DataNode & { value: string } = {} as DataNode & { value: string };
-      newData.key = deptData.id as string;
-      newData.value = deptData.id as string;
-      newData.title = deptData.name;
-      newData.children = deptData.children ? handleTreeDataRecursion(deptData.children) : []; // 如果还有子集，就再次调用自己
-      item.push(newData);
-    });
+/**
+ * 获取第一个表格的可视化高度
+ * @param {*} extraHeight 额外的高度(表格底部的内容高度 Number类型,默认为74) 
+ * @param {*} id 当前页面中有多个table时需要制定table的id
+ */
+const getTableScroll = ({ extraHeight, id }: any) => {
+  if (!extraHeight) {
+    //  默认底部分页64 + 边距10
+    extraHeight = 74
   }
-  return item;
+  let tHeader = null
+  if (id) {
+    tHeader = document.getElementById(id) ? document.getElementById(id)?.getElementsByClassName("ant-table-thead")[0] : null
+  } else {
+    tHeader = document.getElementsByClassName("ant-table-thead")[0]
+  }
+  //表格内容距离顶部的距离
+  let tHeaderBottom = 0
+  if (tHeader) {
+    tHeaderBottom = tHeader.getBoundingClientRect().bottom
+  }
+  //窗体高度-表格内容顶部的高度-表格内容底部的高度
+  // let height = document.body.clientHeight - tHeaderBottom - extraHeight
+  let height = `calc(100vh - ${tHeaderBottom + extraHeight + window.scrollY + 30}px)`
+
+  return height
 }
 
 const UserTable: React.FC<UserData> = () => {
   /** 新建窗口的弹窗 */
   const [userFormVisible, setUserFormVisible] = useState<boolean>(false);
   const [userCurrentRow, setUserCurrentRow] = useState<UserData>();
+  const [isCurrent, setIsCurrent] = useState<boolean>(false);
+  const [deptId, setDeptId] = useState<string>();
   const [deptTree, setDeptTree] = useState<DataNode[]>();
   const userFormRef = useRef<FormInstance>();
   const userActionRef = useRef<ActionType>();
-
+  const [scrollY, setScrollY] = useState("")
+  //页面加载完成后才能获取到对应的元素及其位置
   useEffect(() => {
-    YuApi.queryList<DeptData>(yuUrlSystem('/dept/tree')).then(res => {
-      setDeptTree(handleTreeDataRecursion(res.data));
-    });
-  }, []);
+    setScrollY(getTableScroll({ extraHeight: null, id: null }))
+  }, [])
 
   const columns: ProColumns<UserData>[] = [
-    {
-      title: '所属部门',
-      dataIndex: 'deptId',
-      hideInTable: true,
-      renderFormItem: () => {
-        return (
-          <TreeSelect
-            style={{ width: '100%' }}
-            listHeight={300}
-            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            treeData={deptTree}
-            placeholder="请选择"
-            treeDefaultExpandAll
-          />
-        );
-      },
-    },
     {
       dataIndex: 'avatar',
       title: '头像',
@@ -88,7 +84,6 @@ const UserTable: React.FC<UserData> = () => {
     },
     {
       title: '用户账号',
-      tip: '用户账号是唯一的 key',
       dataIndex: 'username'
     },
     {
@@ -168,29 +163,60 @@ const UserTable: React.FC<UserData> = () => {
     <PageContainer header={{
       breadcrumb: {},
     }}>
-      <ProTable<UserData, API.TableListPagination>
-        headerTitle="查询表格"
-        actionRef={userActionRef}
-        rowKey="id"
-        search={{
-          labelWidth: 120,
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              userFormRef?.current?.resetFields();
-              setUserCurrentRow(undefined)
-              setUserFormVisible(true);
+
+      <ProCard split="vertical" ghost >
+        <ProCard style={{ height: 'calc(100vh - 168px)', background: "white" }} colSpan={{ xs: 12, sm: 12, md: 10, lg: 8, xl: 5 }}>
+          <DeptTree
+            onInit={(deptTree) => { setDeptTree(deptTree) }}
+            onSelect={(deptId) => {
+              setDeptId(deptId);
+              userActionRef.current?.reload();
+            }} />
+        </ProCard>
+        <ProCard ghost>
+          <ProTable<UserData>
+            toolbar={{
+              title: (
+                <Switch
+                  checkedChildren="只看本级"
+                  unCheckedChildren="本级及下级"
+                  defaultChecked={isCurrent}
+                  onChange={() => setIsCurrent(!isCurrent)} />
+              )
             }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-        request={queryUser}
-        columns={columns}
-      />
+            actionRef={userActionRef}
+            rowKey="id"
+            search={{
+              labelWidth: 120,
+              onCollapse: () => {
+                setScrollY(getTableScroll({ extraHeight: null, id: null }))
+              }
+            }}
+            scroll={{ y: scrollY }}
+
+            toolBarRender={() => [
+              <Button
+                type="primary"
+                key="primary"
+                onClick={() => {
+                  userFormRef?.current?.resetFields();
+                  setUserCurrentRow(undefined)
+                  setUserFormVisible(true);
+                }}
+              >
+                <PlusOutlined /> 新建
+              </Button>,
+            ]}
+            params={{ deptId, isCurrent }}
+            request={queryUser}
+            columns={columns}
+            pagination={{
+              showSizeChanger: true,
+            }}
+          />
+        </ProCard>
+      </ProCard>
+
       {userFormVisible && <UserForm
         deptTree={deptTree}
         width="700px"

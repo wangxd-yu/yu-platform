@@ -68,7 +68,6 @@ const DeptPage: React.FC = () => {
   const [deptList, setDeptList] = useState<DataNode[]>([]);
   const [tab, setTab] = useState('tab1');
 
-
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([currentUser?.deptId as string]);
   const [searchValue, setSearchValue] = useState('');
   const [autoExpandParent, setAutoExpandParent] = useState(true);
@@ -164,7 +163,7 @@ const DeptPage: React.FC = () => {
         breadcrumb: {},
       }}>
       <ProCard split="vertical" style={{ height: 'calc(100vh - 170px)' }}>
-        <ProCard colSpan={{ xs: 20, sm: 16, md: 12, lg: 8, xl: 6 }}>
+        <ProCard colSpan={{ xs: 12, sm: 12, md: 10, lg: 8, xl: 5 }}>
           {deptTree &&
             <>
               <Search style={{ marginBottom: 8 }} placeholder="部门搜索" onChange={onChange} />
