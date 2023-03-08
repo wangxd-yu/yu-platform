@@ -1,6 +1,6 @@
 export type UserData = {
   id?: string;
-  deptNo: string;
+  deptId: string;
   disabled?: boolean;
   href: string;
   portraitBase64: string;
