@@ -15,7 +15,7 @@ import { DataNode } from 'antd/lib/tree';
 
 /**
  * 获取第一个表格的可视化高度
- * @param {*} extraHeight 额外的高度(表格底部的内容高度 Number类型,默认为74) 
+ * @param {*} extraHeight 额外的高度(表格底部的内容高度 Number类型,默认为74)
  * @param {*} id 当前页面中有多个table时需要制定table的id
  */
 const getTableScroll = ({ extraHeight, id }: any) => {
@@ -192,7 +192,7 @@ const UserTable: React.FC<UserData> = () => {
                 setScrollY(getTableScroll({ extraHeight: null, id: null }))
               }
             }}
-            scroll={{ y: scrollY }}
+            scroll={{ y: scrollY, x: '800px'}}
 
             toolBarRender={() => [
               <Button
