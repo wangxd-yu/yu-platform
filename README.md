@@ -2,7 +2,7 @@
 
 ### 介绍
 
-#### **演示环境地址**：[http://117.50.173.203/yu-platform](http://117.50.173.203/yu-platform)
+#### **演示环境地址**：[https://wangxd-yu.github.io/yu-platform](https://wangxd-yu.github.io/yu-platform)
 
 * 租户列表：1001、1002、1003
 * 账号密码：
