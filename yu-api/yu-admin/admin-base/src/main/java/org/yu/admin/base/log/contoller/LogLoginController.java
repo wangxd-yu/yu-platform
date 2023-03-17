@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yu.admin.base.log.domain.LogLoginDO;
+import org.yu.admin.base.log.dto.LogLoginDTO;
 import org.yu.admin.base.log.query.LogLoginQuery;
 import org.yu.admin.base.log.service.LogLoginService;
 import org.yu.common.querydsl.controller.DslBaseController;
@@ -23,6 +24,6 @@ public class LogLoginController extends DslBaseController<LogLoginService, LogLo
 
     @GetMapping
     public ResponseEntity<Object> getPage(LogLoginQuery query, Pageable pageable) {
-        return super.query(query, pageable);
+        return super.queryDTO(query, pageable, LogLoginDTO.class);
     }
 }

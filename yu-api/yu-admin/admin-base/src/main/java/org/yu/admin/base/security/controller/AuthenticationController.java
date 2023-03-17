@@ -65,17 +65,19 @@ public class AuthenticationController {
         if (!DeptUtil.findById(securityUser.getDeptId()).getEnabled()) {
             throw new AccountExpiredException("所属部门已停用，请联系管理员");
         }*/
-        logLoginService.asyncSave(this.map2LogLoginDO(loginUser.getUsername()));
+        logLoginService.asyncSave(this.map2LogLoginDO(securityUser));
         securityUser.setRoles(userService.getRoleCodesByUserId(securityUser.getId()));
         // 返回 认证信息
         return ResponseEntity.ok(JwtTokenUtil.generateAuthenticationInfo(securityUser));
     }
 
-    private LogLoginDO map2LogLoginDO(String username) {
+    private LogLoginDO map2LogLoginDO(SecurityUser securityUser) {
         LogLoginDO logLoginDO = new LogLoginDO();
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
         UserAgent ua = UserAgentUtil.parse(request.getHeader("User-Agent"));
-        logLoginDO.setUsername(username);
+        logLoginDO.setUsername(securityUser.getUsername());
+        logLoginDO.setDeptId(securityUser.getDeptId());
+        logLoginDO.setTenantId(securityUser.getTenantId());
         logLoginDO.setBrowser(ua.getBrowser().getName());
         String ip = ServletUtil.getClientIP(request);
         logLoginDO.setIp(ip);

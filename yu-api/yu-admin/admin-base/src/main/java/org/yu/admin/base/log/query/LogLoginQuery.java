@@ -2,18 +2,23 @@ package org.yu.admin.base.log.query;
 
 import lombok.Data;
 import org.yu.admin.base.log.domain.LogLoginDO;
-import org.yu.common.querydsl.query.annotation.YuOrderColumn;
-import org.yu.common.querydsl.query.annotation.YuQuery;
-import org.yu.common.querydsl.query.annotation.YuQueryColumn;
+import org.yu.common.querydsl.query.AbstractQuery;
+import org.yu.common.querydsl.query.annotation.*;
 import org.yu.common.querydsl.query.enums.YuOperatorEnum;
+import org.yu.serve.system.module.dept.domain.DeptDO;
 
 /**
  * @author wangxd
  * @date 2021-11-24 23:17
  */
 @Data
-@YuQuery(domain = LogLoginDO.class, orders = {@YuOrderColumn(column = "id", type = YuOrderColumn.Type.DESC)})
-public class LogLoginQuery {
+@YuQuery(domain = LogLoginDO.class,
+        joins = {
+                @YuJoin(domain = DeptDO.class, type = YuJoin.Type.LEFT_JOIN, columns = {
+                        @YuJoinColumn(column = "id", relationColumn = "deptId")
+                })},
+        orders = {@YuOrderColumn(column = "id", type = YuOrderColumn.Type.DESC)})
+public class LogLoginQuery extends AbstractQuery {
     /**
      * 登录用户名
      */

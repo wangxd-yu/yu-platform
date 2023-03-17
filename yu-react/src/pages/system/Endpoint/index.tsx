@@ -2,13 +2,12 @@ import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Switch, Tag } from 'antd';
 import type { FormInstance } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
 import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, accessEnable, accessDisable, logEnable, logDisable } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { EndpointData } from './data';
 import EndpointForm from './components/EndpointForm'
+import YuProTable from '@/components/Yu/YuProTable';
 
 export const methodMap = {
   POST: {
@@ -162,33 +161,28 @@ const EndpointTable: React.FC<EndpointData> = () => {
       ],
     },
   ];
-
   return (
-    <PageContainer header={{
-      breadcrumb: {},
-    }}>
-      <ProTable<EndpointData, API.TableListPagination>
-        headerTitle="查询表格"
-        actionRef={endpointActionRef}
-        rowKey="id"
-        search={{
-          labelWidth: 120,
+    <>
+      <YuProTable<EndpointData, API.TableListPagination>
+        showDeptTree={false}
+        tableProps={{
+          actionRef: endpointActionRef,
+          toolBarRender: () => [
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                endpointFormRef?.current?.resetFields();
+                setEndpointCurrentRow(undefined)
+                setEndpointFormVisible(true);
+              }}
+            >
+              <PlusOutlined /> 新建
+            </Button>,
+          ],
+          request: queryEndpoint,
+          columns: columns
         }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              endpointFormRef?.current?.resetFields();
-              setEndpointCurrentRow(undefined)
-              setEndpointFormVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-        request={queryEndpoint}
-        columns={columns}
       />
       <EndpointForm
         width="500px"
@@ -221,7 +215,7 @@ const EndpointTable: React.FC<EndpointData> = () => {
           }
         }}
       />
-    </PageContainer >
+    </>
   );
 };
 export default EndpointTable;
