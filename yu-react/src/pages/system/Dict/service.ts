@@ -4,10 +4,8 @@ import { request } from 'umi';
 import type { Dict, DictItem } from './data';
 import * as YuApi from '@/utils/yuApi';
 
-import { yuUrlSystem } from '@/utils/yuUrl';
-
-const dictUrl = yuUrlSystem('/dict');
-const dictItemUrl = yuUrlSystem('/dictDetail');
+const dictUrl = '/dict';
+const dictItemUrl = '/dictDetail';
 
 /** 获取规则列表 GET /api/rule */
 export async function queryDict(
@@ -36,7 +34,7 @@ export async function queryDictItem(
 }
 
 export async function getDict(id: number) {
-  return request(yuUrlSystem(`/dict/${id}`), {
+  return request(`/dict/${id}`, {
     method: 'GET',
   });
 }

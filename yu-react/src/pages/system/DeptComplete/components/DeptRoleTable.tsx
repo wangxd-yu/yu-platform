@@ -8,7 +8,6 @@ import * as YuCrud from '@/utils/yuCrud';
 import {addDeptRoles, batchDeleteDeptRoles, queryDeptRoles} from '../service'
 import {PlusOutlined} from '@ant-design/icons';
 import * as YuApi from '@/utils/yuApi'
-import {yuUrlSystem} from '@/utils/yuUrl';
 import type {RoleData} from '../../Role/data';
 
 type RoleTransferData = RoleData & { disabled: boolean }
@@ -22,7 +21,7 @@ const DeptRolePage: React.FC<{ deptId: string }> = (prop: { deptId: string }) =>
   const deptRoleActionRef = useRef<ActionType>();
 
     useEffect(() => {
-        YuApi.queryList<RoleTransferData>(yuUrlSystem('/role')).then(res => {
+        YuApi.queryList<RoleTransferData>('/role').then(res => {
             return setRoleList(res?.data);
         });
     }, []);

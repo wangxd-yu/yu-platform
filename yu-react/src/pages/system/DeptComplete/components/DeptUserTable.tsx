@@ -9,7 +9,6 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { UserData } from '../../User/data';
 import ProTable from '@ant-design/pro-table';
 
-import { yuUrlSystem } from '@/utils/yuUrl';
 import * as YuCrud from '@/utils/yuCrud';
 import * as YuApi from '@/utils/yuApi';
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
@@ -145,7 +144,7 @@ const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { de
           </Button>
         ]}
         params={{ deptId: prop.deptId, isCurrent }}
-        request={(params) => YuApi.queryPage<UserData>(yuUrlSystem('/user'), params)}
+        request={(params) => YuApi.queryPage<UserData>('/user', params)}
         postData={(dataList) => {
           return dataList;
         }}

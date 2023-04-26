@@ -1,7 +1,6 @@
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 
-const virtualDeptUrl = yuUrlSystem('/virtualDept');
+const virtualDeptUrl = '/virtualDept';
 
 /** 获取规则列表 GET /api/rule */
 export async function queryVirtualDept(

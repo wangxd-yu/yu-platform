@@ -10,7 +10,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 
 import fixMenuItemIcon from './utils/fixMenuItemIcon';
 import * as YuApi from '@/utils/yuApi';
-import { YuServe, yuServePrefix, yuUrlSystem } from './utils/yuUrl';
+import { YuServe, yuServePrefix } from './utils/yuUrl';
 import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
 import { InterceptorError } from './error';
 import type { RequestOptionsInit } from 'umi-request';
@@ -70,7 +70,7 @@ function isUrlNeedAuthentication(url: string) {
 }
 
 function handleURL(url: string) {
-  return BASE_URL + url;
+  return BASE_URL + (url.startsWith('/') ? '' : '/') + url;
 }
 
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
@@ -221,7 +221,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         // initialState.currentUser 中包含了所有用户信息
         // const menuData = await fetchMenuData();
         if (params.username) {
-          return YuApi.queryList(yuUrlSystem(`/menu/build`));
+          return YuApi.queryList(`/menu/build`);
         }
       },
       defaultOpenAll: true,

@@ -4,7 +4,6 @@ import Tree, { DataNode, EventDataNode } from 'antd/lib/tree';
 import { DeptData } from '@/pages/system/DeptComplete/data';
 import { GlobalOutlined, ClusterOutlined } from '@ant-design/icons';
 import { useModel } from 'umi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import * as YuApi from '@/utils/yuApi';
 
 export type DeptTreeProps = {
@@ -72,7 +71,7 @@ const DeptTree: React.FC<DeptTreeProps> = ((props: DeptTreeProps) => {
     }, []);
 
     const initDeptTree = () => {
-        YuApi.queryList<DeptData>(yuUrlSystem('/dept/tree')).then(res => {
+        YuApi.queryList<DeptData>('/dept/tree').then(res => {
             if (res?.data) {
                 const deptTree = handleTreeDataRecursion(res?.data)
                 setDeptTree(deptTree);

@@ -1,8 +1,7 @@
 import type { UserData } from './data';
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 
-const userUrl = yuUrlSystem('/user');
+const userUrl = '/user';
 
 /** 获取规则列表 GET /api/rule */
 export async function queryUser(

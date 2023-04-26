@@ -5,7 +5,6 @@ import './index.less'
 import { EllipsisOutlined } from '@ant-design/icons';
 import SplitPane from 'react-split-pane';
 import { DataNode, EventDataNode } from 'antd/lib/tree';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import { DeptData } from '../Dept/data';
 
 import * as YuApi from '@/utils/yuApi';
@@ -48,13 +47,13 @@ const VirtualDeptPage: React.FC<{}> = () => {
     const [deptTree, setDeptTree] = useState<DataNode[]>();
 
     const initDeptTree = () => {
-        YuApi.queryList<DeptData>(yuUrlSystem('/dept/tree')).then(res => {
+        YuApi.queryList<DeptData>('/dept/tree').then(res => {
             setDeptTree(handleTreeDataRecursion(res?.data));
         });
     }
 
     const initVirtualDeptTree = () => {
-        YuApi.queryList<DeptData>(yuUrlSystem('/virtualDept/tree')).then(res => {
+        YuApi.queryList<DeptData>('/virtualDept/tree').then(res => {
             setVirtualDeptList(res.data)
             setVirtualDeptTree(handleTreeDataRecursion(res.data))
         });
@@ -88,7 +87,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
     const initRightTree = (nodeData: EventDataNode<string>) => {
         setShowFooterBtn(false)
         setDeptCheckKeys([])
-        YuApi.queryList<DeptData>(yuUrlSystem(`/virtualDept/${nodeData.key}/deptIds`)).then(res => setDeptCheckKeys(res as unknown as string[]))
+        YuApi.queryList<DeptData>(`/virtualDept/${nodeData.key}/deptIds`).then(res => setDeptCheckKeys(res as unknown as string[]))
     }
 
     function handleMenuClick(e: any) {
@@ -172,9 +171,9 @@ const VirtualDeptPage: React.FC<{}> = () => {
                                     },
                                 }}
                                 onFinish={async (values) => {
-                                    //YuApi.add({deptIds: deptCheckKeys}, yuUrlSystem(`/virtualDept/${currentSelectDataNode.key}/deptIds`))
+                                    //YuApi.add({deptIds: deptCheckKeys}, `/virtualDept/${currentSelectDataNode.key}/deptIds`)
                                     await YuCrud.handleAdd({ deptIds: deptCheckKeys }, ({ deptIds: deptCheckKeys }) => {
-                                        return YuApi.add(yuUrlSystem(`/virtualDept/${currentSelectDataNode.key}/deptIds`), { deptIds: deptCheckKeys })
+                                        return YuApi.add(`/virtualDept/${currentSelectDataNode.key}/deptIds`, { deptIds: deptCheckKeys })
                                     });
 
                                     setShowFooterBtn(false)
@@ -241,7 +240,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
                     visible={showVirtualDeptForm}
                     params={{ id: currentRightClickDataNode.value }}
                     request={async (params) => {
-                        const value = await YuApi.getById<DeptData>(yuUrlSystem(`/virtualDept`), params.id)
+                        const value = await YuApi.getById<DeptData>(`/virtualDept`, params.id)
                         return Promise.resolve(value)
                     }}
                     onVisibleChange={(visible: boolean) => {

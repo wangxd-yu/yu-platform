@@ -10,7 +10,6 @@ import {
 } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import type { DataNode, EventDataNode } from 'antd/lib/tree';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import * as YuApi from '@/utils/yuApi';
 import DeptFormInner from './components/DeptFormInner';
 import SubDeptTable from './components/SubDeptTable';
@@ -77,7 +76,7 @@ const DeptPage: React.FC = () => {
   }, []);
 
   const initDeptTree = () => {
-    YuApi.queryList<DeptData>(yuUrlSystem('/dept/tree')).then(res => {
+    YuApi.queryList<DeptData>('/dept/tree').then(res => {
       if (res?.data) {
         setDeptTree(handleTreeDataRecursion(res?.data));
         generateList(res?.data)

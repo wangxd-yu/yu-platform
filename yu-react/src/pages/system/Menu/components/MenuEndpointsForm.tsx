@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ModalForm, ProFormDependency, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import * as YuApi from '@/utils/yuApi';
 import _ from 'lodash'
 import type { FormInstance } from 'antd';
@@ -66,7 +65,7 @@ const MenuEndpointsForm: React.FC<YuFormProps> = (props: YuFormProps) => {
   const dictItemFormRef = useRef<FormInstance>();
 
   useEffect(() => {
-    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoint/all')).then(res => {
+    YuApi.get<EndpointLessDTO>('/endpoint/all').then(res => {
       setEndpointList(new Map(Object.entries<EndpointLessDTO[]>(_.groupBy(res, 'pattern') as unknown as {pattern: EndpointLessDTO[]})))
     });
   }, []);

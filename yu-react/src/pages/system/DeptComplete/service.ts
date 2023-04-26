@@ -1,9 +1,8 @@
 import type { DeptData, DeptRoleData } from './data';
 import * as YuApi from '@/utils/yuApi';
 import { request } from 'umi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 
-const deptUrl = yuUrlSystem('/dept');
+const deptUrl = '/dept';
 
 /** 获取规则列表 GET /api/rule */
 export async function queryDeptTree(params: any) {
@@ -53,7 +52,7 @@ export async function deleteDept(id: string | number) {
  * */
 export async function getSubDeptTypes(params: any) {
   const typeId = params.typeId ? params.typeId : '0';
-  return request(yuUrlSystem(`/deptType/subTypes/${typeId}`), {
+  return request(`/deptType/subTypes/${typeId}`, {
     method: 'get'
   }).then(res => {
     return res.map((item: any) => {
@@ -70,7 +69,7 @@ export async function getSubDeptTypes(params: any) {
  * GET /api_sy/deptType/deptId:{deptId} 
  * */
 export async function getDeptTypesByDeptId(params: { deptId: string }) {
-  return request(yuUrlSystem(`/deptType/deptId:${params.deptId}`), {
+  return request(`/deptType/deptId:${params.deptId}`, {
     method: 'get'
   }).then(res => {
     return res.map((item: any) => {

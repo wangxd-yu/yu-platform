@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { ProFormDependency, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import * as YuApi from '@/utils/yuApi';
 import _ from 'lodash'
 
@@ -15,7 +14,7 @@ const EndpointForm: React.FC<YuFormProps> = (props: YuFormProps) => {
   const [endpointList, setEndpointList] = useState<Map<string,EndpointLessDTO[]>>(new Map());
 
   useEffect(() => {
-    YuApi.get<EndpointLessDTO>(yuUrlSystem('/endpoint/all')).then(res => {
+    YuApi.get<EndpointLessDTO>('/endpoint/all').then(res => {
       setEndpointList(new Map(Object.entries<EndpointLessDTO[]>(_.groupBy(res, 'pattern') as unknown as {pattern: EndpointLessDTO[]})))
     });
   }, []);

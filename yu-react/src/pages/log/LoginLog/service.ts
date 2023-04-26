@@ -1,9 +1,8 @@
 import type { LogLoginData } from './data';
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import type { SortOrder } from 'antd/lib/table/interface';
 
-const logLoginUrl = yuUrlSystem('/logLogin');
+const logLoginUrl = '/logLogin';
 
 /** 获取规则列表 GET */
 export async function queryLogLogin(

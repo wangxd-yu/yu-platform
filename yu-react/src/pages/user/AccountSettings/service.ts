@@ -1,9 +1,8 @@
 import { request } from 'umi';
 import type { CurrentUser, GeographicItemType } from './data';
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 
-const userUrl = yuUrlSystem('/user');
+const userUrl = '/user';
 
 export async function queryCurrent(): Promise<{ data: CurrentUser }> {
   return request('/api/accountSettingCurrentUser');

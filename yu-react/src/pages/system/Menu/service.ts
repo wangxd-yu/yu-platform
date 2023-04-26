@@ -1,12 +1,11 @@
 import type { MenuData } from './data';
 import * as YuApi from '@/utils/yuApi';
 
-import { yuUrlSystem } from '@/utils/yuUrl';
 import type { EndpointData } from '../Endpoint/data';
 import { request } from 'umi';
 
-const menuUrl = yuUrlSystem('/menu');
-const endpointUrl = yuUrlSystem('/endpoint')
+const menuUrl = '/menu';
+const endpointUrl = '/endpoint'
 
 /** 获取规则列表 GET /api/rule */
 export async function queryMenu(

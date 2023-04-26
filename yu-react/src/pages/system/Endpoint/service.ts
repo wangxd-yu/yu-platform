@@ -1,9 +1,8 @@
 import type { EndpointData } from './data';
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import type { SortOrder } from 'antd/lib/table/interface';
 
-const endpointUrl = yuUrlSystem('/endpoint');
+const endpointUrl = '/endpoint';
 
 /** 获取规则列表 GET */
 export async function queryEndpoint(

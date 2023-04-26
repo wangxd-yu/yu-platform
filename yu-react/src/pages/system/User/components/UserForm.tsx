@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import ProForm, {ProFormSwitch, ProFormText} from '@ant-design/pro-form'
 import type {YuFormProps} from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
-import {yuUrlSystem} from '@/utils/yuUrl';
 import {message, Transfer, TreeSelect, Upload} from 'antd';
 import * as YuCrud from '@/utils/yuCrud';
 import * as YuApi from '@/utils/yuApi';
@@ -47,7 +46,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
   useEffect(() => {
     console.log(props?.initialValues?.roleIds)
     setRoleTargetKeys(props?.initialValues?.roleIds)
-    YuApi.queryList<RoleTransferData>(yuUrlSystem('/role')).then(res => {
+    YuApi.queryList<RoleTransferData>('/role').then(res => {
       return setRoleList(res?.data);
     });
   }, []);
@@ -166,7 +165,7 @@ const UserForm: React.FC<YuFormProps & UserFromProps> = (props: UserFromProps) =
         name="roleIds"
         label="角色"
         request={async () => {
-          const res = await YuApi.queryList<{ name: string; id: string; }>(yuUrlSystem("/role"));
+          const res = await YuApi.queryList<{ name: string; id: string; }>("/role");
           return res.data.map((item) => {
             return {
               label: item.name,
