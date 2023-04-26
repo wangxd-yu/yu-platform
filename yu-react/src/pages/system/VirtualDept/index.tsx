@@ -174,7 +174,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
                                 onFinish={async (values) => {
                                     //YuApi.add({deptIds: deptCheckKeys}, yuUrlSystem(`/virtualDept/${currentSelectDataNode.key}/deptIds`))
                                     await YuCrud.handleAdd({ deptIds: deptCheckKeys }, ({ deptIds: deptCheckKeys }) => {
-                                        return YuApi.add({ deptIds: deptCheckKeys }, yuUrlSystem(`/virtualDept/${currentSelectDataNode.key}/deptIds`))
+                                        return YuApi.add(yuUrlSystem(`/virtualDept/${currentSelectDataNode.key}/deptIds`), { deptIds: deptCheckKeys })
                                     });
 
                                     setShowFooterBtn(false)
@@ -241,7 +241,7 @@ const VirtualDeptPage: React.FC<{}> = () => {
                     visible={showVirtualDeptForm}
                     params={{ id: currentRightClickDataNode.value }}
                     request={async (params) => {
-                        const value = await YuApi.getById<DeptData>(params.id, yuUrlSystem(`/virtualDept`))
+                        const value = await YuApi.getById<DeptData>(yuUrlSystem(`/virtualDept`), params.id)
                         return Promise.resolve(value)
                     }}
                     onVisibleChange={(visible: boolean) => {

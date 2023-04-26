@@ -11,7 +11,7 @@ export async function queryVirtualDept(
 }
 
 export async function getVirtualDept(id: number, cb: any) {
-  return YuApi.getById(id, virtualDeptUrl).then(res => cb(res))
+  return YuApi.getById(virtualDeptUrl, id).then(res => cb(res))
 }
 
 /** 更新用户 PUT /api_sy/virtualDept */
@@ -21,12 +21,12 @@ export async function updateVirtualDept(record: API.VirtualDept) {
 
 /** 新建用户 */
 export async function addVirtualDept(record: API.VirtualDept) {
-  return YuApi.add<API.VirtualDept>(record, virtualDeptUrl);
+  return YuApi.add<API.VirtualDept>(virtualDeptUrl, record);
 }
 
 /** 删除规则 DELETE /api_sy/virtualDept */
 export async function deleteVirtualDept(id: string | number) {
-  return YuApi.deleteById(id, virtualDeptUrl)
+  return YuApi.deleteById(virtualDeptUrl, id)
 }
 
 export async function enableVirtualDept(id: string) {

@@ -53,19 +53,19 @@ export async function updateDictItem(record: DictItem) {
 
 /** 新建字典 */
 export async function addDict<Dict>(record: Dict) {
-  return YuApi.add<Dict>(record, dictUrl);
+  return YuApi.add<Dict>(dictUrl, record);
 }
 
 /** 新建字典条目 */
 export async function addDictItem<DictItem>(record: DictItem) {
-  return YuApi.add<DictItem>(record, dictItemUrl);
+  return YuApi.add<DictItem>(dictItemUrl, record);
 }
 
 /** 删除规则 DELETE /api_sy/dict */
 export async function deleteDict(id: string | number) {
-  return YuApi.deleteById(id, dictUrl)
+  return YuApi.deleteById(dictUrl, id)
 }
 
 export async function deleteDictItem(id: string | number) {
-  return YuApi.deleteById(id, dictItemUrl)
+  return YuApi.deleteById(dictItemUrl, id)
 }

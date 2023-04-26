@@ -14,5 +14,5 @@ export async function queryLogEndpoint(
 }
 
 export async function getLogEndpoint(id: number, cb: any) {
-  return YuApi.getById(id, logEndpointUrl).then(res => cb(res))
+  return YuApi.getById(logEndpointUrl, id).then(res => cb(res))
 }

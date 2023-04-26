@@ -14,7 +14,7 @@ export async function queryEndpoint(
 }
 
 export async function getEndpoint(id: number, cb: any) {
-  return YuApi.getById(id, endpointUrl).then(res => cb(res))
+  return YuApi.getById(endpointUrl, id).then(res => cb(res))
 }
 
 /** 更新端点 PUT */
@@ -24,12 +24,12 @@ export async function updateEndpoint(record: EndpointData) {
 
 /** 新建端点 */
 export async function addEndpoint(record: EndpointData) {
-  return YuApi.add<EndpointData>(record, endpointUrl);
+  return YuApi.add<EndpointData>(endpointUrl, record);
 }
 
 /** 删除规则 DELETE */
 export async function deleteEndpoint(id: string | number) {
-  return YuApi.deleteById(id, endpointUrl)
+  return YuApi.deleteById(endpointUrl, id)
 }
 
 export async function accessEnable(id: string) {

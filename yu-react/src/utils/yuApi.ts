@@ -27,7 +27,7 @@ const transferTreeParams = (params: any) => {
   return paramsRtn;
 };
 
-const queryMulti = <T> (pa: {
+const queryMulti = <T>(pa: {
   url: string,
   params?: {
     /** 当前的页码 */
@@ -39,17 +39,17 @@ const queryMulti = <T> (pa: {
   options?: Record<string, any>
 }, cb: (params: any) => any) => {
   let allParams: any = cb(pa.params)
-  if(pa.sort && Object.keys(pa.sort).length > 0) {
+  if (pa.sort && Object.keys(pa.sort).length > 0) {
     const sortColumn = Object.keys(pa.sort)[0]
     let sort
-    if(pa.sort[sortColumn] === 'descend') {
+    if (pa.sort[sortColumn] === 'descend') {
       sort = `${sortColumn},desc`
     } else {
       sort = `${sortColumn},asc`
     }
-    allParams = {...allParams, sort}
+    allParams = { ...allParams, sort }
   }
-  
+
   return request<{
     data: T[];
     /** 列表的内容总数 */
@@ -75,7 +75,7 @@ export async function queryPage<T>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _filter?: Record<string, React.ReactText[] | null>
 ) {
-  return queryMulti<T>({ url, params,sort }, transferPageParams);
+  return queryMulti<T>({ url, params, sort }, transferPageParams);
 }
 
 export async function queryList<T>(
@@ -112,14 +112,14 @@ export async function get<T>(url: string) {
 }
 
 /** 查询请求-根据id */
-export async function getById<T>(id: string | number, url: string) {
+export async function getById<T>(url: string, id: string | number) {
   return request<T>(`${url}/${id}`, {
     method: 'GET'
   });
 }
 
 /** 新增请求 */
-export async function add<T>(record: T, url: string) {
+export async function add<T>(url: string, record: T) {
   return request<T>(url, {
     method: 'POST',
     data: record,
@@ -135,14 +135,14 @@ export async function update<T>(url: string, record?: T) {
 }
 
 /** 删除请求 */
-export async function deleteById(id: string | number, url: string) {
+export async function deleteById(url: string, id: string | number) {
   return request<Record<string, any>>(`${url}/${id}`, {
     method: 'DELETE'
   });
 }
 
 /** 批量删除请求 */
-export async function batchDelete<T>(record: T, url: string) {
+export async function batchDelete<T>(url: string, record: T) {
   return request<Record<string, any>>(`${url}`, {
     method: 'POST',
     data: record,
