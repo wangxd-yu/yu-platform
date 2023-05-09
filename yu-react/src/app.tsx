@@ -61,7 +61,7 @@ export async function getInitialState(): Promise<{
 
 // 不需要 auth 认证的接口地址
 const noAuthUrlArr = [
-  `${yuServePrefix(YuServe.Auth)}/auth/login`   // 登录接口
+  `/auth/login`   // 登录接口
   // `/oauth/token`
 ]
 
