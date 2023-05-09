@@ -46,7 +46,7 @@ public class JwtTokenUtil {
     }
 
     public static AuthenticationInfo generateAuthenticationInfo(SecurityUser securityUser) {
-        long expiresIn = 60 * 60L;
+        long expiresIn = 6000 * 60L;
         long expiration = System.currentTimeMillis() / 1000 + expiresIn;
 
         Map<String, Object> info = new HashMap<>(8);

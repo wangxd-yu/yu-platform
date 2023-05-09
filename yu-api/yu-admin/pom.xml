@@ -27,11 +27,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.yu</groupId>
-                <artifactId>serve-system</artifactId>
-                <version>${yu-serve.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit-jupiter-engine.version}</version>

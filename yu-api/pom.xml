@@ -17,6 +17,7 @@
         <module>yu-common</module>
         <module>yu-serve</module>
         <module>yu-admin</module>
+        <module>yu-generate</module>
     </modules>
 
     <properties>
@@ -66,14 +67,34 @@
                 <artifactId>common-multidb-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <!-- 自定义 starter -->
 
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>yu-generator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.yu</groupId>
                 <artifactId>tenant-service-union-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>serve-file-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>serve-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yu</groupId>
+                <artifactId>admin-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>

@@ -139,6 +139,23 @@ export default [
     ],
   },
   {
+    path: '/tool',
+    name: '系统工具',
+    icon: 'smile',
+    routes: [
+      {
+        name: '代码生成',
+        path: '/tool/generate',
+        component: './tool/Generate',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
+      }
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

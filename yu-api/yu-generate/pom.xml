@@ -1,55 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>yu-admin</artifactId>
+        <artifactId>yu</artifactId>
         <groupId>org.yu</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>admin-base</artifactId>
-    <description>管理系统-基础模块</description>
+    <artifactId>yu-generator</artifactId>
+    <description>代码生成模块</description>
+
     <dependencies>
         <dependency>
             <groupId>org.yu</groupId>
-            <artifactId>common-multidb-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.yu</groupId>
-            <artifactId>yu-generator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.yu</groupId>
-            <artifactId>serve-system</artifactId>
+            <artifactId>common-querydsl</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-            <version>1.1.1.RELEASE</version>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>org.yu.admin.base.AdminBaseApplication</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- 跳过单元测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
