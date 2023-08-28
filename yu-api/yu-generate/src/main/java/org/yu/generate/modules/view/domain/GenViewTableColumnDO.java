@@ -3,7 +3,7 @@ package org.yu.generate.modules.view.domain;
 import lombok.Data;
 
 /**
- * 前端 表单展示列
+ * 前端 表格展示列
  *
  * @author wangxd
  * @date 2023-04-15 23:32

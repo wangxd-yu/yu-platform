@@ -25,12 +25,12 @@ public class ${genApiModuleDO.genApiDomainDO.upperDomainName}DO extends DslBaseD
 <String> {
     <#if genApiModuleDO.genApiDomainDO.domainFields??>
         <#list genApiModuleDO.genApiDomainDO.domainFields as domainField>
-            <#if domainField.columnComment??>
+            <#if domainField.comment??>
                 /**
-                * ${domainField.columnComment}
+                * ${domainField.comment}
                 */
             </#if>
-            private ${domainField.javaType} ${domainField.lowerColumnName};
+            private ${domainField.javaType} ${domainField.lowerName};
 
         </#list>
     </#if>

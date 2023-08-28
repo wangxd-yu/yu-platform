@@ -44,8 +44,8 @@ public class GenerateHandler {
         // import 引入 列表，set排重
         Set<String> importTypes = new HashSet<>();
         standardModelBO.getGenApiModuleDO().getGenApiDomainDO().getDomainFields().forEach(item -> {
-            item.setJavaType(GeneratorConst.javaBoxTypeMap.getOrDefault(item.getColumnType(), "UNKNOWN"));
-            item.setImportType(GeneratorConst.importsTypeMap.get(item.getColumnType()));
+            item.setJavaType(GeneratorConst.javaBoxTypeMap.getOrDefault(item.getType(), "UNKNOWN"));
+            item.setImportType(GeneratorConst.importsTypeMap.get(item.getType()));
             if (GeneratorConst.importsTypeMap.get(item.getJavaType()) != null) {
                 importTypes.add(GeneratorConst.importsTypeMap.get(item.getJavaType()));
             }

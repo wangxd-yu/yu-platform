@@ -7,6 +7,7 @@ import org.yu.common.querydsl.domain.DslBaseDO;
 import javax.persistence.*;
 
 /**
+ * 数据库字段
  * @author wangxd
  * @date 2023-04-13 23:07
  */
@@ -18,23 +19,50 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "gen_api_domain_field")
 public class GenApiDomainFieldDO extends DslBaseDO<String> {
-    @Basic
-    @Column(name = "domain_id", nullable = true)
+
+    @Column
     private Long domainId;
-    @Basic
-    @Column(name = "column_name", nullable = false, length = 20)
-    private String columnName;
-    @Basic
-    @Column(name = "column_type", nullable = true, length = 20)
-    private String columnType;
-    @Basic
-    @Column(name = "column_comment", nullable = true, length = 255)
-    private String columnComment;
-    @Basic
-    @Column(name = "ordinal_position", nullable = true)
-    private String ordinalPosition;
-    @Basic
-    @Column(name = "if_nullable", nullable = true)
+
+    /**
+     * 字段名（英文单字）
+     */
+    @Column
+    private String name;
+
+    /**
+     * 字段类型
+     */
+    @Column
+    private String type;
+
+    /**
+     * 字段长度
+     */
+    @Column
+    private Integer length;
+
+    /**
+     * 小数点（小数位数）
+     */
+    @Column
+    private Integer decimal;
+
+    /**
+     * 注释
+     */
+    @Column
+    private String comment;
+
+    /**
+     * 排序
+     */
+    @Column
+    private String sort;
+
+    /**
+     * 是否允许为空
+     */
+    @Column(name = "if_nullable")
     private String ifNullable;
 
     /**
@@ -43,8 +71,11 @@ public class GenApiDomainFieldDO extends DslBaseDO<String> {
     @Transient
     private String javaType;
 
+    /**
+     * 驼峰命名，纯小写的 字段名 ,例：user_age -> userAge
+     */
     @Transient
-    private String lowerColumnName;
+    private String lowerName;
 
     /**
      * import 字段路径
@@ -52,8 +83,8 @@ public class GenApiDomainFieldDO extends DslBaseDO<String> {
     @Transient
     private String importType;
 
-    public String getLowerColumnName() {
-        return NamingCase.toCamelCase(columnName);
+    public String getLowerName() {
+        return NamingCase.toCamelCase(name);
     }
 
 }

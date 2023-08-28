@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>org.yu</groupId>
-            <artifactId>yu-generator</artifactId>
+            <artifactId>yu-generate</artifactId>
         </dependency>
         <dependency>
             <groupId>org.yu</groupId>

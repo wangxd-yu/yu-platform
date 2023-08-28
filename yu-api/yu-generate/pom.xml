@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>yu-generator</artifactId>
+    <artifactId>yu-generate</artifactId>
     <description>代码生成模块</description>
 
     <dependencies>
