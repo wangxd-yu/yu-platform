@@ -5,6 +5,7 @@ import org.yu.generate.enums.GenFormComponentEnum;
 import org.yu.generate.enums.GenFormRuleEnum;
 
 /**
+ * 前端表单列信息
  * @author wangxd
  * @date 2023-04-15 23:33
  */

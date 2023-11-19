@@ -9,16 +9,16 @@ import java.util.List;
  * @date 2023-04-26 22:59
  */
 @Data
-public class GenViewTable {
+public class GenViewTableDO {
 
     /**
-     * 表名称
+     * 名称
      */
-    private String tableName;
+    private String title;
     /**
      * 表格列，包含：展示列、查询列、表头筛选菜单
      */
-    private List<GenViewTableColumnDO> tableColumns;
+    private List<GenViewTableColumnDO> columns;
 
     //private GenViewTableOptionDO tableOptionDO;
 }

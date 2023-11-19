@@ -14,7 +14,7 @@ interface TableQueryTabProps {
 const columns: ProColumns<ViewTableQuery>[] = [
     {
         title: '字段名',
-        dataIndex: 'dataIndex',
+        dataIndex: 'field',
         formItemProps: {
             rules: [
                 {

@@ -21,17 +21,16 @@ import javax.persistence.Table;
 @Entity
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "${genApiModuleDO.genApiDomainDO.tableName}")
-public class ${genApiModuleDO.genApiDomainDO.upperDomainName}DO extends DslBaseDeptDO
-<String> {
+public class ${genApiModuleDO.genApiDomainDO.upperDomainName}DO extends DslBaseDeptDO<String> {
     <#if genApiModuleDO.genApiDomainDO.domainFields??>
         <#list genApiModuleDO.genApiDomainDO.domainFields as domainField>
             <#if domainField.comment??>
-                /**
-                * ${domainField.comment}
-                */
+    /**
+    * ${domainField.comment}
+    */
             </#if>
-            private ${domainField.javaType} ${domainField.lowerName};
+    private ${domainField.javaType} ${domainField.lowerName};
 
         </#list>
     </#if>
-    }
+}

@@ -7,7 +7,7 @@ export type OperatorEnum = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_OR_
 export type ApiDomainField = {
     key?: string;   //在穿梭框中做 key使用，不映射数据库
     id: string;
-    name?: string;
+    name: string;
     type?: string;
     length?: number;
     decimal?: number;

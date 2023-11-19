@@ -1,7 +1,7 @@
-export type ${genViewModuleDO.genViewTable.tableName}Data = {
-<#if genViewModuleDO.genViewTable.tableColumns??>
-  <#list genViewModuleDO.genViewTable.tableColumns as tableColumn>
-    ${tableColumn.dataIndex}?: string;
+export type ${module.genViewModuleDO.moduleName?cap_first} = {
+<#if module.genApiModuleDO.genApiDomainDO.domainFields??>
+  <#list module.genApiModuleDO.genApiDomainDO.domainFields as field>
+    ${field.name}?: string;
   </#list>
 </#if>
 };

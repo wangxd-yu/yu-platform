@@ -46,6 +46,17 @@ const rightColumns = [
     },
 ];
 
+/**
+ * 下划线转换驼峰
+ * @param name 
+ * @returns 
+ */
+const toHump = (name: string) => {
+    return name.replace(/\_(\w)/g, function(all, letter){
+        return letter.toUpperCase();
+    });
+}
+
 //const ConfigTab: React.FC<ConfigTabProps> = (props) => {
 const ConfigTab = <T extends Sortable>(props: ConfigTabProps<T>) => {
     const { transferDataSource } = props;
@@ -127,6 +138,9 @@ const ConfigTab = <T extends Sortable>(props: ConfigTabProps<T>) => {
         setFormDataSource(formColumns)
         setEditableRowKeys(targetKeys)
         setIsModalOpen(false);
+        
+        console.log("formRef.current?.getFieldsValue()", formRef.current?.getFieldsValue());
+        props.onValuesChange(formRef.current?.getFieldsValue())
     };
 
     const handleCancel = () => {
@@ -136,17 +150,21 @@ const ConfigTab = <T extends Sortable>(props: ConfigTabProps<T>) => {
         <>
             <ProForm
                 grid
-                onValuesChange={(changeValues) => console.log("changeValues", changeValues)}
-                formRef={formRef}
-                submitter={{
-                    render: (_, dom) => <FooterToolbar style={{ width: '100%' }}>{dom}</FooterToolbar>,
+                onValuesChange={(changeValues,values) => {
+                    console.log("changeValues", changeValues)
+                    console.log("values", values)
+                    props.onValuesChange(values)
                 }}
+                formRef={formRef}
+                /* submitter={{
+                    render: (_, dom) => <FooterToolbar style={{ width: '100%' }}>{dom}</FooterToolbar>,
+                }} */
                 onFinish={async (values) => console.log(values)}
             >
                 {props.children}
 
                 <ProForm.Item
-                    name="transferDataSource"
+                    name="columns"
                     initialValue={[]}
                     trigger="onValuesChange"
                 >
@@ -226,6 +244,7 @@ const ConfigTab = <T extends Sortable>(props: ConfigTabProps<T>) => {
                 <TableTransfer
                     dataSource={transferDataSource.map((item) => {
                         item.key = item.id;
+                        item.name = toHump(item.name)
                         return item;
                     })}
                     leftColumns={leftColumns}

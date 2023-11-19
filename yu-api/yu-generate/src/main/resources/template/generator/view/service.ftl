@@ -1,16 +1,31 @@
-import type { LogLoginData } from './data.ftl';
+<#--定义业务类型-->
+<#assign moduleType = module.genViewModuleDO.moduleName?cap_first>
+<#--定义业务对象-->
+<#assign moduleObject = module.genViewModuleDO.moduleName?uncap_first>
+import type { ${moduleType} } from './data.d.ts';
 import * as YuApi from '@/utils/yuApi';
-import { yuUrlSystem } from '@/utils/yuUrl';
 import type { SortOrder } from 'antd/lib/table/interface';
 
-const logLoginUrl = yuUrlSystem('/logLogin');
+const url = '/${moduleObject}';
 
-/** 获取规则列表 GET */
-export async function queryLogLogin(
+/** 查询 */
+export async function query${moduleType}(
 params?: any,
 sort?: Record
 <string, SortOrder>
 ) {
-return YuApi.queryPage
-<LogLoginData>(logLoginUrl, params, sort);
-    }
+return YuApi.queryPage<${moduleType}>(url, params, sort);
+}
+
+/** 新建 */
+export async function add${moduleType}(record: ${moduleType}) {
+return YuApi.add<${moduleType}>(record, url);
+}
+/** 更新 PUT  */
+export async function update${moduleType}(record: ${moduleType}) {
+return YuApi.update<${moduleType}>(url, record);
+}
+/** 删除 DELETE */
+export async function delete${moduleType}(id: string | number) {
+return YuApi.deleteById(id, url)
+}

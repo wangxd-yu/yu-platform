@@ -1,5 +1,7 @@
 package org.yu.generate.core.handler;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
@@ -26,11 +28,34 @@ public class GenerateHandler {
             "Service",
             "ServiceImpl",
             "Repository",
-            "DO"
+            "DO",
+            "Query"
             /*
-            "Query",
+
             "DTO",*/
     );
+    /**
+     * 前端模板 文件名（不带后缀）
+     */
+    private static final List<String> VIEW_TEMPLATE_NAMES = Arrays.asList(
+            "data",
+            "service",
+            "Form",
+            "index"
+    );
+    /**
+     * 构建node列表
+     */
+    private static List<TreeNode<String>> nodeList = CollUtil.newArrayList();
+
+    static {
+        nodeList.add(new TreeNode<>("1", "0", "前端", 5));
+        nodeList.add(new TreeNode<>("11", "1", "${standardModelBO.moduleName}", 222222));
+        nodeList.add(new TreeNode<>("111", "11", "4", 0));
+        nodeList.add(new TreeNode<>("2", "0", "店铺管理", 1));
+        nodeList.add(new TreeNode<>("21", "2", "商品管理", 44));
+        nodeList.add(new TreeNode<>("221", "2", "商品管理2", 2));
+    }
 
     /**
      * 代码预览
@@ -51,12 +76,13 @@ public class GenerateHandler {
             }
         });
 
-
+        //后端代码
         for (String templateName : API_TEMPLATE_NAMES) {
             Map<String, Object> map = new HashMap<>(1);
             Template template = engine.getTemplate("generator/api/" + templateName + ".ftl");
             map.put("content", template.render(new HashMap<String, Object>(1) {
                 {
+                    put("module", standardModelBO);
                     put("genApiModuleDO", standardModelBO.getGenApiModuleDO());
                     put("date", LocalDate.now());
                     put("importTypes", importTypes);
@@ -66,6 +92,18 @@ public class GenerateHandler {
             genList.add(map);
         }
 
+        //前端代码
+        for (String templateName : VIEW_TEMPLATE_NAMES) {
+            Map<String, Object> map = new HashMap<>(1);
+            Template template = engine.getTemplate("generator/view/" + templateName + ".ftl");
+            map.put("content", template.render(new HashMap<String, Object>(1) {
+                {
+                    put("module", standardModelBO);
+                }
+            }));
+            map.put("name", templateName);
+            genList.add(map);
+        }
         return genList;
     }
 

@@ -7,7 +7,9 @@ interface ModuleConfigTabProps {
 
 const ModuleConfigTab: React.FC<ModuleConfigTabProps> = (prop) => {
 
-    return <ProForm>
+    return <ProForm
+        onValuesChange={(changeValues, values) => prop.onValuesChange(values)}
+    >
         <ProFormText
             rules={[
                 {
@@ -22,11 +24,11 @@ const ModuleConfigTab: React.FC<ModuleConfigTabProps> = (prop) => {
             rules={[
                 {
                     required: true,
-                    message: '模块名称为必填项',
+                    message: '模块标题为必填项',
                 },
             ]}
-            label="模块描述"
-            name="moduleComment"
+            label="模块标题"
+            name="moduleTitle"
         />
         <ProFormText
             rules={[

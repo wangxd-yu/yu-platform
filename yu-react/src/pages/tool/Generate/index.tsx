@@ -17,39 +17,85 @@ import FormConfigTab from './FormConfigTab';
 import { ProFormText } from '@ant-design/pro-form';
 import TableConfigTab from './TableConfigTab';
 import ModuleConfigTab from './ModuleConfigTab';
-
-const onChange = (key: string) => {
-  console.log(key);
-};
+import CodeTree from './CodeTree';
+import { request } from 'umi';
 
 const GeneratePage: React.FC<any> = () => {
-  const [apiDomainFields, setApiDomainFields] = useState<ApiDomainField[]>([]);
-  const [viewFormColumns, setViewFormColumns] = useState<ViewFormColumn[]>([]);
-  const [viewTableQuerys, setViewTableQuerys] = useState<ViewTableQuery[]>([]);
-  const [viewTableColumns, setViewTableColumns] = useState<ViewTableQuery[]>([]);
+  //最终对象，根据这个对象生成code
+  const [moduleDO, setModuleDO] = useState<any>({});
+
+  const [moduleProps, setModuleProps] = useState<any>({});
+  const [genApiDomainDO, setGenApiDomainDO] = useState<any>({});
+  const [genViewFormDO, setGenViewFormDO] = useState<any>({});
+  const [genViewTableDO, setGenViewTableDO] = useState<any>({});
+
+  const [codeStrs, setCodeStrs] = useState<string[]>([]);
+
+  // 使用 useEffect 监听 moduleProps 变化
+  useEffect(() => {
+
+    genApiDomainDO.domainName = moduleProps.moduleName
+
+    // 在 moduleProps 变化时调用触发
+    moduleDO.genApiModuleDO = {
+      author: moduleProps?.author,
+      packagePath: moduleProps?.packagePath,
+      // 在 genApiDomainDO 变化时调用触发
+      genApiDomainDO: genApiDomainDO
+    }
+
+    genViewTableDO.title = moduleProps.moduleTitle
+    moduleDO.genViewModuleDO = {
+      moduleName: moduleProps.moduleName,
+      type: "CRUD",
+      genViewCrudDO: {
+        genViewFormDO: genViewFormDO,
+        genViewTableDO: genViewTableDO
+      }
+    }
+
+    // 更新 moduleDO
+    setModuleDO(moduleDO);
+  }, [moduleProps, genApiDomainDO, genViewFormDO, genViewTableDO]); // 当 moduleProps、genApiDomainDO 变化时触发 useEffect
+
+  const onMainChange = (key: string) => {
+    console.log(key);
+    console.log("moduleDO", moduleDO)
+    if (key === '2') {
+      request('getTest1', {
+        method: 'POST',
+        data: moduleDO,
+      }).then(res => console.log("res", setCodeStrs(res)));
+    }
+  }
+  const onChange = (key: string) => {
+    
+    console.log(key);
+  };
 
   const moduleConfigTabContent = (
+    // 模块配置
     <ModuleConfigTab
-      onValuesChange={setApiDomainFields}
+      onValuesChange={setModuleProps}
     />
   );
 
   const dbConfigTabContent = (
     <DbConfigTab
-      dataSource={apiDomainFields}
-      onValuesChange={setApiDomainFields}
+      dataSource={genApiDomainDO}
+      onValuesChange={setGenApiDomainDO}
     />
   );
   const formConfigTabContent = (
     <FormConfigTab
-      transferDataSource={apiDomainFields}
-      onValuesChange={(values) => console.log("values", values)} />
+      transferDataSource={genApiDomainDO.domainFields}
+      onValuesChange={setGenViewFormDO} />
   );
 
   const TableConfigTabContent = (
     <TableConfigTab
-      transferDataSource={apiDomainFields}
-      onValuesChange={(values) => console.log("values", values)} />
+      transferDataSource={genApiDomainDO.domainFields}
+      onValuesChange={setGenViewTableDO} />
   )
 
   const items: TabsProps['items'] = [
@@ -70,7 +116,7 @@ const GeneratePage: React.FC<any> = () => {
     },
     {
       key: '4',
-      label: `查询字段`,
+      label: `表格字段`,
       children: TableConfigTabContent,
     },
   ];
@@ -84,14 +130,14 @@ const GeneratePage: React.FC<any> = () => {
     {
       key: '2',
       label: `预览`,
-      children: (<></>),
+      children: (<CodeTree moduleDO={moduleDO} codeStrs={codeStrs}/>),
     }
   ]
 
   // 高亮所有代码
-  useEffect(() => {
+  /* useEffect(() => {
     Prism.highlightAll();
-  }, []);
+  }, []); */
 
   return (<>
     <PageContainer header={{ breadcrumb: {} }}>
@@ -122,7 +168,7 @@ const GeneratePage: React.FC<any> = () => {
       height="100vh"
       onClose={() => { }}
       open={true}>
-      <Tabs defaultActiveKey="1" tabPosition="left" items={collectItems} onChange={onChange} />
+      <Tabs defaultActiveKey="1" tabPosition="left" items={collectItems} onChange={onMainChange} />
     </Drawer>
 
   </>

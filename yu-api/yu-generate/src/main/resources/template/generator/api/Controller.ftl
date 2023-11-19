@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("${genApiModuleDO.genApiDomainDO.lowerDomainName}")
 public class ${genApiModuleDO.genApiDomainDO.upperDomainName}Controller extends DslBaseController
-<${genApiModuleDO.genApiDomainDO.upperDomainName}Service, ${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String>; {
+<${genApiModuleDO.genApiDomainDO.upperDomainName}Service, ${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String> {
 protected ${genApiModuleDO.genApiDomainDO.upperDomainName}Controller(${genApiModuleDO.genApiDomainDO.upperDomainName}Service ${genApiModuleDO.genApiDomainDO.lowerDomainName}Service) {
 super(${genApiModuleDO.genApiDomainDO.lowerDomainName}Service);
 }

@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class GenViewTableColumnDO {
     /**
-     * 与实体映射的key
+     * 与实体映射的key    对应antdesign中的dataIndex
      */
-    private String dataIndex;
+    private String field;
 
     /**
      * 标题
@@ -49,6 +49,8 @@ public class GenViewTableColumnDO {
      * 【搜索】在查询表单中隐藏 ,扩展属性：转化值的key, 一般用于事件区间的转化（Transform: (value: any) => ({ startTime: value[0], endTime: value[1] }),）
      */
     private Boolean search;
+
+    private String operator;
 
     /**
      * 在 table 中隐藏

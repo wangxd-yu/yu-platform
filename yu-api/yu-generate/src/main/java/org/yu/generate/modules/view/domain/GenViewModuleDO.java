@@ -15,12 +15,17 @@ public class GenViewModuleDO {
     private String moduleName;
 
     /**
-     * 模块类型：TABLE、FORM、DATA
+     * 模块类型：CRUD、TABLE、FORM、DATA
      */
     private String type;
 
     /**
+     * 模块类型=CRUD 对应的属性
+     */
+    private GenViewCrudDO genViewCrudDO;
+
+    /**
      * 表格 属性
      */
-    private GenViewTable genViewTable;
+    private GenViewTableDO genViewTableDO;
 }
