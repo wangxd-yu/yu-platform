@@ -7,9 +7,7 @@ interface ModuleConfigTabProps {
 
 const ModuleConfigTab: React.FC<ModuleConfigTabProps> = (prop) => {
 
-    return <ProForm
-        onValuesChange={(changeValues, values) => prop.onValuesChange(values)}
-    >
+    return <>
         <ProFormText
             rules={[
                 {
@@ -50,7 +48,7 @@ const ModuleConfigTab: React.FC<ModuleConfigTabProps> = (prop) => {
             label="基础包名"
             name="packagePath"
         />
-    </ProForm>
+    </>
 }
 
 export default ModuleConfigTab

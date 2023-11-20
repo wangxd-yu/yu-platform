@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
@@ -10,11 +10,11 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import PrismCode from '@/components/Yu/PrismCode';
 import type { TabsProps } from 'antd';
-import { Drawer, Tabs } from 'antd';
+import { Drawer, Steps, Tabs, message } from 'antd';
 import type { ApiDomainField, ViewFormColumn, ViewTableQuery, ViewTableColumn } from './data';
 import DbConfigTab from './DbConfigTab';
 import FormConfigTab from './FormConfigTab';
-import { ProFormText } from '@ant-design/pro-form';
+import { ProFormInstance, ProFormText, StepsForm } from '@ant-design/pro-form';
 import TableConfigTab from './TableConfigTab';
 import ModuleConfigTab from './ModuleConfigTab';
 import CodeTree from './CodeTree';
@@ -30,6 +30,8 @@ const GeneratePage: React.FC<any> = () => {
   const [genViewTableDO, setGenViewTableDO] = useState<any>({});
 
   const [codeStrs, setCodeStrs] = useState<string[]>([]);
+
+  const formRef = useRef<ProFormInstance>();
 
   // 使用 useEffect 监听 moduleProps 变化
   useEffect(() => {
@@ -69,7 +71,7 @@ const GeneratePage: React.FC<any> = () => {
     }
   }
   const onChange = (key: string) => {
-    
+
     console.log(key);
   };
 
@@ -92,7 +94,7 @@ const GeneratePage: React.FC<any> = () => {
       onValuesChange={setGenViewFormDO} />
   );
 
-  const TableConfigTabContent = (
+  const tableConfigTabContent = (
     <TableConfigTab
       transferDataSource={genApiDomainDO.domainFields}
       onValuesChange={setGenViewTableDO} />
@@ -117,27 +119,105 @@ const GeneratePage: React.FC<any> = () => {
     {
       key: '4',
       label: `表格字段`,
-      children: TableConfigTabContent,
+      children: tableConfigTabContent,
     },
   ];
 
-  const collectItems: TabsProps['items'] = [
-    {
-      key: '1',
-      label: `配置`,
-      children: (<Tabs defaultActiveKey="1" items={items} onChange={onChange} />),
-    },
-    {
-      key: '2',
-      label: `预览`,
-      children: (<CodeTree moduleDO={moduleDO} codeStrs={codeStrs}/>),
-    }
-  ]
+
 
   // 高亮所有代码
   /* useEffect(() => {
     Prism.highlightAll();
   }, []); */
+
+  const steps = <StepsForm<{
+    name: string;
+  }>
+    formRef={formRef}
+    onFinish={async () => {
+      message.success('提交成功');
+    }}
+    formProps={{
+      validateMessages: {
+        required: '此项为必填项',
+      },
+    }}
+  >
+    <StepsForm.StepForm<{
+      name: string;
+    }>
+      name="base"
+      title="模块属性"
+      stepProps={{
+        description: '这里填入的都是基本信息',
+      }}
+      onFinish={async () => {
+        console.log(formRef.current?.getFieldsValue());
+        return true;
+      }}
+    >
+      {moduleConfigTabContent}
+    </StepsForm.StepForm>
+    <StepsForm.StepForm<{
+      checkbox: string;
+    }>
+      name="checkbox"
+      title="数据库属性"
+      stepProps={{
+        description: '这里填入运维参数',
+      }}
+      onFinish={async () => {
+        console.log(formRef.current?.getFieldsValue());
+        return true;
+      }}
+    >
+      {dbConfigTabContent}
+    </StepsForm.StepForm>
+    <StepsForm.StepForm<{
+      checkbox: string;
+    }>
+      name="111"
+      title="表单字段"
+      stepProps={{
+        description: '这里填入运维参数',
+      }}
+      onFinish={async () => {
+        console.log(formRef.current?.getFieldsValue());
+        return true;
+      }}
+    >
+      {genApiDomainDO.domainFields ? formConfigTabContent : '123'}
+    </StepsForm.StepForm>
+    <StepsForm.StepForm<{
+      checkbox: string;
+    }>
+      name="222"
+      title="表格字段"
+      stepProps={{
+        description: '这里填入运维参数',
+      }}
+      onFinish={async () => {
+        console.log(formRef.current?.getFieldsValue());
+        return true;
+      }}
+    >
+      {genApiDomainDO.domainFields ? tableConfigTabContent : '333'}
+    </StepsForm.StepForm>
+  </StepsForm>
+
+  const collectItems: TabsProps['items'] = [
+    {
+      key: '1',
+      label: `配置`,
+      /* children: (<Tabs defaultActiveKey="1" items={items} onChange={onChange} />), */
+      children: steps,
+    },
+    {
+      key: '2',
+      label: `预览`,
+      children: (<CodeTree moduleDO={moduleDO} codeStrs={codeStrs} />),
+    }
+  ]
 
   return (<>
     <PageContainer header={{ breadcrumb: {} }}>

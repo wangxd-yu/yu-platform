@@ -27,5 +27,6 @@ hs_err_pid*
 
 rebel.xml
 /logs/
+/upload/
 
 config.*.ts
