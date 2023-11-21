@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { DeptData } from './data';
-import { PageContainer } from '@ant-design/pro-layout';
 import { useModel } from 'umi';
 
 import { Tree } from 'antd';
@@ -8,7 +7,6 @@ import {
   ClusterOutlined,
   GlobalOutlined,
 } from '@ant-design/icons';
-import ProCard from '@ant-design/pro-card';
 import type { DataNode, EventDataNode } from 'antd/lib/tree';
 import * as YuApi from '@/utils/yuApi';
 import DeptFormInner from './components/DeptFormInner';
@@ -16,6 +14,7 @@ import SubDeptTable from './components/SubDeptTable';
 import DeptUserTable from './components/DeptUserTable';
 import DeptRolePage from './components/DeptRoleTable';
 import Search from 'antd/lib/input/Search';
+import { PageContainer, ProCard } from '@ant-design/pro-components';
 
 const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {
   const item: DataNode[] = [];

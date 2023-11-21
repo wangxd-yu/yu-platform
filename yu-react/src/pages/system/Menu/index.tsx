@@ -3,11 +3,8 @@ import type { FormInstance } from 'antd';
 import { Modal } from 'antd';
 import { Drawer } from 'antd';
 import { Button, Tag, Space, Popconfirm } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuData } from './data';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
 import { queryMenu, addMenu, updateMenu, deleteMenu, queryMenuEndponits, queryEndponitList, saveMenuEndpoints, deleteMenuEndpoint } from './service'
 import MenuForm from './components/MenuForm'
@@ -15,6 +12,7 @@ import type { EndpointData } from '../Endpoint/data';
 import { methodMap } from '../Endpoint';
 
 import _ from 'lodash'
+import { ActionType, ProColumns, PageContainer, ProTable } from '@ant-design/pro-components';
 
 export enum MenuTypeEnum {
   FOLDER = 'FOLDER',
@@ -205,7 +203,7 @@ const MenuPage: React.FC = () => {
   });
 
   return (
-    <PageContainer
+    (<PageContainer
       header={{
         breadcrumb: {},
       }}>
@@ -276,7 +274,7 @@ const MenuPage: React.FC = () => {
       <Drawer
         title={menuCurrentRow?.name}
         width={800}
-        visible={showMenuEndpointsDetail}
+        open={showMenuEndpointsDetail}
         onClose={() => {
           setShowMenuEndpointsDetail(false);
         }}
@@ -316,7 +314,7 @@ const MenuPage: React.FC = () => {
         }
       </Drawer>
       {showEndpointsModal &&
-        <Modal title="分配端点" visible={showEndpointsModal}
+        <Modal title="分配端点" open={showEndpointsModal}
           onOk={() => {
             saveMenuEndpoints(menuCurrentRow?.id as string, selectedEndpoints as string[]).then(() => {
               setSelectedEndpoints(undefined);
@@ -361,7 +359,7 @@ const MenuPage: React.FC = () => {
 
         </Modal>
       }
-    </PageContainer>
+    </PageContainer>)
   );
 };
 

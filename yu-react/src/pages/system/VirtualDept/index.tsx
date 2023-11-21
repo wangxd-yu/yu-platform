@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown, Input, Menu, Tree } from 'antd';
-import ProCard from '@ant-design/pro-card';
 import './index.less'
 import { EllipsisOutlined } from '@ant-design/icons';
 import SplitPane from 'react-split-pane';
@@ -10,8 +9,7 @@ import { DeptData } from '../Dept/data';
 import * as YuApi from '@/utils/yuApi';
 import * as YuCrud from '@/utils/yuCrud';
 import VirtualDeptForm from './components/VirtualDeptForm';
-import ProForm from '@ant-design/pro-form';
-import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
+import { PageContainer, ProCard, ProForm, FooterToolbar } from '@ant-design/pro-components';
 const { Search } = Input;
 
 const handleTreeDataRecursion = (data: DeptData[]): DataNode[] => {

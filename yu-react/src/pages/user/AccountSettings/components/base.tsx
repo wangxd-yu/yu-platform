@@ -9,8 +9,13 @@ import styles from './BaseView.less';
 import ImgCrop from 'antd-img-crop';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { updateBaseInfo } from '../service';
-import 'antd/es/modal/style';
-import 'antd/es/slider/style';
+
+// import 'antd/es/modal/style';
+
+
+// import 'antd/es/slider/style';
+
+
 import './base.less';
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
@@ -88,7 +93,7 @@ const BaseView: React.FC = () => {
   };
 
   return (
-    <div className={styles.baseView}>
+    (<div className={styles.baseView}>
       {loading ? null : (
         <>
           <div className={styles.left}>
@@ -260,7 +265,7 @@ const BaseView: React.FC = () => {
           </div>
         </>
       )}
-    </div>
+    </div>)
   );
 };
 

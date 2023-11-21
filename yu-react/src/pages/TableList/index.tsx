@@ -1,17 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Drawer, Tree } from 'antd';
-import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
+import { message, Tree } from 'antd';
+import React, {  } from 'react';
 import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
-import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
-import Layout, { Content } from 'antd/lib/layout/layout';
-import Sider from 'antd/lib/layout/Sider';
+import { addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
 /**
  * @en-US Add node
  * @zh-CN 添加节点

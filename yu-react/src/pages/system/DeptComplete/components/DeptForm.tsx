@@ -1,11 +1,11 @@
 import React from 'react'
-import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
 import type { DeptData } from '../data';
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import { addDept, updateDept } from '../service'
 import { getSubDeptTypes } from '../service'
 import * as YuCrud from '@/utils/yuCrud';
 import YuForm from '@/components/Yu/YuForm';
+import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-components';
 
 export type DeptFormProps = YuFormProps & {
     deptDataList: DeptData[];

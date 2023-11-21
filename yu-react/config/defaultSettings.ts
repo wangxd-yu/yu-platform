@@ -1,4 +1,4 @@
-import { Settings as LayoutSettings } from '@ant-design/pro-layout';
+import { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 const Settings: LayoutSettings & {
   pwa?: boolean;
@@ -7,7 +7,8 @@ const Settings: LayoutSettings & {
   navTheme: 'light',
   //headerTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
+  //primaryColor: '#1890ff',
+  colorPrimary: '#1890ff',
   layout: 'mix',
   splitMenus: false,
   contentWidth: 'Fluid',

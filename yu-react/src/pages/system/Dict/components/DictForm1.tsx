@@ -1,7 +1,7 @@
 import React from 'react'
-import { ProFormText, ProFormTextArea } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
+import { ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 
 const DictForm1: React.FC<YuFormProps> = (props: YuFormProps) => {

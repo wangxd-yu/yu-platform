@@ -2,14 +2,11 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, Popconfirm } from 'antd';
 import type { FormInstance } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-form';
 import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { Dict, DictItem } from './data';
 import DictForm1 from './components/DictForm1'
+import { ActionType, ProColumns, PageContainer, ProTable, ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
 
 const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
@@ -146,7 +143,7 @@ const TableList: React.FC = () => {
   };
 
   return (
-    <PageContainer header={{
+    (<PageContainer header={{
       breadcrumb: {},
     }}>
       <ProTable<Dict, API.TableListPagination>
@@ -197,7 +194,7 @@ const TableList: React.FC = () => {
       <Drawer
         title={dictCurrentRow?.name}
         width={800}
-        visible={showDictItemDetail}
+        open={showDictItemDetail}
         onClose={() => {
           setShowDictItemDetail(false);
           setDictCurrentRow(undefined);
@@ -238,7 +235,7 @@ const TableList: React.FC = () => {
           width="500px"
           {...formItemLayout}
           formRef={dictItemFormRef}
-          visible={createDictItemVisible}
+          open={createDictItemVisible}
           layout='horizontal'
           onVisibleChange={handleDictItemVisible}
           onFinish={async (value) => {
@@ -281,7 +278,7 @@ const TableList: React.FC = () => {
           <ProFormDigit label="排序" name="sort" min={1} max={99} />
         </ModalForm>
       </Drawer>
-    </PageContainer >
+    </PageContainer >)
   );
 };
 

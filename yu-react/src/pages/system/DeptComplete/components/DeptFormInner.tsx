@@ -1,12 +1,11 @@
 import React, { Fragment, useRef, useState } from 'react'
-import type { FormInstance } from '@ant-design/pro-form';
-import ProForm, { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-form'
 import { getDeptTypesByDeptId, updateDept } from '../service'
 import { getDept } from '../service';
 import type { DeptData } from '../data';
-import { Col, Row, Space, Spin } from 'antd';
+import { Col, FormInstance, Row, Space, Spin } from 'antd';
 import * as YuCrud from '@/utils/yuCrud';
 import { YuFormProps } from '@/components/Yu/YuForm';
+import { ProForm, ProFormText, ProFormRadio, ProFormDigit } from '@ant-design/pro-components';
 
 const formItemLayout = {
     labelCol: { span: 6 },

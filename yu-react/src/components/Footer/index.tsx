@@ -1,5 +1,5 @@
 import { GithubOutlined } from '@ant-design/icons';
-import { DefaultFooter } from '@ant-design/pro-layout';
+import { DefaultFooter } from '@ant-design/pro-components';
 export default () => {
   const defaultMessage = '蚂蚁集团体验技术部出品';
   return (

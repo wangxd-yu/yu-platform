@@ -5,9 +5,7 @@ import { Popconfirm } from 'antd';
 import { Button } from 'antd';
 import { Avatar, Space } from 'antd';
 import { Switch } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { UserData } from '../../User/data';
-import ProTable from '@ant-design/pro-table';
 
 import * as YuCrud from '@/utils/yuCrud';
 import * as YuApi from '@/utils/yuApi';
@@ -15,6 +13,7 @@ import { PlusOutlined, UserOutlined } from '@ant-design/icons';
 import type { DataNode } from 'antd/lib/tree';
 import UserForm from '../../User/components/UserForm';
 import { deleteUser, disableUser, enableUser, getUser } from '../../User/service';
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 
 const DeptPage: React.FC<{ deptId: string, deptTree: DataNode[] }> = (prop: { deptId: string, deptTree: DataNode[] }) => {
   const [userFormVisible, setUserFormVisible] = useState<boolean>(false);

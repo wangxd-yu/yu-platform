@@ -1,12 +1,11 @@
-import React, { ReactChild, ReactFragment, ReactPortal } from 'react'
-import ProForm, { ModalForm, DrawerForm } from '@ant-design/pro-form'
-import type { ModalFormProps } from '@ant-design/pro-form';
+import React, {  ReactFragment, ReactPortal } from 'react'
 import YuDraggleModal from './YuDraggleModel';
+import { DrawerForm, ModalForm, ModalFormProps, ProForm } from '@ant-design/pro-components';
 
 export declare type FormType = 'ProForm' | 'YuDraggleModal' | 'ModalForm' | 'DrawerForm';
 
 export type YuFormProps = ModalFormProps & {
-    title?: ((boolean | ReactChild | ReactFragment | ReactPortal | null) & string) | undefined;
+    title?: ((boolean | ReactFragment | ReactPortal | null) & string) | undefined;
     formType?: FormType;
     isAdd?: boolean;
     children?: React.ReactNode;

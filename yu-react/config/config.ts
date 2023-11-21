@@ -4,17 +4,26 @@ import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
+/* const { theme } = require('antd/lib');
+const { convertLegacyToken } = require('@ant-design/compatible/lib');
+
+const { defaultAlgorithm, defaultSeed } = theme;
+
+const mapToken = defaultAlgorithm(defaultSeed);
+const v4Token = convertLegacyToken(mapToken); */
+
 const { REACT_APP_ENV } = process.env;
 
 //非根目录部署 设置项目名 yu-platform(与 项目名称一直，是为了 在githup pages中进行前端部署)
 const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? `/yu-platform/` : '/';
 
 export default defineConfig({
+  /* lessLoader: {
+    modifyVars: v4Token
+  }, */
+  access: {},
   hash: true,
-  antd: {
-    //dark: true, // 开启暗色主题
-    //compact: true, // 开启紧凑主题
-  },
+  antd: false,
   dva: {
     hmr: true,
   },
@@ -25,7 +34,7 @@ export default defineConfig({
     ...defaultSettings,
   },
   dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
+    loading: '@ant-design/pro-layout/es/components/PageLoading',
   },
   targets: {
     ie: 11,

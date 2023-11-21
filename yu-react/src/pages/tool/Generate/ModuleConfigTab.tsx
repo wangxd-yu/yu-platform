@@ -1,5 +1,4 @@
-import ProForm, { ProFormText } from "@ant-design/pro-form";
-import type { ApiDomainField } from "./data";
+import { ProFormText } from "@ant-design/pro-components";
 
 interface ModuleConfigTabProps {
     onValuesChange: (values: any) => void;

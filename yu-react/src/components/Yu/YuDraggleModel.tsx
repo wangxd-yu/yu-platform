@@ -1,6 +1,5 @@
+import { ModalForm, ModalFormProps } from '@ant-design/pro-components';
 import React, { useState } from 'react'
-import { ModalForm } from '@ant-design/pro-form'
-import type { ModalFormProps } from '@ant-design/pro-form';
 import Draggable from 'react-draggable';
 
 const YuDraggleModal: React.FC<ModalFormProps> = ((props: ModalFormProps) => {

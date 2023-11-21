@@ -1,11 +1,8 @@
-import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
-import type { ParamsType } from '@ant-design/pro-provider';
-import ProCard from '@ant-design/pro-card';
-import { PageContainer } from '@ant-design/pro-layout';
 import { DataNode } from 'antd/lib/tree';
 import DeptTree from '../DeptTree';
 import { useEffect, useRef, useState } from 'react';
 import { getTableScroll } from '@/utils/baseUtil';
+import { ParamsType, ProTableProps, ActionType, PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
 
 // 定义高阶组件的类型
 type HOCProps<DataType extends Record<string, any>, Params extends ParamsType = ParamsType, ValueType = "text"> = {

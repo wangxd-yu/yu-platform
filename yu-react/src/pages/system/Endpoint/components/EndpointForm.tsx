@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { ProFormDependency, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
 import * as YuApi from '@/utils/yuApi';
 import _ from 'lodash'
+import { ProFormSwitch, ProFormText, ProFormSelect, ProFormDependency } from '@ant-design/pro-components';
 
 type EndpointLessDTO = {
   pattern: string, 

@@ -1,5 +1,4 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { PageLoading } from '@ant-design/pro-layout';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
@@ -14,6 +13,7 @@ import { YuServe, yuServePrefix } from './utils/yuUrl';
 import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
 import { InterceptorError } from './error';
 import type { RequestOptionsInit } from 'umi-request';
+import { PageLoading } from '@ant-design/pro-components';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';

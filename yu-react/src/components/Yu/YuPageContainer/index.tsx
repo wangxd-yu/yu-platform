@@ -1,11 +1,10 @@
-import ProCard from '@ant-design/pro-card';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable, { ActionType, ProTableProps } from '@ant-design/pro-table';
+import { PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
+import { ActionType, ProTableProps } from '@ant-design/pro-components';
 import { DataNode } from 'antd/lib/tree';
 import React, { useEffect, useRef, useState } from 'react';
 import DeptTree from '../DeptTree';
 import { getTableScroll } from '@/utils/baseUtil';
-import type { ParamsType } from '@ant-design/pro-provider';
+import type { ParamsType } from '@ant-design/pro-components';
 
 export type YuPageContainerProps<DataType extends Record<string, any> = Record<string, any>, Params extends ParamsType = ParamsType, ValueType = "text"> = ProTableProps<DataType, Params, ValueType> & {
     // your additional type definition here

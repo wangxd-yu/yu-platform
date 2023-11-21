@@ -1,9 +1,9 @@
 import React, {  } from 'react';
 import { Switch } from 'antd';
-import type { ProColumns } from '@ant-design/pro-table';
 
 import type { ApiDomainField, ViewFormColumn } from './data';
 import ConfigTab from './ConfigTab';
+import { ProColumns } from '@ant-design/pro-components';
 
 interface FormConfigTabProps {
   transferDataSource: ApiDomainField[];

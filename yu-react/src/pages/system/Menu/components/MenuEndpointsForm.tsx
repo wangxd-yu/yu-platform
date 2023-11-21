@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ModalForm, ProFormDependency, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
 import type { YuFormProps } from '@/components/Yu/YuForm';
 import * as YuApi from '@/utils/yuApi';
 import _ from 'lodash'
 import type { FormInstance } from 'antd';
 import { Button, Drawer } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import { ProColumns, ActionType, ProTable, ModalForm, ProFormText } from '@ant-design/pro-components';
+import { DictItem } from '../../Dict/data';
+import { queryDictItem, addDictItem, updateDictItem } from '../../Dict/service';
 
 type EndpointLessDTO = {
   pattern: string, 
@@ -71,87 +71,87 @@ const MenuEndpointsForm: React.FC<YuFormProps> = (props: YuFormProps) => {
   }, []);
 
   return (
-    <Drawer
+    (<Drawer
     title={dictCurrentRow?.name}
     width={800}
-    visible={showDictItemDetail}
+    open={showDictItemDetail}
     onClose={() => {
       setShowDictItemDetail(false);
       setDictCurrentRow(undefined);
     }}
     closable={false}
   >
-    {
-      showDictItemDetail &&
-      <ProTable
-        actionRef={itemActionRef}
-        columns={dictItemColumns}
-        params={{
-          dictId: dictCurrentRow?.id,
+      {
+        showDictItemDetail &&
+        <ProTable
+          actionRef={itemActionRef}
+          columns={dictItemColumns}
+          params={{
+            dictId: dictCurrentRow?.id,
+          }}
+          request={queryDictItem}
+          rowKey="id"
+          pagination={{
+            showQuickJumper: true,
+          }}
+          search={false}
+          dateFormatter="string"
+          headerTitle={dictCurrentRow?.name}
+          toolBarRender={() => [
+            <Button type="primary" key="primary"
+              onClick={() => {
+                dictItemFormRef?.current?.resetFields();
+                setDictItemCurrentRow(undefined);
+                handleDictItemVisible(true);
+              }}
+            >
+              <PlusOutlined /> 新建
+            </Button>,
+          ]}
+        />
+      }
+      <ModalForm
+        title="新建字典值"
+        width="500px"
+        {...formItemLayout}
+        formRef={dictItemFormRef}
+        open={true}
+        layout='horizontal'
+        onVisibleChange={handleDictItemVisible}
+        onFinish={async (value) => {
+          const data = { dictId: dictCurrentRow?.id, ...dictItemCurrentRow, ...value };
+          let success;
+          if (!data.id) {
+            success = await YuCrud.handleAdd(data as DictItem, addDictItem);
+          } else {
+            success = await YuCrud.handleUpdate(data as DictItem, updateDictItem);
+          }
+          if (success) {
+          }
         }}
-        request={queryDictItem}
-        rowKey="id"
-        pagination={{
-          showQuickJumper: true,
-        }}
-        search={false}
-        dateFormatter="string"
-        headerTitle={dictCurrentRow?.name}
-        toolBarRender={() => [
-          <Button type="primary" key="primary"
-            onClick={() => {
-              dictItemFormRef?.current?.resetFields();
-              setDictItemCurrentRow(undefined);
-              handleDictItemVisible(true);
-            }}
-          >
-            <PlusOutlined /> 新建
-          </Button>,
-        ]}
-      />
-    }
-    <ModalForm
-      title="新建字典值"
-      width="500px"
-      {...formItemLayout}
-      formRef={dictItemFormRef}
-      visible={true}
-      layout='horizontal'
-      onVisibleChange={handleDictItemVisible}
-      onFinish={async (value) => {
-        const data = { dictId: dictCurrentRow?.id, ...dictItemCurrentRow, ...value };
-        let success;
-        if (!data.id) {
-          success = await YuCrud.handleAdd(data as DictItem, addDictItem);
-        } else {
-          success = await YuCrud.handleUpdate(data as DictItem, updateDictItem);
-        }
-        if (success) {
-        }
-      }}
-    >
-      <ProFormText
-        rules={[
-          {
-            required: true,
-            message: '字典标签为必填项',
-          },
-        ]}
-        label="字典标签"
-        name="name"
-      />
-      <ProFormText
-        rules={[
-          {
-            required: true,
-            message: '字典值为必填项',
-          },
-        ]}
-        label="字典值"
-        name="code"
-      />
-    </ModalForm>
-  </Drawer>
-  )
+      >
+        <ProFormText
+          rules={[
+            {
+              required: true,
+              message: '字典标签为必填项',
+            },
+          ]}
+          label="字典标签"
+          name="name"
+        />
+        <ProFormText
+          rules={[
+            {
+              required: true,
+              message: '字典值为必填项',
+            },
+          ]}
+          label="字典值"
+          name="code"
+        />
+      </ModalForm>
+    </Drawer>)
+  );
 }
 export default MenuEndpointsForm;

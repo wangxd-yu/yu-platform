@@ -1,8 +1,8 @@
 import React, { } from 'react';
-import type { ProColumns } from '@ant-design/pro-table';
 import type { LogLoginData } from './data';
 import { queryLogLogin } from './service';
 import YuProTable from '@/components/Yu/YuProTable';
+import { ProColumns } from '@ant-design/pro-components';
 
 const EndpointTable: React.FC<LogLoginData> = () => {
 

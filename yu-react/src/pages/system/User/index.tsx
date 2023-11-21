@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Popconfirm, Popover, Row, Space, Switch } from 'antd';
-import type { FormInstance } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
+import { Avatar, Button, Popconfirm, Popover, Space, Switch, type FormInstance } from 'antd';
 import { queryUser, getUser, deleteUser, disableUser, enableUser } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { UserData } from './data';
 import UserForm from './components/UserForm'
 import DeptTree from '@/components/Yu/DeptTree/index';
-import ProCard from '@ant-design/pro-card';
 import { DataNode } from 'antd/lib/tree';
 import { getTableScroll } from '@/utils/baseUtil';
+import { ActionType, ProColumns, PageContainer, ProCard, ProTable } from '@ant-design/pro-components';
 
 const UserTable: React.FC<UserData> = () => {
   /** 新建窗口的弹窗 */

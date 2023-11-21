@@ -2,10 +2,6 @@ import { FolderOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, Pro
 import { Avatar, Button, Popconfirm, Space, Tree } from 'antd';
 import type { FormInstance } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import ProForm, { DrawerForm, } from '@ant-design/pro-form';
 import { queryRole, addRole, updateRole, deleteRole, saveRoleMenus, getRoleMenus, queryRoleUserPage } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { RoleData } from './data';
@@ -13,11 +9,11 @@ import RoleForm from './components/RoleForm'
 import type { MenuData } from '../Menu/data';
 import { queryMenu } from '../Menu/service';
 import type { DataNode } from 'rc-tree/lib/interface';
-import { MenuTypeEnum } from '../Menu/index';
-import ProCard from '@ant-design/pro-card';
 
 import styles from './role.less'
 import type { UserData } from '../User/data';
+import { ActionType, ProColumns, PageContainer, ProCard, ProTable, DrawerForm, ProForm } from '@ant-design/pro-components';
+import { MenuTypeEnum } from '../Menu';
 
 const handleTreeDataRecursion = (data: MenuData[]): DataNode[] => {
   const item: DataNode[] = [];
@@ -27,11 +23,11 @@ const handleTreeDataRecursion = (data: MenuData[]): DataNode[] => {
       newData.key = list.id;
       newData.title = list.name;
       if (MenuTypeEnum[list.type] === MenuTypeEnum.FOLDER) {
-        newData.icon = <FolderOutlined />;
+        newData.icon = <FolderOutlined rev={undefined} />;
       } else if (MenuTypeEnum[list.type] === MenuTypeEnum.MENU) {
-        newData.icon = <ProfileOutlined />
+        newData.icon = <ProfileOutlined rev={undefined} />
       } else {
-        newData.icon = <SecurityScanOutlined />
+        newData.icon = <SecurityScanOutlined rev={undefined} />
       }
 
       newData.children = list.children ? handleTreeDataRecursion(list.children) : []; // 如果还有子集，就再次调用自己
@@ -221,7 +217,7 @@ const RoleTable: React.FC = () => {
               </Button>,
               <Button
                 onClick={() => setShowRight(!showRight)}>
-                {showRight ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                {showRight ? <MenuUnfoldOutlined rev={undefined} /> : <MenuFoldOutlined rev={undefined} />}
               </Button>,
             ]}
             request={queryRole}

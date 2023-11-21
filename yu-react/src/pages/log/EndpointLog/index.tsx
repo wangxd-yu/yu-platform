@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import type { ProColumns } from '@ant-design/pro-table';
 import type { LogEndpointData } from './data';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
 import { getLogEndpoint, queryLogEndpoint } from './service';
 import { Drawer } from 'antd';
-import ProDescriptions from '@ant-design/pro-descriptions';
+import { PageContainer, ProColumns, ProDescriptions, ProTable } from '@ant-design/pro-components';
 
 const LogEndpointTable: React.FC<LogEndpointData> = () => {
   const [logEndpointDetailVisible, setLogEndpointDetailVisible] = useState<boolean>(false);
@@ -79,7 +76,7 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
   ];
 
   return (
-    <PageContainer header={{
+    (<PageContainer header={{
       breadcrumb: {},
     }}>
       <ProTable<LogEndpointData, API.TableListPagination>
@@ -94,7 +91,7 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
       <Drawer
         title={logEndpointCurrentRow?.url}
         width={800}
-        visible={logEndpointDetailVisible}
+        open={logEndpointDetailVisible}
         onClose={() => {
           setLogEndpointDetailVisible(false);
           setLogEndpointCurrentRow(undefined);
@@ -137,7 +134,7 @@ const LogEndpointTable: React.FC<LogEndpointData> = () => {
           </ProDescriptions.Item>
         </ProDescriptions>
       </Drawer>
-    </PageContainer >
+    </PageContainer >)
   );
 };
 export default LogEndpointTable;

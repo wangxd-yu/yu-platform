@@ -1,14 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { Button, Modal } from 'antd';
 import TableTransfer from './TableTransfer';
-import type { ProFormInstance } from '@ant-design/pro-form';
-import ProForm from '@ant-design/pro-form';
-import { FooterToolbar } from '@ant-design/pro-layout';
-import type { ProColumns } from '@ant-design/pro-table';
-import { EditableProTable } from '@ant-design/pro-table';
 import lodash from 'lodash'
 
 import type { ApiDomainField } from './data';
+import { ProColumns, ProFormInstance, ProForm, EditableProTable } from '@ant-design/pro-components';
 
 // 要求包含 sort 属性的泛型类型
 interface Sortable {

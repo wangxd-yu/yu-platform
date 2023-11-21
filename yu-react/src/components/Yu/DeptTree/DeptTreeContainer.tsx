@@ -1,8 +1,7 @@
-import ProCard from '@ant-design/pro-card';
-import { PageContainer } from '@ant-design/pro-layout';
 import { DataNode } from 'antd/lib/tree';
 import React, { useState } from 'react';
 import DeptTree from '.';
+import { PageContainer, ProCard } from '@ant-design/pro-components';
 
 // 这里使用React.PropsWithChildren接口来定义函数参数的类型
 function DeptTreeContainer({ children }: React.PropsWithChildren<any>) {

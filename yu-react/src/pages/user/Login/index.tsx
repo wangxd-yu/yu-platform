@@ -9,12 +9,11 @@ import {
 } from '@ant-design/icons';
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { Link, history, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
+import { ProForm, ProFormText, ProFormCaptcha, ProFormCheckbox } from '@ant-design/pro-components';
 
 const LoginMessage: React.FC<{
   content: string;

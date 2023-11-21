@@ -1,16 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, message, Input, Drawer } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
-import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from './service';
 import type { TableListItem, TableListPagination } from './data';
+import { ActionType, ProColumns, PageContainer, ProTable, FooterToolbar, ModalForm, ProFormText, ProFormTextArea, ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 /**
  * 添加节点
  *
@@ -185,7 +180,7 @@ const TableList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    (<PageContainer>
       <ProTable<TableListItem, TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}
@@ -290,10 +285,9 @@ const TableList: React.FC = () => {
         updateModalVisible={updateModalVisible}
         values={currentRow || {}}
       />
-
       <Drawer
         width={600}
-        visible={showDetail}
+        open={showDetail}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
@@ -314,7 +308,7 @@ const TableList: React.FC = () => {
           />
         )}
       </Drawer>
-    </PageContainer>
+    </PageContainer>)
   );
 };
 

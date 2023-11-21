@@ -5,9 +5,7 @@ import { Space } from 'antd';
 import { Table } from 'antd';
 import { Button } from 'antd';
 import { Switch, Popconfirm } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { DeptData } from '../data';
-import ProTable from '@ant-design/pro-table';
 import * as YuCrud from '@/utils/yuCrud';
 import { queryDept, deleteDept, disableDept, enableDept, moveDept } from '../service'
 import DeptForm from './DeptForm';
@@ -15,6 +13,7 @@ import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import type { DataNode } from 'antd/lib/tree';
 import Tree from 'antd/lib/tree';
 import Title from 'antd/lib/typography/Title';
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 
 const SubDeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: () => any }> = (prop: { dept: DeptData, deptTree: DataNode[], deptChange: () => any }) => {
     const [deptFormVisible, setDeptFormVisible] = useState<boolean>(false);
@@ -161,7 +160,7 @@ const SubDeptPage: React.FC<{ dept: DeptData, deptTree: DataNode[], deptChange: 
                 actionRef={deptActionRef}
                 params={{ pid: prop.dept.id }}
                 request={(params) => queryDept(params)}
-                postData={(dataList) => {
+                postData={(dataList: any) => {
                     return dataList;
                 }}
                 rowKey="id"
