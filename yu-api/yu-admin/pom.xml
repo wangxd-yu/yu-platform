@@ -15,6 +15,7 @@
 
     <modules>
         <module>admin-base</module>
+        <module>admin-archive</module>
     </modules>
 
     <properties>

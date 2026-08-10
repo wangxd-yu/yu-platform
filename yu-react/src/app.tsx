@@ -1,27 +1,20 @@
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-import { notification } from 'antd';
-import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
-import { history, Link } from 'umi';
-import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
+import { LinkOutlined } from '@ant-design/icons';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { SettingDrawer } from '@ant-design/pro-components';
+import type { RunTimeLayoutConfig } from '@umijs/max';
+import { history, Link } from '@umijs/max';
+import defaultSettings from '../config/defaultSettings';
+import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
-
-import fixMenuItemIcon from './utils/fixMenuItemIcon';
-import * as YuApi from '@/utils/yuApi';
-import { YuServe, yuServePrefix } from './utils/yuUrl';
 import { getAuthToken, isTokenEfective } from './utils/AuthUtil';
-import { InterceptorError } from './error';
-import type { RequestOptionsInit } from 'umi-request';
-import { PageLoading } from '@ant-design/pro-components';
-
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
-/** 获取用户信息比较慢的时候会展示一个 loading */
-export const initialStateConfig = {
-  loading: <PageLoading />,
-};
+import * as YuApi from '@/utils/yuApi';
+import fixMenuItemIcon from './utils/fixMenuItemIcon';
+import NoticeIconView from './components/NoticeIcon';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -29,6 +22,7 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
@@ -40,14 +34,14 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
-  // 如果是登录页面 或者 token为空，不执行
+  // 如果不是登录页面，执行
   if (history.location.pathname.indexOf(loginPath) < 0 && getAuthToken()) {
     if (isTokenEfective()) {
       const currentUser = await fetchUserInfo();
       return {
         fetchUserInfo,
         currentUser,
-        settings: {},
+        settings: defaultSettings as Partial<LayoutSettings>,
       };
     } else {
       localStorage.clear()
@@ -55,176 +49,141 @@ export async function getInitialState(): Promise<{
   }
   return {
     fetchUserInfo,
-    settings: {},
+    settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
 
-// 不需要 auth 认证的接口地址
-const noAuthUrlArr = [
-  `/auth/login`   // 登录接口
-  // `/oauth/token`
-]
-
-function isUrlNeedAuthentication(url: string) {
-  return noAuthUrlArr.findIndex(item => url.startsWith(item)) === -1
-}
-
-function handleURL(url: string) {
-  return BASE_URL + (url.startsWith('/') ? '' : '/') + url;
-}
-
-const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
-  
-  // 需要 token 认证
-  if (isUrlNeedAuthentication(url)) {
-    const authToken = getAuthToken()
-    if (isTokenEfective()) {
-      let authHeader = {};
-      if (authToken.token) {
-        authHeader = { Authorization: `${authToken.tokenHead}${authToken.token}` };
+const findFirstPageMenu = (menuData: any) => {
+  for (const menu of menuData) {
+    if (menu.routes && menu.routes.length > 0) {
+      const firstSubMenu = findFirstPageMenu(menu.routes);
+      if (firstSubMenu) {
+        return firstSubMenu;
       }
-      return {
-        url: handleURL(url),
-        options: { ...options, interceptors: true, headers: authHeader },
-      };
-    } else {
-      throw new InterceptorError('token已过期，请重新登录！')   // throw 是抛出错误的语法
+    } else if (menu.component) {
+      // Check if the component is not null
+      return menu;
     }
   }
-  // 不需要token认证
-  return {
-    url: handleURL(url),
-    options
-  };
-};
-
-/**
- * 异常处理程序
-    200: '服务器成功返回请求的数据。',
-    201: '新建或修改数据成功。',
-    202: '一个请求已经进入后台排队（异步任务）。',
-    204: '删除数据成功。',
-    400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-    401: '用户没有权限（令牌、用户名、密码错误）。',
-    403: '用户得到授权，但是访问是被禁止的。',
-    404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-    405: '请求方法不被允许。',
-    406: '请求的格式不可得。',
-    410: '请求的资源被永久删除，且不会再得到的。',
-    422: '当创建一个对象时，发生一个验证错误。',
-    500: '服务器发生错误，请检查服务器。',
-    502: '网关错误。',
-    503: '服务不可用，服务器暂时过载或维护。',
-    504: '网关超时。',
- //-----English
-    200: The server successfully returned the requested data. ',
-    201: New or modified data is successful. ',
-    202: A request has entered the background queue (asynchronous task). ',
-    204: Data deleted successfully. ',
-    400: 'There was an error in the request sent, and the server did not create or modify data. ',
-    401: The user does not have permission (token, username, password error). ',
-    403: The user is authorized, but access is forbidden. ',
-    404: The request sent was for a record that did not exist. ',
-    405: The request method is not allowed. ',
-    406: The requested format is not available. ',
-    410':
-        'The requested resource is permanently deleted and will no longer be available. ',
-    422: When creating an object, a validation error occurred. ',
-    500: An error occurred on the server, please check the server. ',
-    502: Gateway error. ',
-    503: The service is unavailable. ',
-    504: The gateway timed out. ',
- * @see https://beta-pro.ant.design/docs/request-cn
- */
-export const request: RequestConfig = {
-  // 新增自动添加AccessToken的请求前拦截器
-  requestInterceptors: [authHeaderInterceptor],
-  errorHandler: (error: any) => {
-    if (error instanceof InterceptorError) {
-      notification.error({
-        description: error.message,
-        message: "",
-      });
-      return;
-    } else {
-      if(!error.data.data) {
-        // Http status = 504
-        notification.error({
-          description: '您的网络发生异常，无法连接服务器',
-          message: '网络异常',
-        });
-      } else {
-        const { response } = error;
-        if (!response) {
-          notification.error({
-            description: '您的网络发生异常，无法连接服务器',
-            message: '网络异常',
-          });
-        } else {
-          notification.error({
-            description: error.data.data,
-            message: error.data.message,
-          });
-        }
-      }
-      
-      console.log(error)
-      throw error;
-    }
-  }
+  return null;
 };
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    rightContentRender: () => <RightContent />,
-    disableContentMargin: false,   // 内容区域是否禁用 margin
+    //actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    //actionsRender: () => [initialState?.currentUser? <NoticeIconView key="niv" />: ''],
+    avatarProps: {
+      src: `/${BASE_URL_PREFIX}/${initialState?.currentUser?.portraitUrl}`,
+      title: <AvatarName />,
+      render: (_, avatarChildren) => {
+        return <AvatarDropdown menu>{avatarChildren}</AvatarDropdown>;
+      },
+    },
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    defaultOpenAll: true,
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!isTokenEfective() && location.pathname !== loginPath) {
         history.push(loginPath);
-      } else if (isTokenEfective() && !initialState?.currentUser) {
+      } else if (isTokenEfective() && !initialState?.currentUser){
         history.push("/")
-      }
+      } 
     },
+    layoutBgImgList: [
+      {
+        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
+        left: 85,
+        bottom: 100,
+        height: '303px',
+      },
+      {
+        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
+        bottom: -68,
+        right: -45,
+        height: '303px',
+      },
+      {
+        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
+        bottom: 0,
+        left: 0,
+        width: '331px',
+      },
+    ],
     links: isDev
       ? [
-        <Link to="/umi/plugin/openapi" target="_blank">
-          <LinkOutlined />
-          <span>OpenAPI 文档</span>
-        </Link>,
-        <Link to="/~docs">
-          <BookOutlined />
-          <span>业务组件文档</span>
-        </Link>,
-      ]
+          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+            <LinkOutlined />
+            <span>OpenAPI 文档</span>
+          </Link>,
+        ]
       : [],
-    menuHeaderRender: undefined,
     menuDataRender: (menuItemProps) => {
       return fixMenuItemIcon(menuItemProps)
     },
+    menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
-    ...initialState?.settings,
+    // 增加一个 loading 的状态
+    childrenRender: (children) => {
+      // if (initialState?.loading) return <PageLoading />;
+      return (
+        <>
+          {children}
+          <SettingDrawer
+            disableUrlParams
+            enableDarkTheme
+            settings={initialState?.settings}
+            onSettingChange={(settings) => {
+              setInitialState((preInitialState) => ({
+                ...preInitialState,
+                settings,
+              }));
+            }}
+          />
+        </>
+      );
+    },
+    
     menu: {
+      locale: false,
       // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
       params: {
         username: initialState?.currentUser?.username,
       },
-      request: (params, defaultMenuData) => {
+      request: async (params, defaultMenuData) => {
         // initialState.currentUser 中包含了所有用户信息
         // const menuData = await fetchMenuData();
-        if (params.username) {
-          return YuApi.queryList(`/menu/build`);
+        //用户未登录直接返回
+        if(!initialState?.currentUser) {
+          return null;
         }
+        const menuData = await YuApi.queryList(`/menu/build`);
+
+        // 在这里处理菜单数据，并决定是否跳转到第一个有页面的菜单项
+        /* const firstPageMenu = findFirstPageMenu(menuData);
+        if (firstPageMenu && firstPageMenu.path) {
+          // 设置默认路由
+          console.log("firstPageMenu.path----", firstPageMenu.path)
+          history.push(firstPageMenu.path);
+        } */
+
+        return menuData;
       },
       defaultOpenAll: true,
-    }
+    },
+    ...initialState?.settings,
   };
-}
+};
+
+/**
+ * @name request 配置，可以配置错误处理
+ * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
+ * @doc https://umijs.org/docs/max/request#配置
+ */
+export const request = {
+  ...errorConfig,
+};

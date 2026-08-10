@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import { request } from '@umijs/max';
 import QS from 'qs'
 
 /** 获取当前的用户 GET /api/currentUser */

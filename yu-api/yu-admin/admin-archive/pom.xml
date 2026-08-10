@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.yu</groupId>
+        <artifactId>yu-admin</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>admin-archive</artifactId>
+    <description>管理系统-档案管理系统</description>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.yu</groupId>
+            <artifactId>admin-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>20.12-jdk17-cracked</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.29.2-GA</version>
+        </dependency>
+
+        <!-- <dependency>
+             <groupId>jakarta.xml.bind</groupId>
+             <artifactId>jakarta.xml.bind-api</artifactId>
+             <version>3.0.1</version>
+         </dependency>
+         <dependency>
+             <groupId>org.glassfish.jaxb</groupId>
+             <artifactId>jaxb-runtime</artifactId>
+             <version>3.0.1</version>
+         </dependency>
+
+         <dependency>
+             <groupId>jakarta.activation</groupId>
+             <artifactId>jakarta.activation-api</artifactId>
+             <version>2.1.2</version> &lt;!&ndash; 选择合适的版本 &ndash;&gt;
+         </dependency>-->
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <!-- word转html BEGIN -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version> <!-- 请检查最新版本 -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>4.1.2</version> <!-- 请检查最新版本 -->
+        </dependency>
+        <!-- <dependency>
+             <groupId>org.docx4j</groupId>
+             <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+             <version>11.4.11</version> &lt;!&ndash; 使用最新版本 &ndash;&gt;
+         </dependency>
+         <dependency>
+             <groupId>org.docx4j</groupId>
+             <artifactId>docx4j-core</artifactId>
+             <version>11.4.11</version> &lt;!&ndash; 请检查最新版本 &ndash;&gt;
+         </dependency>
+         -->
+        <dependency>
+            <groupId>fr.opensagres.xdocreport</groupId>
+            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
+            <version>5.2.0</version> <!-- 请检查最新版本 -->
+        </dependency>
+        <dependency>
+            <groupId>fr.opensagres.xdocreport</groupId>
+            <artifactId>fr.opensagres.poi.xwpf.converter.core</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.18.3</version>
+        </dependency>
+        <!-- word转html END -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.yu.admin.archive.AdminArchiveApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <!-- Q对象生成插件 （QueryDSL）-->
+            <plugin>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>${querydsl.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- 指定源代码位置（主要为QueryDSL生成的Q类制定文件位置）-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-sources/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version> <!-- 使用最新版本 -->
+                <configuration>
+                    <!--使用增量编译 -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                    <source>${java.version}</source> <!-- 源代码版本 -->
+                    <target>${java.version}</target> <!-- 目标字节码版本 -->
+                </configuration>
+            </plugin>
+
+
+            <!--<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>-->
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <outfile>target/Archive-application.exe</outfile>
+                            <jar>target/admin-archive-0.0.1-SNAPSHOT.jar</jar>
+                            <classPath>
+                                <mainClass>org.yu.admin.archive.AdminArchiveApplication</mainClass>
+                                <addDependencies>true</addDependencies>
+                            </classPath>
+                            <jre>
+                                <minVersion>17</minVersion>
+                                <jdkPreference>preferJre</jdkPreference> <!-- 优先使用 JRE -->
+                                <path>
+                                    D:\dev\JDK\openlogic-openjdk-jre-17.0.14+7-windows-x64\openlogic-openjdk-jre-17.0.14+7-windows-x64
+                                </path> <!-- 指定 Java 安装路径 -->
+                            </jre>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <!--<repositories>
+        <repository>
+            <id>AsposeJavaAPI</id>
+            <name>Aspose Java API</name>
+            <url>https://releases.aspose.com/java/repo/</url>
+        </repository>
+
+        <repository>
+            <id>central</id>
+            <name>Maven Central Repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>-->
+
+
+</project>

@@ -4,7 +4,10 @@ import cn.hutool.core.text.NamingCase;
 import lombok.*;
 import org.yu.common.querydsl.domain.DslBaseDO;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 数据库字段
@@ -62,8 +65,8 @@ public class GenApiDomainFieldDO extends DslBaseDO<String> {
     /**
      * 是否允许为空
      */
-    @Column(name = "if_nullable")
-    private String ifNullable;
+    @Column(name = "if_not_null")
+    private String ifNotNull;
 
     /**
      * java 属性类型

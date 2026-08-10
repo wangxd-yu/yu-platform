@@ -1,0 +1,111 @@
+CREATE TABLE tb_intro
+(
+    `id`                 bigint(20)   NOT NULL COMMENT 'ID',
+    database_id          VARCHAR(20)  NOT NULL COMMENT '数据库ID',
+    database_name        VARCHAR(255) NOT NULL COMMENT '数据库名称',
+    material_source      VARCHAR(200) COMMENT '资料来源',
+    publisher            VARCHAR(100) COMMENT '出版者',
+    publication_time     VARCHAR(20) COMMENT '出版时间',
+    publication_location VARCHAR(20) COMMENT '出版地点',
+    material_description TEXT COMMENT '资料描述',
+    keywords             VARCHAR(100) COMMENT '关键字',
+    material_type        VARCHAR(20) COMMENT '资料类型',
+    material_timeframe   VARCHAR(20) COMMENT '资料时间范围',
+    author               VARCHAR(50) COMMENT '作者',
+    remarks              VARCHAR(200) COMMENT '备注',
+    other1               VARCHAR(200) COMMENT '其他字段1',
+    other2               VARCHAR(200) COMMENT '其他字段2',
+    other3               VARCHAR(200) COMMENT '其他字段3',
+    `create_time`        datetime DEFAULT NULL COMMENT '创建时间',
+    `update_time`        datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='数据库信息表';
+
+
+CREATE TABLE tb_data_sdgmls
+(
+    `id`                bigint NOT NULL COMMENT 'ID',
+    `database_name`     varchar(255) DEFAULT NULL COMMENT '数据库名称',
+    `series_name`       varchar(255) DEFAULT NULL COMMENT '文献系列名称',
+    `document_name`     varchar(255) DEFAULT NULL COMMENT '文献名称',
+    `file_number`       varchar(255) DEFAULT NULL COMMENT '文件序号',
+    `title`             varchar(255) DEFAULT NULL COMMENT '文件题名',
+    `file_time`         varchar(255) DEFAULT NULL COMMENT '文件时间',
+    `start_file_number` varchar(255) DEFAULT NULL COMMENT '起始文件序号',
+    `end_file_number`   varchar(255) DEFAULT NULL COMMENT '终止文件序号',
+    `keywords`          varchar(255) DEFAULT NULL COMMENT '关键词',
+    `person`            varchar(255) DEFAULT NULL COMMENT '人物',
+    `location_name`     varchar(255) DEFAULT NULL COMMENT '地名',
+    `organization`      varchar(255) DEFAULT NULL COMMENT '机构',
+    `notes`             text COMMENT '备注',
+    `other1`            varchar(255) DEFAULT NULL COMMENT '其他1',
+    `other2`            varchar(255) DEFAULT NULL COMMENT '其他2',
+    `other3`            varchar(255) DEFAULT NULL COMMENT '其他3',
+    `other4`            varchar(255) DEFAULT NULL COMMENT '其他4',
+    `other5`            varchar(255) DEFAULT NULL COMMENT '其他5',
+    `create_time`       datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_time`       datetime     DEFAULT NULL COMMENT '更新时间',
+    `html`              mediumtext CHARACTER SET utf8mb4 COMMENT 'html内容',
+    `html_no_tag`       mediumtext CHARACTER SET utf8mb4 COMMENT 'html无标签',
+    `word`              varchar(255) DEFAULT NULL COMMENT 'word路径',
+    `pdfs`              text CHARACTER SET utf8mb4 COMMENT 'pdfs tag标签'
+) ENGINE=InnoDB  COMMENT ='山东革命历史档案数据库';
+
+CREATE TABLE `tb_data_qdshda`
+(
+    `id`                bigint NOT NULL COMMENT 'ID',
+    `database_name`     varchar(255) DEFAULT NULL COMMENT '数据库名称',
+    `series_name`       varchar(255) DEFAULT NULL COMMENT '文献系列名称',
+    `document_name`     varchar(255) DEFAULT NULL COMMENT '文献名称',
+    `file_number`       varchar(255) DEFAULT NULL COMMENT '文件序号',
+    `title`             varchar(255) DEFAULT NULL COMMENT '文件题名',
+    `file_time`         varchar(255) DEFAULT NULL COMMENT '文件时间',
+    `start_file_number` varchar(255) DEFAULT NULL COMMENT '起始文件序号',
+    `end_file_number`   varchar(255) DEFAULT NULL COMMENT '终止文件序号',
+    `keywords`          varchar(255) DEFAULT NULL COMMENT '关键词',
+    `person`            varchar(255) DEFAULT NULL COMMENT '人物',
+    `location_name`     varchar(255) DEFAULT NULL COMMENT '地名',
+    `organization`      varchar(255) DEFAULT NULL COMMENT '机构',
+    `notes`             text COMMENT '备注',
+    `other1`            varchar(255) DEFAULT NULL COMMENT '其他1',
+    `other2`            varchar(255) DEFAULT NULL COMMENT '其他2',
+    `other3`            varchar(255) DEFAULT NULL COMMENT '其他3',
+    `other4`            varchar(255) DEFAULT NULL COMMENT '其他4',
+    `other5`            varchar(255) DEFAULT NULL COMMENT '其他5',
+    `create_time`       datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_time`       datetime     DEFAULT NULL COMMENT '更新时间',
+    `html`              mediumtext CHARACTER SET utf8mb4 COMMENT 'html内容',
+    `html_no_tag`       mediumtext CHARACTER SET utf8mb4 COMMENT 'html无标签',
+    `word`              varchar(255) DEFAULT NULL COMMENT 'word路径',
+    `pdfs`              text CHARACTER SET utf8mb4 COMMENT 'pdfs tag标签'
+) ENGINE=InnoDB COMMENT='青岛商会档案';
+
+CREATE TABLE `tb_data_jjtlda`
+(
+    `id`                bigint NOT NULL COMMENT 'ID',
+    `database_name`     varchar(255) DEFAULT NULL COMMENT '数据库名称',
+    `series_name`       varchar(255) DEFAULT NULL COMMENT '文献系列名称',
+    `document_name`     varchar(255) DEFAULT NULL COMMENT '文献名称',
+    `file_number`       varchar(255) DEFAULT NULL COMMENT '文件序号',
+    `title`             varchar(255) DEFAULT NULL COMMENT '文件题名',
+    `file_time`         varchar(255) DEFAULT NULL COMMENT '文件时间',
+    `start_file_number` varchar(255) DEFAULT NULL COMMENT '起始文件序号',
+    `end_file_number`   varchar(255) DEFAULT NULL COMMENT '终止文件序号',
+    `keywords`          varchar(255) DEFAULT NULL COMMENT '关键词',
+    `person`            varchar(255) DEFAULT NULL COMMENT '人物',
+    `location_name`     varchar(255) DEFAULT NULL COMMENT '地名',
+    `organization`      varchar(255) DEFAULT NULL COMMENT '机构',
+    `notes`             text COMMENT '备注',
+    `other1`            varchar(255) DEFAULT NULL COMMENT '其他1',
+    `other2`            varchar(255) DEFAULT NULL COMMENT '其他2',
+    `other3`            varchar(255) DEFAULT NULL COMMENT '其他3',
+    `other4`            varchar(255) DEFAULT NULL COMMENT '其他4',
+    `other5`            varchar(255) DEFAULT NULL COMMENT '其他5',
+    `create_time`       datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_time`       datetime     DEFAULT NULL COMMENT '更新时间',
+    `html`              mediumtext CHARACTER SET utf8mb4 COMMENT 'html内容',
+    `html_no_tag`       mediumtext CHARACTER SET utf8mb4 COMMENT 'html无标签',
+    `word`              varchar(255) DEFAULT NULL COMMENT 'word路径',
+    `pdfs`              text CHARACTER SET utf8mb4 COMMENT 'pdfs tag标签'
+) ENGINE=InnoDB COMMENT='JJTLDA膠濟鐵路檔案';

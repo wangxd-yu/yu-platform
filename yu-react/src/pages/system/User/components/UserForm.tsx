@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import ProForm, {ProFormSwitch, ProFormText} from '@ant-design/pro-form'
 import type {YuFormProps} from '@/components/Yu/YuForm';
 import YuForm from '@/components/Yu/YuForm';
 import {message, Transfer, TreeSelect, Upload} from 'antd';
@@ -9,10 +8,11 @@ import type {DataNode} from 'rc-tree/lib/interface';
 import ImgCrop from 'antd-img-crop';
 import {LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import './UserForm.less';
-import Field from '@ant-design/pro-form/lib/components/Field';
 import type {UserData} from '../data';
 import {addUser, updateUser} from '../service';
 import type {RoleData} from '../../Role/data';
+import { ProFormText, ProForm } from '@ant-design/pro-components';
+import { Field } from '@formily/core';
 
 type UserFromProps = YuFormProps & { deptTree: DataNode[] | undefined }
 

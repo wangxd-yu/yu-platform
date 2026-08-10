@@ -10,9 +10,7 @@ import org.yu.admin.base.config.EnableGenerate;
 import org.yu.admin.base.config.EnableServeSystem;
 import org.yu.common.multidb.config.EnableMultiDatabase;
 
-/**
- * @author 王晓冬
- */
+
 @EnableAsync
 @EnableMultiDatabase
 @EnableServeSystem

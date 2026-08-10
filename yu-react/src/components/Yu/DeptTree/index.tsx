@@ -3,7 +3,7 @@ import Search from 'antd/lib/input/Search';
 import Tree, { DataNode, EventDataNode } from 'antd/lib/tree';
 import { DeptData } from '@/pages/system/DeptComplete/data';
 import { GlobalOutlined, ClusterOutlined } from '@ant-design/icons';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 import * as YuApi from '@/utils/yuApi';
 
 export type DeptTreeProps = {

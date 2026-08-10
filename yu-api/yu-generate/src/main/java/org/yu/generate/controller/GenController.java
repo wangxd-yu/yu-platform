@@ -1,10 +1,9 @@
 package org.yu.generate.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.yu.generate.core.handler.GenerateHandler;
 import org.yu.generate.core.pojo.bo.StandardModelBO;
 import org.yu.generate.service.DbService;
@@ -38,11 +37,21 @@ public class GenController {
 
         String str = template.render(map);*/
 
-        return dbService.getColumns("log_endpoint");
+        return new ResponseEntity<>(dbService.getColumns("log_endpoint"), HttpStatus.OK);
     }
 
     @PostMapping("/getTest1")
     public Object getAllCode(@RequestBody StandardModelBO standardModelBO) {
         return GenerateHandler.preview(standardModelBO);
+    }
+
+    @GetMapping("/mysql/tables")
+    public ResponseEntity<Object> getTableList() {
+        return new ResponseEntity<>(dbService.getTables(), HttpStatus.OK);
+    }
+
+    @GetMapping("/mysql/columns")
+    public ResponseEntity<Object> getColumns(@RequestParam String tableName) {
+        return new ResponseEntity<>(dbService.getColumns(tableName), HttpStatus.OK);
     }
 }

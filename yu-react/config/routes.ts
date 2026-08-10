@@ -156,6 +156,23 @@ export default [
     ],
   },
   {
+    path: '/code',
+    name: '代码生成',
+    icon: 'smile',
+    routes: [
+      {
+        name: '代码模板',
+        path: '/code/template',
+        component: './code/Template',
+        layout: {
+          hideMenu: false,
+          hideNav: false,
+          hideFooter: true,
+        },
+      }
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

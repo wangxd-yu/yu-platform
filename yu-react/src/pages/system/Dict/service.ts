@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import { request } from '@umijs/max';
 import type { Dict, DictItem } from './data';
 import * as YuApi from '@/utils/yuApi';
 

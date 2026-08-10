@@ -2,7 +2,7 @@ import type { MenuData } from './data';
 import * as YuApi from '@/utils/yuApi';
 
 import type { EndpointData } from '../Endpoint/data';
-import { request } from 'umi';
+import { request } from '@umijs/max';
 
 const menuUrl = '/menu';
 const endpointUrl = '/endpoint'

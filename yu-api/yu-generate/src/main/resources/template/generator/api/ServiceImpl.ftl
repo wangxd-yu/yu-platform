@@ -13,7 +13,6 @@ import org.yu.common.querydsl.service.DslBaseServiceImpl;
 */
 @Slf4j
 @Service
-public class ${genApiModuleDO.genApiDomainDO.upperDomainName}ServiceImpl extends DslBaseServiceImpl
-<${genApiModuleDO.genApiDomainDO.upperDomainName}Repository, ${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String> implements ${genApiModuleDO.genApiDomainDO.upperDomainName}Service {
+public class ${genApiModuleDO.genApiDomainDO.upperDomainName}ServiceImpl extends DslBaseServiceImpl<${genApiModuleDO.genApiDomainDO.upperDomainName}Repository, ${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String> implements ${genApiModuleDO.genApiDomainDO.upperDomainName}Service {
 
 }

@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
 import { Upload, message } from 'antd';
-import ProForm, {
-  ProFormText,
-} from '@ant-design/pro-form';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 import styles from './BaseView.less';
 import ImgCrop from 'antd-img-crop';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { updateBaseInfo } from '../service';
 
-// import 'antd/es/modal/style';
-
-
-// import 'antd/es/slider/style';
-
-
 import './base.less';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar, handleChange }: { avatar: string, handleChange: (imageBase64: string) => any }) => {

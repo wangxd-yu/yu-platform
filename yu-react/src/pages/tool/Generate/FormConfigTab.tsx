@@ -1,9 +1,9 @@
-import React, {  } from 'react';
 import { Switch } from 'antd';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
-import type { ApiDomainField, ViewFormColumn } from './data';
+import type { ProColumns } from '@ant-design/pro-components';
 import ConfigTab from './ConfigTab';
-import { ProColumns } from '@ant-design/pro-components';
+import type { ApiDomainField, ViewFormColumn } from './data';
 
 interface FormConfigTabProps {
   transferDataSource: ApiDomainField[];
@@ -21,7 +21,7 @@ const columns: ProColumns<ViewFormColumn>[] = [
           required: true,
           whitespace: false,
           message: '此项是必填项',
-        }
+        },
       ],
     },
   },
@@ -35,7 +35,7 @@ const columns: ProColumns<ViewFormColumn>[] = [
           required: true,
           whitespace: false,
           message: '此项是必填项',
-        }
+        },
       ],
     },
   },
@@ -83,31 +83,48 @@ const columns: ProColumns<ViewFormColumn>[] = [
     width: 50,
     dataIndex: 'sort',
     valueType: 'digit',
-    editable: false
+    editable: false,
   },
   {
     title: '操作',
     valueType: 'option',
-  }
+  },
 ];
 
-const FormConfigTab: React.FC<FormConfigTabProps> = (props) => {
-  return <>
-    <ConfigTab<ViewFormColumn>
-      transferDataSource={props.transferDataSource}
-      columns={columns}
-      mapApiDomainFieldToT={(item) => {
-        return {
-          id: item.id,
-          field: item.name,
-          title: item.comment,
-          length: item.length,
-          sort: item.sort,
-          search: false
-        } as ViewFormColumn;
-      }}
-      onValuesChange={props.onValuesChange} />
-  </>
-}
+const FormConfigTab: React.FC<FormConfigTabProps & React.RefAttributes<{ validate: () => any }>> =
+  forwardRef((props, ref) => {
+    const configTabRef = useRef<{ validate: () => any } | null>(null);
+    // 使用 useImperativeHandle 暴露 form 实例给父组件
+    useImperativeHandle(
+      ref,
+      () => ({
+        validate: () => {
+          console.log('validate');
+          return configTabRef?.current?.validate();
+        },
+      }),
+      [ref],
+    );
+    return (
+      <>
+        <ConfigTab
+          ref={configTabRef}
+          transferDataSource={props.transferDataSource}
+          columns={columns}
+          mapApiDomainFieldToT={(item) => {
+            return {
+              id: item.id,
+              field: item.name,
+              title: item.comment,
+              length: item.length,
+              sort: item.sort,
+              search: false,
+            } as ViewFormColumn;
+          }}
+          onValuesChange={props.onValuesChange}
+        />
+      </>
+    );
+  });
 
 export default FormConfigTab;

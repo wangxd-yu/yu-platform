@@ -3,8 +3,8 @@ import { Dropdown, Input, Menu, Tree } from 'antd';
 import './index.less'
 import { EllipsisOutlined } from '@ant-design/icons';
 import SplitPane from 'react-split-pane';
-import { DataNode, EventDataNode } from 'antd/lib/tree';
-import { DeptData } from '../Dept/data';
+import type { DataNode, EventDataNode } from 'antd/lib/tree';
+import type { DeptData } from '../Dept/data';
 
 import * as YuApi from '@/utils/yuApi';
 import * as YuCrud from '@/utils/yuCrud';
@@ -217,8 +217,8 @@ const VirtualDeptPage: React.FC<{}> = () => {
 
             {(showVirtualDeptForm && formType === 'A') &&
                 <VirtualDeptForm
-                    visible={showVirtualDeptForm}
-                    onVisibleChange={(visible: boolean) => {
+                    open={showVirtualDeptForm}
+                    onOpenChange={(visible: boolean) => {
                         if (!visible) {
                             setShowVirtualDeptForm(false)
                         }

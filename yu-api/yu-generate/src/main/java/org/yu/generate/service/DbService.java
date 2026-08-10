@@ -1,8 +1,7 @@
 package org.yu.generate.service;
 
-import org.yu.generate.dto.ColumnDto;
-
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangxd
@@ -22,5 +21,6 @@ public interface DbService {
      * @param tableName 表名
      * @return /
      */
-    List<ColumnDto> getColumns(String tableName);
+    List<Map<String, Object>> getColumns(String tableName);
+
 }

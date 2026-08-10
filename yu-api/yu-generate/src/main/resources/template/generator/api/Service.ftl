@@ -7,6 +7,6 @@ import ${genApiModuleDO.packagePath}.domain.${genApiModuleDO.genApiDomainDO.uppe
 * @author ${genApiModuleDO.author}
 * @date ${date}
 */
-public interface ${genApiModuleDO.genApiDomainDO.upperDomainName}Service extends DslBaseService
-<${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String> {
+public interface ${genApiModuleDO.genApiDomainDO.upperDomainName}Service extends DslBaseService<${genApiModuleDO.genApiDomainDO.upperDomainName}DO, String> {
+
 }

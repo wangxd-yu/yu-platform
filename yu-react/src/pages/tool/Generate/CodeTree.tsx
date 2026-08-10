@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Tree } from 'antd';
 import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
-import { request } from 'umi';
+import { request } from '@umijs/max';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';

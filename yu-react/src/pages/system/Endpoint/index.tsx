@@ -2,12 +2,12 @@ import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Switch, Tag } from 'antd';
 import type { FormInstance } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { queryEndpoint, getEndpoint, addEndpoint, updateEndpoint, deleteEndpoint, accessEnable, accessDisable, logEnable, logDisable } from './service';
 import * as YuCrud from '@/utils/yuCrud';
 import type { EndpointData } from './data';
 import EndpointForm from './components/EndpointForm'
 import YuProTable from '@/components/Yu/YuProTable';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
 
 export const methodMap = {
   POST: {

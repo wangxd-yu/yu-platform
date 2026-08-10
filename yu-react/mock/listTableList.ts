@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Request, Response } from 'express';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { parse } from 'url';
 
 // mock tableListDataSource
@@ -22,8 +22,8 @@ const genList = (current: number, pageSize: number) => {
       desc: '这是一段描述',
       callNo: Math.floor(Math.random() * 1000),
       status: Math.floor(Math.random() * 10) % 4,
-      updatedAt: moment().format('YYYY-MM-DD'),
-      createdAt: moment().format('YYYY-MM-DD'),
+      updatedAt: dayjs().format('YYYY-MM-DD'),
+      createdAt: dayjs().format('YYYY-MM-DD'),
       progress: Math.ceil(Math.random() * 100),
     });
   }

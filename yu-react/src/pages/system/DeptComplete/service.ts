@@ -1,6 +1,6 @@
 import type { DeptData, DeptRoleData } from './data';
 import * as YuApi from '@/utils/yuApi';
-import { request } from 'umi';
+import { request } from '@umijs/max';
 
 const deptUrl = '/dept';
 

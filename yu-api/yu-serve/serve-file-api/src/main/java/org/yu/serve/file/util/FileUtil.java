@@ -1,6 +1,7 @@
 package org.yu.serve.file.util;
 
 import cn.hutool.core.util.StrUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.yu.serve.file.domain.FileRecordDO;
@@ -18,11 +19,9 @@ import java.util.List;
 @Component
 public class FileUtil {
     private static FileUtil fileUtil;
-    private final FileService fileService;
 
-    public FileUtil(FileService fileService) {
-        this.fileService = fileService;
-    }
+    @Autowired(required = false)
+    private FileService fileService;
 
     @PostConstruct
     private void init() {
@@ -30,7 +29,10 @@ public class FileUtil {
     }
 
     public static List<FileRecordDO> queryList(FilePathEnum filePathEnum, Long relationId) {
-        return fileUtil.fileService.queryList(filePathEnum, relationId);
+        if (fileUtil.fileService != null) {
+            return fileUtil.fileService.queryList(filePathEnum, relationId);
+        }
+        return null; // 或者抛出自定义异常
     }
 
     public static String base64ToFileSave(String base64, FilePathEnum filePathEnum) {

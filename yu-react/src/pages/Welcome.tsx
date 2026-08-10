@@ -35,7 +35,7 @@ export default (): React.ReactNode => {
             欢迎使用
           </a>
         </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-table</CodePreview>
+        {/* <CodePreview>yarn add @ant-design/pro-table</CodePreview> */}
         <Typography.Text
           strong
           style={{

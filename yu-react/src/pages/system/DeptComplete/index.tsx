@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { DeptData } from './data';
-import { useModel } from 'umi';
+import { useModel } from '@umijs/max';
 
 import { Tree } from 'antd';
 import {

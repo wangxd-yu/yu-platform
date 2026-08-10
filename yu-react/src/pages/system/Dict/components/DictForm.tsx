@@ -1,5 +1,5 @@
+import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import React from 'react'
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
 
 export type DictFormProps = {
     onFinish?: (values: any) => Promise<void>;
@@ -20,9 +20,9 @@ const DictForm = React.forwardRef((props: DictFormProps, ref: any) => {
             width="500px"
             {...formItemLayout}
             formRef={ref}
-            visible={props.visible}
+            open={props.visible}
             layout='horizontal'
-            onVisibleChange={props.onVisibleChange}
+            onOpenChange={props.onVisibleChange}
             onFinish={props.onFinish}
       >
         <ProFormText

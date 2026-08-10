@@ -1,8 +1,9 @@
-import YuForm, { YuFormProps } from "@/components/Yu/YuForm"
+import type { YuFormProps } from "@/components/Yu/YuForm";
+import YuForm from "@/components/Yu/YuForm"
 import { addVirtualDept, updateVirtualDept } from "@/services/system/virtualDept"
-import { ProFormDigit, ProFormText } from "@ant-design/pro-form"
 import * as YuCrud from '@/utils/yuCrud';
 import { ApartmentOutlined } from "@ant-design/icons";
+import { ProFormText, ProFormDigit } from "@ant-design/pro-components";
 
 const VirtualDeptForm: React.FC<YuFormProps & {pDept: API.VirtualDept}> = (props: YuFormProps & {pDept: API.VirtualDept}) => {
     const { pDept, ...yuProps} = props;

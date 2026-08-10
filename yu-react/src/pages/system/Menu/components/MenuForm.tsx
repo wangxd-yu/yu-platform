@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { TreeSelect } from 'antd'
-import ProForm, { DrawerForm, ProFormDigit, ProFormRadio, ProFormSwitch, ProFormText } from '@ant-design/pro-form'
+
 import type { DataNode } from 'rc-tree-select/lib/interface';
 import { menuTypeArr, MenuTypeEnum } from '../index';
 import type { MenuData } from '../data';
 import type { YuFormProps } from '@/components/Yu/YuForm';
+import { DrawerForm, ProFormRadio, ProFormText, ProForm, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
 
 export type MenuFormProps = YuFormProps & {
     menuDataList: MenuData[];
@@ -69,9 +70,9 @@ const MenuForm: React.FC<MenuFormProps> = (props: MenuFormProps) => {
             width="600px"
             formRef={props.formRef}
             {...formItemLayout}
-            visible={props.visible}
+            open={props.visible}
             layout='horizontal'
-            onVisibleChange={(visible) => {
+            onOpenChange={(visible) => {
                 if (props.onVisibleChange) props.onVisibleChange(visible);
                 if (visible) {
                     const initialType = MenuTypeEnum[props?.initialValues?.type];

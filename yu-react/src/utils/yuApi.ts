@@ -1,5 +1,5 @@
 import type { SortOrder } from 'antd/lib/table/interface';
-import { request } from 'umi';
+import { request } from '@umijs/max';
 
 // 转换分页参数 
 export const transferPageParams = (params: any) => {

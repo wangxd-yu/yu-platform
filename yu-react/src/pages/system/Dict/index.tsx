@@ -1,12 +1,28 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Popconfirm } from 'antd';
-import type { FormInstance } from 'antd';
-import React, { useState, useRef } from 'react';
-import { queryDict, queryDictItem, addDict, addDictItem, updateDict, updateDictItem, deleteDict, deleteDictItem } from './service';
 import * as YuCrud from '@/utils/yuCrud';
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import {
+  ModalForm,
+  PageContainer,
+  ProFormDigit,
+  ProFormText,
+  ProTable,
+} from '@ant-design/pro-components';
+import type { FormInstance } from 'antd';
+import { Button, Drawer, Popconfirm } from 'antd';
+import React, { useRef, useState } from 'react';
+import DictForm1 from './components/DictForm1';
 import type { Dict, DictItem } from './data';
-import DictForm1 from './components/DictForm1'
-import { ActionType, ProColumns, PageContainer, ProTable, ModalForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
+import {
+  addDict,
+  addDictItem,
+  deleteDict,
+  deleteDictItem,
+  queryDict,
+  queryDictItem,
+  updateDict,
+  updateDictItem,
+} from './service';
 
 const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
@@ -30,13 +46,13 @@ const TableList: React.FC = () => {
   const columns: ProColumns<Dict>[] = [
     {
       title: '字典名称',
-      dataIndex: 'name'
+      dataIndex: 'name',
     },
     {
       title: '字典编号',
       tip: '字典编号是唯一的 key',
       dataIndex: 'code',
-      hideInForm: true
+      hideInForm: true,
     },
     {
       title: '描述',
@@ -50,7 +66,7 @@ const TableList: React.FC = () => {
       sorter: true,
       search: false,
       dataIndex: 'createTime',
-      valueType: 'dateTime'
+      valueType: 'dateTime',
     },
     {
       title: '操作',
@@ -76,9 +92,13 @@ const TableList: React.FC = () => {
         >
           字典配置
         </a>,
-        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+        <Popconfirm
+          key="popconfirm"
+          title={`确认删除该记录吗?`}
+          okText="是"
+          cancelText="否"
           onConfirm={async () => {
-            await YuCrud.handleDelete(deleteDict, record.id)
+            await YuCrud.handleDelete(deleteDict, record.id);
             if (actionRef.current) {
               actionRef.current.reload();
             }
@@ -87,7 +107,7 @@ const TableList: React.FC = () => {
           <a key="delete" href="#">
             删除
           </a>
-        </Popconfirm>
+        </Popconfirm>,
       ],
     },
   ];
@@ -96,23 +116,24 @@ const TableList: React.FC = () => {
     {
       title: '字典标签',
       dataIndex: 'name',
-      hideInForm: true
+      hideInForm: true,
     },
     {
       title: '字典值',
       dataIndex: 'code',
-      hideInForm: true
+      hideInForm: true,
     },
     {
       title: '排序',
-      dataIndex: 'sort'
+      dataIndex: 'sort',
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_: any, record: DictItem) => [
-        <a key="updateDictItem"
+        <a
+          key="updateDictItem"
           onClick={() => {
             handleDictItemVisible(true);
             setDictItemCurrentRow(record);
@@ -121,7 +142,11 @@ const TableList: React.FC = () => {
         >
           编辑
         </a>,
-        <Popconfirm key="popconfirm" title={`确认删除该记录吗?`} okText="是" cancelText="否"
+        <Popconfirm
+          key="popconfirm"
+          title={`确认删除该记录吗?`}
+          okText="是"
+          cancelText="否"
           onConfirm={async () => {
             await YuCrud.handleDelete(deleteDictItem, record.id);
             if (itemActionRef.current) {
@@ -132,10 +157,10 @@ const TableList: React.FC = () => {
           <a key="delete" href="#">
             删除
           </a>
-        </Popconfirm>
+        </Popconfirm>,
       ],
     },
-  ]
+  ];
 
   const formItemLayout = {
     labelCol: { span: 5 },
@@ -143,9 +168,11 @@ const TableList: React.FC = () => {
   };
 
   return (
-    (<PageContainer header={{
-      breadcrumb: {},
-    }}>
+    <PageContainer
+      header={{
+        breadcrumb: {},
+      }}
+    >
       <ProTable<Dict, API.TableListPagination>
         headerTitle="查询表格"
         actionRef={actionRef}
@@ -159,7 +186,7 @@ const TableList: React.FC = () => {
             key="primary"
             onClick={() => {
               dictFormRef?.current?.resetFields();
-              setDictCurrentRow(undefined)
+              setDictCurrentRow(undefined);
               handleDictVisible(true);
             }}
           >
@@ -201,8 +228,7 @@ const TableList: React.FC = () => {
         }}
         closable={false}
       >
-        {
-          showDictItemDetail &&
+        {showDictItemDetail && (
           <ProTable<DictItem>
             actionRef={itemActionRef}
             columns={dictItemColumns}
@@ -218,7 +244,9 @@ const TableList: React.FC = () => {
             dateFormatter="string"
             headerTitle={dictCurrentRow?.name}
             toolBarRender={() => [
-              <Button type="primary" key="primary"
+              <Button
+                type="primary"
+                key="primary"
                 onClick={() => {
                   dictItemFormRef?.current?.resetFields();
                   setDictItemCurrentRow(undefined);
@@ -229,14 +257,14 @@ const TableList: React.FC = () => {
               </Button>,
             ]}
           />
-        }
+        )}
         <ModalForm
           title="新建字典值"
           width="500px"
           {...formItemLayout}
           formRef={dictItemFormRef}
           open={createDictItemVisible}
-          layout='horizontal'
+          layout="horizontal"
           onVisibleChange={handleDictItemVisible}
           onFinish={async (value) => {
             const data = { dictId: dictCurrentRow?.id, ...dictItemCurrentRow, ...value };
@@ -278,7 +306,7 @@ const TableList: React.FC = () => {
           <ProFormDigit label="排序" name="sort" min={1} max={99} />
         </ModalForm>
       </Drawer>
-    </PageContainer >)
+    </PageContainer>
   );
 };
 

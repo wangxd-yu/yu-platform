@@ -18,6 +18,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 @EnableJpaRepositories("org.yu.serve.system.module")
 @EntityScan("org.yu.serve.system.module")
-@ComponentScan(value = {"org.yu.serve.system.module"})
+@ComponentScan(basePackages = {"org.yu.serve.system.module"})
+//@EnableJpaRepositories("org.yu")
+//@EntityScan("org.yu")
+//@ComponentScan(basePackages = {"org.yu"})
 public class ServeSystemAutoConfigure {
 }

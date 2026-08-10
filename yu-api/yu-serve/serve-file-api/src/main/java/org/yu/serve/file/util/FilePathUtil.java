@@ -22,6 +22,7 @@ import java.util.UUID;
  */
 @Component
 public class FilePathUtil {
+    private String root;
     private String staticAccessPath;
     private String uploadFolder;
     private String uploadPath;
@@ -33,25 +34,28 @@ public class FilePathUtil {
         this.filePathConfig = filePathConfig;
     }
 
-    @PostConstruct
-    private void init() {
-        filePathUtil = this;
-        staticAccessPath = filePathConfig.getStaticAccessPath();
-        uploadPath = filePathConfig.getUploadPath();
-        uploadFolder = filePathConfig.getUploadFolder();
+    public static String getRoot() {
+        return filePathUtil.root;
+    }
 
-        //创建上传文件根目录
-        File tmpFile = new File(uploadPath);
-        if (!tmpFile.exists()) {
-            boolean wasSuccessful = tmpFile.mkdirs();
-            if (!wasSuccessful) {
-                throw new RuntimeException("文件目录创建失败，请检查jar包所在目录是否有写入权限！");
-            }
-        }
+    public static String getStaticAccessPathSimple() {
+        return filePathUtil.staticAccessPath;
     }
 
     public static String getStaticAccessPath() {
         return filePathUtil.staticAccessPath;
+    }
+
+    public static File getFileByStaticPath(String path) {
+        /**
+         * File.separator在windows中为"\\"
+         */
+        int idx = path.indexOf(File.separator);
+        if (idx < 0) {
+            return null;
+        }
+        // 文件上传目录 + 文件子目录和文件名
+        return new File(getUploadPath() + path.substring(idx + 1));
     }
 
     public static String getUploadFolder() {
@@ -144,15 +148,21 @@ public class FilePathUtil {
         return getTempFilePath(UUID.randomUUID().toString() + fileSuffix.getSuffix());
     }
 
-    public static File getFileByStaticPath(String path) {
-        /**
-         * File.separator在windows中为"\\"
-         */
-        int idx = path.indexOf("/");
-        if (idx < 0) {
-            return null;
+    @PostConstruct
+    private void init() {
+        filePathUtil = this;
+        root = filePathConfig.getRoot();
+        staticAccessPath = filePathConfig.getStaticAccessPath();
+        uploadPath = filePathConfig.getUploadPath();
+        uploadFolder = filePathConfig.getUploadFolder();
+
+        //创建上传文件根目录
+        File tmpFile = new File(uploadPath);
+        if (!tmpFile.exists()) {
+            boolean wasSuccessful = tmpFile.mkdirs();
+            if (!wasSuccessful) {
+                throw new RuntimeException("文件目录创建失败，请检查jar包所在目录是否有写入权限！");
+            }
         }
-        // 文件上传目录 + 文件子目录和文件名
-        return new File(getUploadPath() + path.substring(idx + 1));
     }
 }

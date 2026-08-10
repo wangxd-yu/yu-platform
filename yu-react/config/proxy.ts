@@ -8,16 +8,6 @@
  */
 export default {
   dev: {
-    /* '/auth/': {
-      target: 'http://swwx.sdses.com/wxd',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-    '/api_sy/': {
-      target: 'http://swwx.sdses.com/wxd',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    }, */
     '/api/': {
       target: 'http://127.0.0.1:1128',
       changeOrigin: true,

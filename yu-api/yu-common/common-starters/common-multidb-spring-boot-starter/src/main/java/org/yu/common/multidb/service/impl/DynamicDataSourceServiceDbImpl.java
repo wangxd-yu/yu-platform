@@ -31,12 +31,6 @@ public class DynamicDataSourceServiceDbImpl implements DynamicDataSourceService 
             defaultDataSource = dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
         }
         return defaultDataSource;
-        /*HikariDataSource dataSource2 = new HikariDataSource();
-        dataSource2.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource2.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/yu_tenant_platform?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false");
-        dataSource2.setUsername("root");
-        dataSource2.setPassword("123456");
-        return dataSource2;*/
     }
 
     @Override
@@ -52,29 +46,6 @@ public class DynamicDataSourceServiceDbImpl implements DynamicDataSourceService 
             DynamicDataSource.dynamicTargetDataSources.put(resultSet.getString("tenant_id"), dataSource);
             return null;
         });
-        /*DataSourceDO dataSourceDBDO1 = new DataSourceDO();
-        dataSourceDBDO1.setTenantId(1000L);
-        dataSourceDBDO1.setUrl("jdbc:mysql://127.0.0.1:3306/yu_tenant_1?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false");
-        dataSourceDBDO1.setUsername("root");
-        dataSourceDBDO1.setPassword("123456");
-
-        DataSourceDO dataSourceDBDO2 = new DataSourceDO();
-        dataSourceDBDO2.setTenantId(1001L);
-        dataSourceDBDO2.setUrl("jdbc:mysql://127.0.0.1:3306/yu_tenant_2?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false");
-        dataSourceDBDO2.setUsername("root");
-        dataSourceDBDO2.setPassword("123456");
-
-        List<DataSourceDO> dataSourceDBDOS = Arrays.asList(
-                dataSourceDBDO1, dataSourceDBDO2
-        );
-        dataSourceDBDOS.forEach(dataSourceDBDO -> {
-            HikariDataSource dataSource = new HikariDataSource();
-            dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            dataSource.setJdbcUrl(dataSourceDBDO.getUrl());
-            dataSource.setUsername(dataSourceDBDO.getUsername());
-            dataSource.setPassword(dataSourceDBDO.getPassword());
-            DynamicDataSource.dynamicTargetDataSources.put(dataSourceDBDO.getTenantId().toString(), dataSource);
-        });*/
         return DynamicDataSource.dynamicTargetDataSources;
     }
 }
